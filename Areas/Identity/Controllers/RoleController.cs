@@ -60,7 +60,15 @@ namespace HnganhCinema.Areas.Identity.Controllers
            }
 
             return View(roles);
-        } 
+        }
+        [HttpGet] 
+        public async Task<IActionResult> GetAllRoles()
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            return Json(roles);
+        }
+
+        
 
         // GET: /Role/Create
         [HttpGet]
@@ -106,7 +114,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
             return View((object)role);
         }
 
-        // POST: /Role/Edit/1
         [HttpPost("{roleid}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmAsync(string roleid)
@@ -138,13 +145,26 @@ namespace HnganhCinema.Areas.Identity.Controllers
             if (role == null)
             {
                 return NotFound("Not found ROLE");
-            } 
+            }
             model.Name = role.Name;
             model.Claims = await _context.RoleClaims.Where(rc => rc.RoleId == role.Id).ToListAsync();
             model.role = role;
             ModelState.Clear();
             return View(model);
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetClaim([FromQuery] string roleid)
+        {
+            if (roleid == null) return NotFound("Not found ROLE");
+            var role = await _roleManager.FindByIdAsync(roleid);
+            if (role == null)
+            {
+                return NotFound("Not found ROLE");
+            }
+            
+            var Claims = await _context.RoleClaims.Where(rc => rc.RoleId == role.Id).ToListAsync();
+            return Json(Claims);
         }
 
         // POST: /Role/Edit/1

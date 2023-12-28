@@ -11,18 +11,18 @@ namespace HnganhCinema.Areas.Identity.Models.AccountViewModels
 {
     public class ResetPasswordViewModel
     {
-            [Required(ErrorMessage = "Phải nhập {0}")]
-            [EmailAddress(ErrorMessage="Phải đúng định dạng email")]
+            [Required(ErrorMessage = "Must input {0}")]
+            [EmailAddress(ErrorMessage="Invalid email format")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Phải nhập {0}")]
+            [Required(ErrorMessage = "Must input {0}")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Nhập mật khẩu mới")]
+            [Display(Name = "New Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Lặp lại mật khẩu")]
+            [Display(Name = "Confirm new password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 

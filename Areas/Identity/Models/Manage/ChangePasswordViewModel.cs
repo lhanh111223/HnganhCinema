@@ -11,20 +11,21 @@ namespace HnganhCinema.Areas.Identity.Models.ManageViewModels
 {
     public class ChangePasswordViewModel
     {
-        [Required(ErrorMessage = "Phải nhập {0}")]
+        [Required(ErrorMessage = "Must input {0}")]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu hiện tại")]
+        [Display(Name = "Old Password")]
         public string OldPassword { get; set; }
 
-        [Required(ErrorMessage = "Phải nhập {0}")]
-        [StringLength(100, ErrorMessage = "{0} phải dài tối thiểu {2} ký tự.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Must input {0}")]
+        [StringLength(100, ErrorMessage = "{0} must be from {2} characters.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu mới")]
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; }
 
+        [Required(ErrorMessage = "Must input {0}")]
         [DataType(DataType.Password)]
-        [Display(Name = "Xác nhận lại mật khẩu")]
-        [Compare("NewPassword", ErrorMessage = "Mật khẩu xác nhận phải trùng với mật khẩu mới")]
+        [Display(Name = "Confirm new password")]
+        [Compare("NewPassword", ErrorMessage = "Incorrect confirm password")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -34,6 +34,7 @@
           "Microsoft.Extensions.Logging": "8.0.0",
           "Microsoft.Extensions.Logging.Console": "8.0.0",
           "Microsoft.Extensions.Options.DataAnnotations": "6.0.0",
+          "Microsoft.TypeScript.MSBuild": "5.3.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.16",
           "MimeKit": "4.3.0",
           "Newtonsoft.Json": "13.0.3",
@@ -1831,6 +1832,7 @@
       },
       "Microsoft.NETCore.Platforms/2.0.2": {},
       "Microsoft.NETCore.Targets/1.1.0": {},
+      "Microsoft.TypeScript.MSBuild/5.3.3": {},
       "Microsoft.VisualStudio.Debugger.Contracts/17.2.0": {
         "dependencies": {
           "MessagePack": "2.1.152",
@@ -4004,6 +4006,13 @@
       "sha512": "sha512-aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg==",
       "path": "microsoft.netcore.targets/1.1.0",
       "hashPath": "microsoft.netcore.targets.1.1.0.nupkg.sha512"
+    },
+    "Microsoft.TypeScript.MSBuild/5.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sFxHtBLDgNp+vhCS0usd7F/5NfWSGJ7KiYy8YLKeQit19szQZ6oqxRYyOmQsFlZt2GLHpTkXffFqjZIDvGCdaQ==",
+      "path": "microsoft.typescript.msbuild/5.3.3",
+      "hashPath": "microsoft.typescript.msbuild.5.3.3.nupkg.sha512"
     },
     "Microsoft.VisualStudio.Debugger.Contracts/17.2.0": {
       "type": "package",

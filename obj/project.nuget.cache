@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/VZyCzdPAtB/3RuTKn6fESk3d5YRM3pVXDtf9YxTXazbMITNuliIH/stRQTmW3zZ4TdU4SXwoteJGJXmwkURzA==",
+  "dgSpecHash": "R582r5tFsqb2TbCvVsaGJkP3OKNNJTLSuQFEhnBskqa4ObcwYy1oOSTTFb60DjDr/a8/O0dJa7WaBZvBIs8cAA==",
   "success": true,
   "projectFilePath": "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\dataannotationsextensions\\5.0.1.27\\dataannotationsextensions.5.0.1.27.nupkg.sha512",
+    "C:\\Users\\Hoang Anh\\.nuget\\packages\\elfinder.netcore\\1.3.6\\elfinder.netcore.1.3.6.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",
@@ -154,6 +155,7 @@
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.netcore.dotnethostresolver\\2.0.7\\microsoft.netcore.dotnethostresolver.2.0.7.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.2\\microsoft.netcore.platforms.2.0.2.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.typescript.msbuild\\5.3.3\\microsoft.typescript.msbuild.5.3.3.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.visualstudio.debugger.contracts\\17.2.0\\microsoft.visualstudio.debugger.contracts.17.2.0.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration\\6.0.16\\microsoft.visualstudio.web.codegeneration.6.0.16.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.core\\6.0.16\\microsoft.visualstudio.web.codegeneration.core.6.0.16.nupkg.sha512",

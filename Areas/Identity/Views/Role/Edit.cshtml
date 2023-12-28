@@ -1,5 +1,5 @@
 @model EditRoleModel
- 
+
 @{
     ViewData["Title"] = "UPDATE ROLE";
 }
@@ -7,7 +7,7 @@
 <partial name="_StatusMessage"></partial>
 
 <hr>
-
+<input id="roleid" type="hidden" value="@Model.role.Id" />
 <div class="row">
     <div class="col-md-6">
         <form method="post">
@@ -24,7 +24,8 @@
             </div>
         </form>
         <hr>
-        <p>Claims of role:  
+        <p>
+            Claims of role:
             <a asp-action="AddRoleClaim" asp-route-roleid="@Model.role.Id">+ Add new Claim</a>
         </p>
         @if (Model.Claims.Count > 0)
@@ -40,10 +41,57 @@
                 }
             </ul>
         }
+
+        <table id="claimTable">
+            <thead>
+                <tr>
+                    <th>Claim name</th>
+                    <th>Accessible feature</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
 </div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        var js = jQuery.noConflict(true);
+
+        let ClaimData = [];
+
+        $(document).ready(function () {
+            GetClaimOfRole();
+            console.log(ClaimData);
+        });
+
+        function GetClaimOfRole() {
+            let roleid = $("#roleid").val();
+            js.ajax({
+                async: false,
+                url: "/Role/GetClaim?roleid=" + roleid,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    ClaimData = data;
+                }
+            });
+
+            $("#claimTable").DataTable({
+                data: ClaimData,
+
+            });
+
+        }
+    </script>
 }

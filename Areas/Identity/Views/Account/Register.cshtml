@@ -3,14 +3,102 @@
 
 @model RegisterViewModel
 @{
-    ViewData["Title"] = "Đăng ký tài khoản";
+    ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"].</h1>
+@* <h1>@ViewData["Title"].</h1> *@
 
-<div class="row">
+<head>
+    <link rel="stylesheet" href="~/sourcetemplate/loginregister/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/sourcetemplate/loginregister/css/style.css">
+</head>
+
+<section class="signup">
+    <div class="signup-content">
+        <div class="signup-form">
+            <h2 class="form-title">Register</h2>
+            <form method="POST" class="register-form" id="register-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label><i class="zmdi zmdi-account material-icons-name"></i></label>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <input asp-for="UserName" placeholder="Username" />
+                </div>
+                <div class="form-group">
+                    <label><i class="zmdi zmdi-email"></i></label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" placeholder="Email" />
+                </div>
+                <div class="form-group">
+                    <label><i class="zmdi zmdi-lock"></i></label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <input asp-for="Password" placeholder="Password" />
+                </div>
+                <div class="form-group">
+                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <input asp-for="ConfirmPassword" placeholder="Repeat your password" />
+                </div>
+                @* <div class="form-group">
+                    <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                    <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                </div> *@
+                <div class="form-group form-button">
+                    <input type="submit" class="form-submit" value="Register" />
+                </div>
+            </form>
+            @{
+                var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+                var loginProviders = schemes.ToList();
+                if (loginProviders.Count == 0)
+                {
+                    <div>
+                        <p>
+                            NOT SUPPORT
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                        <div>
+                            <p>
+                                <p>Or login with</p> 
+                                @foreach (var provider in loginProviders)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.Name</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </div>
+        <div class="signup-image">
+            <figure><img src="~/sourcetemplate/loginregister/images/signup-image.jpg" alt="sing up image"></figure>
+            <a asp-action="Login" class="signup-image-link">I am already member</a>
+        </div>
+    </div>
+
+
+</section>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/sourcetemplate/loginregister/vendor/jquery/jquery.min.js"></script>
+    <script src="~/sourcetemplate/loginregister/js/main.js"></script>
+}
+
+
+
+@* <div class="row">
     <div class="col-md-8">
-        <section>   
+        <section>
             <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
                 <h4>Tạo tài khoản mới trên website.</h4>
                 <hr />
@@ -48,7 +136,7 @@
                         <button type="submit" class="btn btn-primary">Đăng ký</button>
                     </div>
                 </div>
-            </form>          
+            </form>
         </section>
     </div>
     <div class="col-md-4">
@@ -82,12 +170,4 @@
             }
         </section>
     </div>
-</div>
-
-
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+</div> *@

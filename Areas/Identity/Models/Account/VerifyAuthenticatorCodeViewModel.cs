@@ -7,16 +7,16 @@ namespace HnganhCinema.Areas.Identity.Models.AccountViewModels
 {
     public class VerifyAuthenticatorCodeViewModel
     {
-        [Required(ErrorMessage = "Phải nhập {0}")]
-        [Display(Name = "Nhập mã đã lưu")]
+        [Required(ErrorMessage = "Must input {0}")]
+        [Display(Name = "Input code")]
         public string Code { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Nhớ thông tin trình duyệt này?")]
+        [Display(Name = "Remember for this browser?")]
         public bool RememberBrowser { get; set; }
 
-        [Display(Name = "Nhớ thông tin đăng nhập?")]
+        [Display(Name = "Remember login info?")]
         public bool RememberMe { get; set; }
     }
 }

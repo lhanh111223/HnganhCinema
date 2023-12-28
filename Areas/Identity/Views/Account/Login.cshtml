@@ -9,8 +9,112 @@
     ViewData["Title"] = "LOGIN";
 }
 
-<h1>@ViewData["Title"].</h1>
-<div class="row">
+@* <h1>@ViewData["Title"]</h1> *@
+
+<head>
+    <!--
+            ./SourceTemplate/Login_Register/
+
+    -->
+    <link rel="stylesheet" href="~/sourcetemplate/loginregister/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/sourcetemplate/loginregister/css/style.css">
+</head>
+
+
+<section class="sign-in">
+    <div class="signin-content">
+        <div class="signin-image">
+            <figure><img src="~/sourcetemplate/loginregister/images/signin-image.jpg" alt="sing up image"></figure>
+            @* <a href="#" class="signup-image-link">Create an account</a> *@
+            <a style="font-size:20px"
+               class="signup-image-link btn btn-outline-primary" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Create an account </a>
+        </div>
+
+        <div class="signin-form">
+            <h2 class="form-title">LOGIN</h2>
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="zmdi zmdi-account material-icons-name"></label>
+                    <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                    <input placeholder="Username / Email" asp-for="UserNameOrEmail" />
+                </div>
+
+                <div class="form-group">
+                    <label class="zmdi zmdi-lock material-icons-name"></label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <input placeholder="Password" asp-for="Password" />
+                </div>
+                @* <div class="form-group">
+                    <div class="custom-control custom-checkbox small">
+                        <input asp-for="RememberMe" type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label" asp-for="RememberMe">
+                            Remember me ?
+                        </label>
+                    </div>
+                </div> *@
+                <div class="form-group">
+                    <div style="margin-top:10px" class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+            </form>
+            <p>
+                <a style="text-decoration:none" asp-action="ForgotPassword">Forget Password</a>
+            </p>
+            <div class="social-login">
+                <span style="font-size:15px" class="social-label">Or login with</span>
+                @* <ul class="socials">
+                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                </ul> *@
+                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                    <div>
+                        @{
+                            var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+                            var loginProviders = schemes.ToList();
+                            if (loginProviders.Count == 0)
+                            {
+                                <div>
+                                    <p>
+                                        NOT SUPPORT
+                                    </p>
+                                </div>
+                            }
+                            else
+                            {
+                                <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                                    <div>
+                                        <p>
+                                            @foreach (var provider in loginProviders)
+                                            {
+                                                <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.Name</button>
+                                            }
+                                        </p>
+                                    </div>
+                                </form>
+                            }
+                        }
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/sourcetemplate/loginregister/vendor/jquery/jquery.min.js"></script>
+    <script src="~/sourcetemplate/loginregister/js/main.js"></script>
+}
+
+@* <div class="row">
     <div class="col-md-8">
         <section>
             <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
@@ -87,8 +191,9 @@
             }
         </section>
     </div>
-</div>
+</div> *@
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
+
+
+
+

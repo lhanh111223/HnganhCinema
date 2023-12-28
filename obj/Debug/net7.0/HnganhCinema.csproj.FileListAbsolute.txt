@@ -1,8 +1,6 @@
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\appsettings.Development.json
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\appsettings.json
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\libman.json
-E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\package-lock.json
-E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\package.json
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\HnganhCinema.staticwebassets.runtime.json
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\HnganhCinema.exe
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net7.0\HnganhCinema.deps.json
