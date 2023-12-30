@@ -18,16 +18,24 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Features"></label>
+                @Html.ListBoxFor(m => m.Features, (IEnumerable<SelectListItem>)ViewBag.allFeature, new{
+                id = "id-select-feature",
+                @class = "w-100 h-20"
+                })
+            </div>
+
             <div style="margin-top: 2vh" class="form-group">
                 <input type="submit" value="Update" class="btn btn-primary" />
                 <a class="btn btn-primary" asp-action="Index">List of Roles</a>
             </div>
         </form>
         <hr>
-        <p>
-            Claims of role:
-            <a asp-action="AddRoleClaim" asp-route-roleid="@Model.role.Id">+ Add new Claim</a>
-        </p>
+        @* <p>
+        Claims of role:
+        <a asp-action="AddRoleClaim" asp-route-roleid="@Model.role.Id">+ Add new Claim</a>
+        </p> *@
         @if (Model.Claims.Count > 0)
         {
             <ul>
@@ -42,7 +50,7 @@
             </ul>
         }
 
-        <table id="claimTable">
+        @* <table id="claimTable">
             <thead>
                 <tr>
                     <th>Claim name</th>
@@ -51,8 +59,9 @@
             </thead>
             <tbody>
             </tbody>
-        </table>
+        </table> *@
     </div>
+
 </div>
 
 
@@ -64,8 +73,12 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
     <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.min.js"></script>
+    <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
 
     <script>
+
         var js = jQuery.noConflict(true);
 
         let ClaimData = [];
@@ -89,9 +102,21 @@
 
             $("#claimTable").DataTable({
                 data: ClaimData,
-
+                columns: [
+                    { data: 'claimType' },
+                    { data: 'claimValue' }
+                ]
             });
 
         }
+
+
+        js("#id-select-feature").multipleSelect({
+            selectAll: false,
+            keepOpen: false,
+            isOpen: false,
+            filter: true
+        });
     </script>
+    <partial name="_ValidationScriptsPartial" />
 }

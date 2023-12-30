@@ -1,4 +1,5 @@
-@model CreateRoleModel
+﻿@using HnganhCinema.Areas.Identity.Models.Role;
+@model AddRoleAppClaim
 @{
     ViewData["Title"] = "Create a new Role";
 }
@@ -8,24 +9,58 @@
 <hr>
 
 <div class="row">
-    <div class="col-md-6">
-        <form method="post">
+    <form class="row" method="post">
+        <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+        </div>
 
-            <div style="margin-top:2vh" class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a class="btn btn-primary" asp-action="Index">List of Roles</a>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Claims"></label>
+                @Html.ListBoxFor(m => m.Claims, (IEnumerable<SelectListItem>)ViewBag.allFeature, new{
+                id = "id-select-feature",
+                @class = "w-100 h-50"
+                })
             </div>
-        </form>
-    </div>
+        </div>
+        <div style="margin-top:2vh" class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <a class="btn btn-primary" asp-action="Index">List of Roles</a>
+        </div>
+    </form>
+    <div id="selected-items-info"></div>
 </div>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.min.js"></script>
+    <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
+
+
+
+
+
+    <script>
+        var js = jQuery.noConflict(true);
+
+        js("#id-select-feature").multipleSelect({
+            selectAll: true,
+            keepOpen: false,
+            isOpen: false,
+            filter: true,
+        });
+
+    </script>
+    <partial name="_ValidationScriptsPartial" />
 }

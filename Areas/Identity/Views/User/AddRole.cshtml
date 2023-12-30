@@ -3,7 +3,7 @@
     ViewData["Title"] = "Gán role";
 }
 
-<h4>Thiết lập role cho user: @Model.user.UserName</h4>
+<h4>Setting role for user: @Model.user.UserName</h4>
 <partial name="_StatusMessage" />
 
 <div class="row">
@@ -15,7 +15,7 @@
                 <label asp-for="RoleNames"></label>
                 @Html.ListBoxFor(m => m.RoleNames, (IEnumerable<SelectListItem>)ViewBag.allRoles, new {
                 id = "id-select-roles",
-                @class = "w-100"
+                @class = "w-100 h-20"
                 })
                 <span asp-validation-for="RoleNames" class="text-danger"></span>
             </div>
@@ -26,8 +26,8 @@
             </div>
         </form>
         <hr>
-        <p>Claims from role:</p>
-        @if (Model.claimsInRole.Count > 0)
+        @* <p>Claims from role:</p> *@
+        @* @if (Model.claimsInRole.Count > 0)
         {
             <ul>
                 @foreach (var claim in Model.claimsInRole)
@@ -35,13 +35,13 @@
                     <li>@claim.ClaimType : @claim.ClaimValue</li>
                 }
             </ul>
-        }
-        <hr>
+        } *@
+        @* <hr>
         <p>
             Các claim riêng:
             <a asp-action="AddClaim" asp-route-userid="@Model.user.Id">+ Add special claim</a>
-        </p>
-        @if (Model.claimsInUserClaim.Count > 0)
+        </p> *@
+       @*  @if (Model.claimsInUserClaim.Count > 0)
         {
             <ul>
                 @foreach (var claim in Model.claimsInUserClaim)
@@ -51,7 +51,7 @@
                     </li>
                 }
             </ul>
-        }
+        } *@
 
 
 
@@ -70,6 +70,7 @@
             selectAll: false,
             keepOpen: false,
             isOpen: false,
+            filter: true
         });
     </script>
 

@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Areas\Database\Views\DbManage\DeleteDb.cshtml" />
-    <None Include="Areas\Database\Views\DbManage\Index.cshtml" />
     <None Include="Areas\Database\Views\_ViewImports.cshtml" />
     <None Include="Areas\Database\Views\_ViewStart.cshtml" />
     <None Include="wwwroot\js\jquery.dataTables.js" />
@@ -186,7 +184,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Database\Data\" />
-    <Folder Include="Areas\Database\Models\" />
     <Folder Include="smssave\" />
   </ItemGroup>
 

@@ -24,6 +24,14 @@ namespace HnganhCinema.Models
         public virtual DbSet<Room> Rooms { get; set; } = null!;
         public virtual DbSet<Seat> Seats { get; set; } = null!;
         public virtual DbSet<Showtime> Showtimes { get; set; } = null!;
+        public virtual DbSet<AppClaim> AppClaims { get; set; } = null!;
+        public virtual DbSet<AppRoleClaim> AppRoleClaims { get; set; } = null!;
+        public virtual DbSet<AppMenu> AppMenu { get; set; } = null!;
+        public virtual DbSet<UserFeature> UserFeatures { get; set; } = null!;
+        public virtual DbSet<RoleAppClaim> RoleAppClaims { get; set; } = null!
+
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
@@ -44,6 +52,15 @@ namespace HnganhCinema.Models
             }
 
             // Setting DB
+
+            modelBuilder.Entity<AppRoleClaim>(entity =>
+            {
+                entity.HasOne(d => d.Claims)
+                    .WithMany(p => p.RoleClaims)
+                    .HasForeignKey(d => d.ClaimId)
+                    .HasConstraintName("FK_RoleClaim_Claim");
+            });
+
             modelBuilder.Entity<MovieActor>(entity =>
             {
                 entity.HasOne(d => d.Actor)
@@ -158,6 +175,32 @@ namespace HnganhCinema.Models
                     .WithMany(p => p.Showtimes)
                     .HasForeignKey(d => d.RoomId)
                     .HasConstraintName("FK_Showtime_Room");
+            });
+
+            modelBuilder.Entity<UserFeature>(entity =>
+            {
+                entity.HasOne(d => d.AppUser)
+                    .WithMany(p => p.UserFeatures)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UserFeature_AppUser");
+                entity.HasOne(d => d.AppClaim)
+                    .WithMany(p => p.UserFeatures)
+                    .HasForeignKey(d => d.ClaimId)
+                    .HasConstraintName("FK_UserFeature_AppClaim");
+            });
+
+            modelBuilder.Entity<AppMenu>(entity =>
+            {
+                entity.HasOne(d => d.AppClaim)
+                    .WithMany(p => p.AppMenu)
+                    .HasForeignKey(d => d.ClaimId)
+                    .HasConstraintName("FK_AppMenu_AppClaim");
+            });
+
+            modelBuilder.Entity<RoleAppClaim>(entity =>
+            {
+                
+
             });
 
         }

@@ -1,0 +1,21 @@
+﻿@model AppClaim
+
+@{
+    ViewData["Title"] = "Delete Feature";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p class="alert alert-danger">
+    Do you want to Delete the feature <strong>@Model.ClaimName</strong> ?
+</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">
+        Delete
+    </button>
+
+    <hr>
+    <a class="btn btn-outline-primary" asp-action="AddFeature">Return</a>
+
+
+</form>

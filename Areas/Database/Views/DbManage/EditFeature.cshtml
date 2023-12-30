@@ -1,0 +1,39 @@
+﻿@model EditFeatureViewModel
+@using HnganhCinema.Areas.Database.Models;
+@using Microsoft.EntityFrameworkCore
+
+@inject CinemaDbContext dbContext
+
+@{
+    ViewData["Title"] = " Feature";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<partial name="_StatusMessage"></partial>
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <label asp-for="Feature" class="control-label"></label>
+    <span asp-validation-for="Feature" class="text-danger"></span>
+    <input asp-for="Feature" class="form-control" />
+    <hr />
+    <input type="checkbox" asp-for="CanView" /> View
+    <input type="checkbox" asp-for="CanCreate" /> Create
+    <input type="checkbox" asp-for="CanUpdate" /> Update
+    <input type="checkbox" asp-for="CanDelete" /> Delete
+    <input type="checkbox" asp-for="CanBlock" /> Block
+
+    <br />
+    <button style="margin-top: 1rem" class="btn btn-success" type="submit">Edit</button>
+
+    
+
+</form>
+
+<hr />
+<a asp-action="IndexFeature" asp-controller="DbManage" asp-area="Database">Return</a>
+
+
+

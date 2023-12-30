@@ -1,12 +1,22 @@
 @{
     var mgs = TempData["StatusMessage"] as string;
+    var mess = ViewBag.Message as string;
 }
 
 @if (!String.IsNullOrEmpty(mgs))
 {
     var statusMessageClass = mgs.StartsWith("Error") ? "danger" : "success";
     <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
-        <button type="button" class="btn btn-close" data-dismiss="alert" ></button>
+        <button type="button" class="btn btn-close" data-dismiss="alert"></button>
         @mgs
+    </div>
+}
+
+@if (!String.IsNullOrEmpty(mess))
+{
+    var statusMessageClass = mess.StartsWith("Error") ? "danger" : "success";
+    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+        <button type="button" class="btn btn-close" data-dismiss="alert"></button>
+        @mess
     </div>
 }

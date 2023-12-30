@@ -16,5 +16,6 @@ namespace HnganhCinema.Models
 
         public virtual ICollection<AccountCinema> AccountCinemas { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<UserFeature> UserFeatures { get; set; }
     }
 }

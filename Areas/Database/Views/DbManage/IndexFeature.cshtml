@@ -1,0 +1,40 @@
+﻿@model AppClaim
+@using Microsoft.EntityFrameworkCore
+
+@inject CinemaDbContext dbContext
+
+@{
+    ViewData["Title"] = "Manage Feature";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<partial name="_StatusMessage"></partial>
+
+<hr />
+
+<a class="btn btn-success btn-lg" asp-action="AddFeature" asp-controller="DbManage" asp-area="Database">
+    Add new Feature
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Feature</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in dbContext.AppClaims)
+        {
+            <tr>
+                <td>@c.ClaimName</td>
+                <td>
+                    <span><a class="btn btn-danger btn-sm" asp-action="DeleteFeature" asp-route-featureid="@c.Id">Delete</a></span>
+                    <span><a class="btn btn-primary btn-sm" asp-action="EditFeature" asp-route-featureid="@c.Id">Edit</a></span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

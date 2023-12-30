@@ -16,12 +16,20 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\ASP.NET\Project\HnganhCinema
 build_property._RazorSourceGeneratorDebug = 
 
-[E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/DbManage/DeleteDb.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcRGJNYW5hZ2VcRGVsZXRlRGIuY3NodG1s
+[E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/DbManage/AddFeature.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcRGJNYW5hZ2VcQWRkRmVhdHVyZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/DbManage/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcRGJNYW5hZ2VcSW5kZXguY3NodG1s
+[E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/DbManage/DeleteFeature.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcRGJNYW5hZ2VcRGVsZXRlRmVhdHVyZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/DbManage/EditFeature.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcRGJNYW5hZ2VcRWRpdEZlYXR1cmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/DbManage/IndexFeature.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcRGJNYW5hZ2VcSW5kZXhGZWF0dXJlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/ASP.NET/Project/HnganhCinema/Areas/Database/Views/_ViewImports.cshtml]

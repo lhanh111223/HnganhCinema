@@ -365,6 +365,57 @@ namespace HnganhCinema.Migrations
                     b.ToTable("Showtime", (string)null);
                 });
 
+            modelBuilder.Entity("HnganhCinema.Models.AppClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppClaims");
+                });
+
+            modelBuilder.Entity("HnganhCinema.Models.AppMenu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("CanBlock")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanUpdate")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ClaimId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClaimId");
+
+                    b.ToTable("AppMenu");
+                });
+
             modelBuilder.Entity("HnganhCinema.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -439,6 +490,45 @@ namespace HnganhCinema.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("HnganhCinema.Models.UserFeature", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("CanBlock")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanUpdate")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ClaimId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClaimId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFeatures");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -480,6 +570,10 @@ namespace HnganhCinema.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RoleId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -489,6 +583,8 @@ namespace HnganhCinema.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleClaims", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRoleClaim<string>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -570,6 +666,20 @@ namespace HnganhCinema.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("HnganhCinema.Models.AppRoleClaim", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>");
+
+                    b.Property<int>("ClaimId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ClaimId");
+
+                    b.ToTable("RoleClaims");
+
+                    b.HasDiscriminator().HasValue("AppRoleClaim");
                 });
 
             modelBuilder.Entity("CinemaWeb.Models.AccountCinema", b =>
@@ -693,6 +803,39 @@ namespace HnganhCinema.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("HnganhCinema.Models.AppMenu", b =>
+                {
+                    b.HasOne("HnganhCinema.Models.AppClaim", "AppClaim")
+                        .WithMany("AppMenu")
+                        .HasForeignKey("ClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_AppMenu_AppClaim");
+
+                    b.Navigation("AppClaim");
+                });
+
+            modelBuilder.Entity("HnganhCinema.Models.UserFeature", b =>
+                {
+                    b.HasOne("HnganhCinema.Models.AppClaim", "AppClaim")
+                        .WithMany("UserFeatures")
+                        .HasForeignKey("ClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserFeature_AppClaim");
+
+                    b.HasOne("HnganhCinema.Models.AppUser", "AppUser")
+                        .WithMany("UserFeatures")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserFeature_AppUser");
+
+                    b.Navigation("AppClaim");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -744,6 +887,18 @@ namespace HnganhCinema.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HnganhCinema.Models.AppRoleClaim", b =>
+                {
+                    b.HasOne("HnganhCinema.Models.AppClaim", "Claims")
+                        .WithMany("RoleClaims")
+                        .HasForeignKey("ClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_RoleClaim_Claim");
+
+                    b.Navigation("Claims");
+                });
+
             modelBuilder.Entity("CinemaWeb.Models.Actor", b =>
                 {
                     b.Navigation("MovieActors");
@@ -789,11 +944,22 @@ namespace HnganhCinema.Migrations
                     b.Navigation("Bookings");
                 });
 
+            modelBuilder.Entity("HnganhCinema.Models.AppClaim", b =>
+                {
+                    b.Navigation("AppMenu");
+
+                    b.Navigation("RoleClaims");
+
+                    b.Navigation("UserFeatures");
+                });
+
             modelBuilder.Entity("HnganhCinema.Models.AppUser", b =>
                 {
                     b.Navigation("AccountCinemas");
 
                     b.Navigation("Bookings");
+
+                    b.Navigation("UserFeatures");
                 });
 #pragma warning restore 612, 618
         }

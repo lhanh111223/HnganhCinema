@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Security.Claims;
+using HnganhCinema.Areas.Identity.Models.Role;
 using HnganhCinema.Areas.Identity.Models.RoleViewModels;
 using HnganhCinema.Data;
 using HnganhCinema.ExtendMethods;
@@ -9,6 +10,7 @@ using HnganhCinema.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace HnganhCinema.Areas.Identity.Controllers
@@ -74,13 +76,15 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            List<string> features = _context.AppClaims.Select(ac => ac.ClaimName).ToList();
+            ViewBag.allFeature = new SelectList(features);
             return View();
         }
         
         // POST: /Role/Create
         [HttpPost, ActionName(nameof(Create))]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAsync(CreateRoleModel model)
+        public async Task<IActionResult> CreateAsync(AddRoleAppClaim model)
         {
             if  (!ModelState.IsValid)
             {
@@ -92,6 +96,16 @@ namespace HnganhCinema.Areas.Identity.Controllers
             if (result.Succeeded)
             {
                 StatusMessage = $"Created role: '{model.Name}' successfully !";
+
+                if(model.Claims?.Length > 0 || model.Claims != null)
+                {
+                    foreach(string name in model.Claims)
+                    {
+                        var claim = _context.AppClaims.Where(c => c.ClaimName == name).First();
+                        
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -148,6 +162,17 @@ namespace HnganhCinema.Areas.Identity.Controllers
             }
             model.Name = role.Name;
             model.Claims = await _context.RoleClaims.Where(rc => rc.RoleId == role.Id).ToListAsync();
+
+            model.Features = (from rc in _context.AppRoleClaims
+                              join ac in _context.AppClaims on rc.ClaimId equals ac.Id
+                              join r in _context.Roles on rc.RoleId equals r.Id
+                              where r.Id == rc.RoleId
+                              select ac.ClaimName
+                              ).ToArray<string>();
+            
+            List<string> features = _context.AppClaims.Select(ac => ac.ClaimName).ToList();
+            ViewBag.allFeature = new SelectList(features);
+
             model.role = role;
             ModelState.Clear();
             return View(model);

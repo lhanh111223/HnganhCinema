@@ -94,14 +94,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ViewManageMenu", builder =>
     {
         builder.RequireAuthenticatedUser();
-        builder.RequireRole(RoleName.Administrator);
+        builder.RequireRole("Administrator");
     });
 
-    options.AddPolicy("ManageAccount", builder =>
-    {
-        builder.RequireAuthenticatedUser();
-        builder.RequireClaim("AdminFeature","ManageAccount");
-    });
 });
 
 var app = builder.Build();
