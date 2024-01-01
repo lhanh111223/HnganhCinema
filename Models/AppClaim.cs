@@ -8,7 +8,7 @@ namespace HnganhCinema.Models
     {
         public AppClaim()
         {
-            RoleClaims = new HashSet<AppRoleClaim>();
+            RoleClaims = new HashSet<RoleAppClaim>();
         }
         [Key]
         public int Id { get; set; }
@@ -18,7 +18,7 @@ namespace HnganhCinema.Models
         [DisplayName("Feature")]
         public string ClaimName {  get; set; }
 
-        public virtual ICollection<AppRoleClaim> RoleClaims { get; set; }
+        public virtual ICollection<RoleAppClaim> RoleClaims { get; set; }
         public virtual ICollection<AppMenu> AppMenu { get; set; }
         public virtual ICollection<UserFeature> UserFeatures { get; set; }
     }

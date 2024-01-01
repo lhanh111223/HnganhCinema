@@ -28,7 +28,7 @@ namespace HnganhCinema.Models
         public virtual DbSet<AppRoleClaim> AppRoleClaims { get; set; } = null!;
         public virtual DbSet<AppMenu> AppMenu { get; set; } = null!;
         public virtual DbSet<UserFeature> UserFeatures { get; set; } = null!;
-        public virtual DbSet<RoleAppClaim> RoleAppClaims { get; set; } = null!
+        public virtual DbSet<RoleAppClaim> RoleAppClaims { get; set; } = null!;
 
 
 
@@ -199,7 +199,7 @@ namespace HnganhCinema.Models
 
             modelBuilder.Entity<RoleAppClaim>(entity =>
             {
-                
+
 
             });
 
