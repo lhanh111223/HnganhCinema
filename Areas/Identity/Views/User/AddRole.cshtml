@@ -53,7 +53,13 @@
             </ul>
         } *@
 
-
+        @if(Model.Claims.Count > 0)
+        {
+            foreach(var c in Model.Claims)
+            {
+                <h3>@c.ClaimName</h3>
+            }
+        }
 
 
     </div>

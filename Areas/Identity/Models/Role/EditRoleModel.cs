@@ -12,11 +12,8 @@ namespace HnganhCinema.Areas.Identity.Models.RoleViewModels
         [StringLength(256, MinimumLength = 3, ErrorMessage = "{0} must be from {2} to {1} characters")]
         public string Name { get; set; }
         public List<IdentityRoleClaim<string>>? Claims { get; set; }
+        public List<AppClaim>? AppClaims { get; set; }
         public string? []? Features { get; set; }
         public IdentityRole? role { get; set; }
-
-
-
-
     }
 }

@@ -20,7 +20,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
     [Route("/ManageUser/[action]")]
     public class UserController : Controller
     {
-        
+
         private readonly ILogger<RoleController> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly CinemaDbContext _context;
@@ -43,7 +43,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         //
         // GET: /ManageUser/Index
         [HttpGet]
-        
+
         public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage)
         {
             var model = new UserListModel();
@@ -61,7 +61,8 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
             var qr1 = qr.Skip((model.currentPage - 1) * model.ITEMS_PER_PAGE)
                         .Take(model.ITEMS_PER_PAGE)
-                        .Select(u => new UserAndRole() {
+                        .Select(u => new UserAndRole()
+                        {
                             Id = u.Id,
                             UserName = u.UserName,
                         });
@@ -72,10 +73,10 @@ namespace HnganhCinema.Areas.Identity.Controllers
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 user.RoleNames = string.Join(",", roles);
-            } 
-            
+            }
+
             return View(model);
-        } 
+        }
 
         // GET: /ManageUser/AddRole/id
         [HttpGet("{id}")]
@@ -100,6 +101,13 @@ namespace HnganhCinema.Areas.Identity.Controllers
             List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
             ViewBag.allRoles = new SelectList(roleNames);
 
+            List<AppClaim> claims = (from ac in _context.AppClaims
+                                     join rc in _context.AppRoleClaims on ac.Id equals rc.ClaimId
+                                     where 
+
+
+                                         ).ToList();
+            model.Claims = claims;
 
             return View(model);
         }
@@ -127,24 +135,24 @@ namespace HnganhCinema.Areas.Identity.Controllers
             var addRoles = model.RoleNames.Where(r => !OldRoleNames.Contains(r));
 
             List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
-            
-            ViewBag.allRoles = new SelectList(roleNames);            
 
-            var resultDelete = await _userManager.RemoveFromRolesAsync(model.user,deleteRoles);
+            ViewBag.allRoles = new SelectList(roleNames);
+
+            var resultDelete = await _userManager.RemoveFromRolesAsync(model.user, deleteRoles);
             if (!resultDelete.Succeeded)
             {
                 ModelState.AddModelError(resultDelete);
                 return View(model);
             }
-            
-            var resultAdd = await _userManager.AddToRolesAsync(model.user,addRoles);
+
+            var resultAdd = await _userManager.AddToRolesAsync(model.user, addRoles);
             if (!resultAdd.Succeeded)
             {
                 ModelState.AddModelError(resultAdd);
                 return View(model);
             }
 
-            
+
             StatusMessage = $"Vừa cập nhật role cho user: {model.user.UserName}";
 
             return RedirectToAction("Index");
@@ -190,7 +198,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             {
                 return View(model);
             }
-             
+
             await _userManager.RemovePasswordAsync(user);
 
             var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
@@ -206,13 +214,13 @@ namespace HnganhCinema.Areas.Identity.Controllers
             StatusMessage = $"Vừa cập nhật mật khẩu cho user: {user.UserName}";
 
             return RedirectToAction("Index");
-        }        
+        }
 
 
         [HttpGet("{userid}")]
         public async Task<ActionResult> AddClaimAsync(string userid)
         {
-            
+
             var user = await _userManager.FindByIdAsync(userid);
             if (user == null) return NotFound("Không tìm thấy user");
             ViewBag.user = user;
@@ -223,19 +231,19 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddClaimAsync(string userid, AddUserClaimModel model)
         {
-            
+
             var user = await _userManager.FindByIdAsync(userid);
             if (user == null) return NotFound("Không tìm thấy user");
             ViewBag.user = user;
             if (!ModelState.IsValid) return View(model);
             await _userManager.AddClaimAsync(user, new Claim(model.ClaimType, model.ClaimValue));
             StatusMessage = "Đã thêm đặc tính cho user";
-                        
-            return RedirectToAction("AddRole", new {id = user.Id});
-        }        
 
-        
-        
+            return RedirectToAction("AddRole", new { id = user.Id });
+        }
 
-  }
+
+
+
+    }
 }

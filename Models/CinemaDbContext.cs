@@ -1,12 +1,17 @@
 ﻿using CinemaWeb.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Org.BouncyCastle.Bcpg.Sig;
+using System.Security;
 using System.Security.Principal;
 
 namespace HnganhCinema.Models
 {
-    public class CinemaDbContext : IdentityDbContext<AppUser>
+    public class CinemaDbContext : IdentityDbContext<AppUser, IdentityRole, string, IdentityUserClaim<string>,
+                                            IdentityUserRole<string>, IdentityUserLogin<string>,
+                                            IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {
@@ -28,10 +33,29 @@ namespace HnganhCinema.Models
         public virtual DbSet<AppRoleClaim> AppRoleClaims { get; set; } = null!;
         public virtual DbSet<AppMenu> AppMenu { get; set; } = null!;
         public virtual DbSet<UserFeature> UserFeatures { get; set; } = null!;
-        public virtual DbSet<RoleAppClaim> RoleAppClaims { get; set; } = null!;
 
 
+        // Custom method
+        public async Task<bool> AddToRoleClaims(string roleId, int ClaimId)
+        {
+            var roleClaim = new AppRoleClaim
+            {
+                RoleId = roleId,
+                ClaimId = ClaimId,
+                ClaimType = "AppFeature",
+                ClaimValue = "Feature"
+            };
 
+            await RoleClaims.AddAsync(roleClaim);
+            var result = await SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public void UpdateToToleClaims(AppRoleClaim appRoleClaim)
+        {
+            RoleClaims.Update(appRoleClaim);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
@@ -197,12 +221,10 @@ namespace HnganhCinema.Models
                     .HasConstraintName("FK_AppMenu_AppClaim");
             });
 
-            modelBuilder.Entity<RoleAppClaim>(entity =>
-            {
-                
 
-            });
 
         }
+
+        
     }
 }

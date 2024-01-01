@@ -30,6 +30,8 @@ builder.Services.AddDbContext<CinemaDbContext>(options =>
 {
     string connectString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseSqlServer(connectString);
+
+    options.EnableSensitiveDataLogging(false);
 });
 
 

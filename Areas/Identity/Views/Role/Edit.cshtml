@@ -36,7 +36,7 @@
         Claims of role:
         <a asp-action="AddRoleClaim" asp-route-roleid="@Model.role.Id">+ Add new Claim</a>
         </p> *@
-        @if (Model.Claims.Count > 0)
+        @* @if (Model.Claims.Count > 0)
         {
             <ul>
                 @foreach (var claim in Model.Claims)
@@ -48,7 +48,7 @@
                     </li>
                 }
             </ul>
-        }
+        } *@
 
         @* <table id="claimTable">
             <thead>

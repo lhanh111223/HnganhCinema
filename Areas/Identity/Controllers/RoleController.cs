@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Linq;
 using System.Security.Claims;
 using HnganhCinema.Areas.Identity.Models.Role;
 using HnganhCinema.Areas.Identity.Models.RoleViewModels;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg.Sig;
 
 namespace HnganhCinema.Areas.Identity.Controllers
 {
@@ -21,7 +23,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
     [Route("/Role/[action]")]
     public class RoleController : Controller
     {
-        
+
         private readonly ILogger<RoleController> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly CinemaDbContext _context;
@@ -44,33 +46,33 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
-           var r = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
-           var roles = new List<RoleModel>();
-           foreach (var _r in r)
-           {
-               var claims = await _roleManager.GetClaimsAsync(_r);
-               var claimsString = claims.Select(c => c.Type  + "=" + c.Value);
 
-               var rm = new RoleModel()
-               {
-                   Name = _r.Name,
-                   Id = _r.Id,
-                   Claims = claimsString.ToArray()
-               };
-               roles.Add(rm);
-           }
+            var r = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
+            var roles = new List<RoleModel>();
+            foreach (var _r in r)
+            {
+                var claims = await _roleManager.GetClaimsAsync(_r);
+                var claimsString = claims.Select(c => c.Type + "=" + c.Value);
+
+                var rm = new RoleModel()
+                {
+                    Name = _r.Name,
+                    Id = _r.Id,
+                    Claims = claimsString.ToArray()
+                };
+                roles.Add(rm);
+            }
 
             return View(roles);
         }
-        [HttpGet] 
+        [HttpGet]
         public async Task<IActionResult> GetAllRoles()
         {
             var roles = await _roleManager.Roles.ToListAsync();
             return Json(roles);
         }
 
-        
+
 
         // GET: /Role/Create
         [HttpGet]
@@ -80,13 +82,13 @@ namespace HnganhCinema.Areas.Identity.Controllers
             ViewBag.allFeature = new SelectList(features);
             return View();
         }
-        
+
         // POST: /Role/Create
         [HttpPost, ActionName(nameof(Create))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAsync(AddRoleAppClaim model)
         {
-            if  (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
@@ -97,12 +99,12 @@ namespace HnganhCinema.Areas.Identity.Controllers
             {
                 StatusMessage = $"Created role: '{model.Name}' successfully !";
 
-                if(model.Claims?.Length > 0 || model.Claims != null)
+                if (model.Claims?.Length > 0 || model.Claims != null)
                 {
-                    foreach(string name in model.Claims)
+                    foreach (string name in model.Claims)
                     {
                         var claim = _context.AppClaims.Where(c => c.ClaimName == name).First();
-                        
+
                     }
                 }
 
@@ -113,7 +115,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 ModelState.AddModelError(result);
             }
             return View();
-        }     
+        }
 
         // GET: /Role/Delete/roleid
         [HttpGet("{roleid}")]
@@ -124,7 +126,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             if (role == null)
             {
                 return NotFound("Not found ROLE");
-            } 
+            }
             return View((object)role);
         }
 
@@ -152,7 +154,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
         // GET: /Role/Edit/roleid
         [HttpGet("{roleid}")]
-        public async Task<IActionResult> EditAsync(string roleid, [Bind("Name")]EditRoleModel model)
+        public async Task<IActionResult> EditAsync(string roleid, [Bind("Name")] EditRoleModel model)
         {
             if (roleid == null) return NotFound("Not found ROLE");
             var role = await _roleManager.FindByIdAsync(roleid);
@@ -163,15 +165,21 @@ namespace HnganhCinema.Areas.Identity.Controllers
             model.Name = role.Name;
             model.Claims = await _context.RoleClaims.Where(rc => rc.RoleId == role.Id).ToListAsync();
 
-            model.Features = (from rc in _context.AppRoleClaims
-                              join ac in _context.AppClaims on rc.ClaimId equals ac.Id
-                              join r in _context.Roles on rc.RoleId equals r.Id
-                              where r.Id == rc.RoleId
-                              select ac.ClaimName
-                              ).ToArray<string>();
-            
-            List<string> features = _context.AppClaims.Select(ac => ac.ClaimName).ToList();
-            ViewBag.allFeature = new SelectList(features);
+            model.Features = await _context.AppRoleClaims
+                                .Where(feature => feature.RoleId == role.Id)
+                                .Select(feature => feature.ClaimId.ToString())
+                                .ToArrayAsync<string>();
+
+            //model.Features = _context.AppRoleClaims.Select(rc => rc.ClaimId.ToString).Where(rc => rc.RoleId == roleid).ToArray();
+
+            var featureList = _context.AppClaims.Select(f => new SelectListItem
+            {
+                Value = f.Id.ToString(),
+                Text = f.ClaimName
+            }).ToList();
+
+
+            ViewBag.allFeature = featureList;
 
             model.role = role;
             ModelState.Clear();
@@ -187,7 +195,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             {
                 return NotFound("Not found ROLE");
             }
-            
+
             var Claims = await _context.RoleClaims.Where(rc => rc.RoleId == role.Id).ToListAsync();
             return Json(Claims);
         }
@@ -195,7 +203,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         // POST: /Role/Edit/1
         [HttpPost("{roleid}"), ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditConfirmAsync(string roleid, [Bind("Name")] EditRoleModel model)
+        public async Task<IActionResult> EditConfirmAsync(string roleid, [Bind("Name, Features")] EditRoleModel model)
         {
             if (roleid == null) return NotFound("Not found ROLE");
             var role = await _roleManager.FindByIdAsync(roleid);
@@ -220,6 +228,16 @@ namespace HnganhCinema.Areas.Identity.Controllers
             role.Name = model.Name;
             var result = await _roleManager.UpdateAsync(role);
 
+            if (model.Features != null)
+            {
+                var roleClaimsDelete = _context.AppRoleClaims.Where(rc => rc.RoleId == roleid).ToList();
+                _context.AppRoleClaims.RemoveRange(roleClaimsDelete);
+                foreach (var featureid in model.Features)
+                {
+                    await _context.AddToRoleClaims(roleid, int.Parse(featureid));
+                }
+            }
+
             if (result.Succeeded)
             {
                 StatusMessage = $"Change name successful for: {model.Name}";
@@ -230,11 +248,22 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 ModelState.AddModelError(result);
             }
 
+            if (model?.Features?.Length > 0)
+            {
+                foreach (var feature in model.Features)
+                {
+                    var addFeature = new AppRoleClaim
+                    {
+                        RoleId = role.Id,
+                        ClaimValue = feature,
+                    };
+                }
+            }
             return View(model);
         }
 
         // GET: /Role/AddRoleClaim/roleid
-        [HttpGet("{roleid}")]        
+        [HttpGet("{roleid}")]
         public async Task<IActionResult> AddRoleClaimAsync(string roleid)
         {
             if (roleid == null) return NotFound("Not found ROLE");
@@ -242,26 +271,26 @@ namespace HnganhCinema.Areas.Identity.Controllers
             if (role == null)
             {
                 return NotFound("Not found ROLE");
-            } 
+            }
 
             var model = new EditClaimModel()
             {
                 role = role
             };
             return View(model);
-        }             
+        }
 
         // POST: /Role/AddRoleClaim/roleid
-        [HttpPost("{roleid}")]  
-        [ValidateAntiForgeryToken]      
-        public async Task<IActionResult> AddRoleClaimAsync(string roleid, [Bind("ClaimType", "ClaimValue")]EditClaimModel model)
+        [HttpPost("{roleid}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRoleClaimAsync(string roleid, [Bind("ClaimType", "ClaimValue")] EditClaimModel model)
         {
             if (roleid == null) return NotFound("Not found ROLE");
             var role = await _roleManager.FindByIdAsync(roleid);
             if (role == null)
             {
                 return NotFound("Not found ROLE");
-            } 
+            }
             model.role = role;
             if (!ModelState.IsValid) return View(model);
 
@@ -274,21 +303,21 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
             var newClaim = new Claim(model.ClaimType, model.ClaimValue);
             var result = await _roleManager.AddClaimAsync(role, newClaim);
-            
+
             if (!result.Succeeded)
             {
                 ModelState.AddModelError(result);
                 return View(model);
             }
-            
-            StatusMessage = "Created successfully !";
-            
-            return RedirectToAction("Edit", new {roleid = role.Id});
 
-        }          
+            StatusMessage = "Created successfully !";
+
+            return RedirectToAction("Edit", new { roleid = role.Id });
+
+        }
 
         // GET: /Role/EditRoleClaim/claimid
-        [HttpGet("{claimid:int}")]        
+        [HttpGet("{claimid:int}")]
         public async Task<IActionResult> EditRoleClaim(int claimid)
         {
             var claim = _context.RoleClaims.Where(c => c.Id == claimid).FirstOrDefault();
@@ -307,12 +336,12 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
 
             return View(Input);
-        }             
+        }
 
         // GET: /Role/EditRoleClaim/claimid
-        [HttpPost("{claimid:int}")]        
+        [HttpPost("{claimid:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRoleClaim(int claimid, [Bind("ClaimType", "ClaimValue")]EditClaimModel Input)
+        public async Task<IActionResult> EditRoleClaim(int claimid, [Bind("ClaimType", "ClaimValue")] EditClaimModel Input)
         {
             var claim = _context.RoleClaims.Where(c => c.Id == claimid).FirstOrDefault();
             if (claim == null) return NotFound("Not found ROLE");
@@ -322,7 +351,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             var role = await _roleManager.FindByIdAsync(claim.RoleId);
             if (role == null) return NotFound("Not found ROLE");
             Input.role = role;
-            if  (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(Input);
             }
@@ -331,21 +360,21 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 ModelState.AddModelError(string.Empty, "This claim is already existed in Role");
                 return View(Input);
             }
- 
+
 
             claim.ClaimType = Input.ClaimType;
             claim.ClaimValue = Input.ClaimValue;
-            
+
             await _context.SaveChangesAsync();
-            
+
             StatusMessage = "This claim has been updated successfully !";
-            
-            return RedirectToAction("Edit", new {roleid = role.Id});
-        }        
+
+            return RedirectToAction("Edit", new { roleid = role.Id });
+        }
         // POST: /Role/EditRoleClaim/claimid
-        [HttpPost("{claimid:int}")]        
+        [HttpPost("{claimid:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteClaim(int claimid, [Bind("ClaimType", "ClaimValue")]EditClaimModel Input)
+        public async Task<IActionResult> DeleteClaim(int claimid, [Bind("ClaimType", "ClaimValue")] EditClaimModel Input)
         {
             var claim = _context.RoleClaims.Where(c => c.Id == claimid).FirstOrDefault();
             if (claim == null) return NotFound("Not found ROLE");
@@ -353,7 +382,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             var role = await _roleManager.FindByIdAsync(claim.RoleId);
             if (role == null) return NotFound("Not found ROLE");
             Input.role = role;
-            if  (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(Input);
             }
@@ -362,15 +391,15 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 ModelState.AddModelError(string.Empty, "This claim is already existed in Role");
                 return View(Input);
             }
- 
+
 
             await _roleManager.RemoveClaimAsync(role, new Claim(claim.ClaimType, claim.ClaimValue));
-            
+
             StatusMessage = "Deleted claim successfully !";
 
-            
-            return RedirectToAction("Edit", new {roleid = role.Id});
-        }        
+
+            return RedirectToAction("Edit", new { roleid = role.Id });
+        }
 
 
     }
