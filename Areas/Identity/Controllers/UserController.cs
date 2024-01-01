@@ -101,14 +101,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
             List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
             ViewBag.allRoles = new SelectList(roleNames);
 
-            List<AppClaim> claims = (from ac in _context.AppClaims
-                                     join rc in _context.AppRoleClaims on ac.Id equals rc.ClaimId
-                                     where 
-
-
-                                         ).ToList();
-            model.Claims = claims;
-
             return View(model);
         }
 
