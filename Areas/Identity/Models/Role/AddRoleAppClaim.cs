@@ -12,6 +12,8 @@ namespace HnganhCinema.Areas.Identity.Models.Role
         public string Name {  get; set; }
 
         [DisplayName("Feature")]
-        public string[]? Claims { get; set; }
+
+        public List<AppClaim>? AppClaims { get; set; }
+        public string?[]? Features { get; set; }
     }
 }

@@ -7,8 +7,9 @@
 <partial name="_StatusMessage" />
 
 <div class="row">
-    <div class="col-md-6">
-        <form id="set-password-form" method="post">
+    <div class="col-md-12">
+        <form id="manage-user-role-form" method="post">
+            <input type="hidden" id="userid" value="@Model.user.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -20,49 +21,74 @@
                 <span asp-validation-for="RoleNames" class="text-danger"></span>
             </div>
 
-            <div style="margin-top: 2vh">
-                <button type="submit" class="btn btn-primary">Update</button>
+
+            @if (Model.Claims.Count > 0 || ViewBag.Model.Claims.Count > 0)
+            {
+                <div class="col-md-12">
+                    <table id="dd" class="table">
+                        <thead>
+                            <tr>
+                                <th>Features</th>
+
+                                <th>View <input type="checkbox" id="checkAllView"></th>
+
+                                <th>Create <input type="checkbox" id="checkAllCreate"></th>
+
+                                <th>Update <input type="checkbox" id="checkAllUpdate"></th>
+
+                                <th>Delete <input type="checkbox" id="checkAllDelete"></th>
+
+                                <th>Block <input type="checkbox" id="checkAllBlock"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+                                int index = -1;
+                                @foreach (AppClaimModel c in Model.Claims)
+                                {
+                                    index++;
+                                    @foreach (var menu in Model.Menu)
+                                    {
+                                        @if (menu.ClaimId == c.Claim.Id)
+                                        {
+                                            <tr>
+                                                <td>@c.Claim.ClaimName</td>
+                                                <input type="hidden" value="@c.Claim.Id" name="Claims[@index].Id" />
+                                                <td>
+                                                    <input disabled="@(!menu.CanView)" asp-for="@c.CanView" type="checkbox" name="Claims[@index].CanView">
+                                                </td>
+                                                <td>
+                                                    <input disabled="@(!menu.CanCreate)" asp-for="@c.CanCreate" type="checkbox" name="Claims[@index].CanCreate">
+                                                </td>
+                                                <td>
+                                                    <input disabled="@(!menu.CanUpdate)" asp-for="@c.CanUpdate" type="checkbox" name="Claims[@index].CanUpdate">
+                                                </td>
+                                                <td>
+                                                    <input disabled="@(!menu.CanDelete)" asp-for="@c.CanDelete" type="checkbox" name="Claims[@index].CanDelete">
+                                                </td>
+                                                <td>
+                                                    <input disabled="@(!menu.CanBlock)" asp-for="@c.CanBlock" type="checkbox" name="Claims[@index].CanBlock">
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            }
+
+            <div style="margin-top: 2rem">
+                <button onclick="SubmitRole()" type="submit" class="btn btn-primary">Update</button>
                 <a class="btn btn-primary" asp-action="Index">List of members</a>
             </div>
         </form>
-        <hr>
-        @* <p>Claims from role:</p> *@
-        @* @if (Model.claimsInRole.Count > 0)
-        {
-            <ul>
-                @foreach (var claim in Model.claimsInRole)
-                {
-                    <li>@claim.ClaimType : @claim.ClaimValue</li>
-                }
-            </ul>
-        } *@
-        @* <hr>
-        <p>
-            Các claim riêng:
-            <a asp-action="AddClaim" asp-route-userid="@Model.user.Id">+ Add special claim</a>
-        </p> *@
-       @*  @if (Model.claimsInUserClaim.Count > 0)
-        {
-            <ul>
-                @foreach (var claim in Model.claimsInUserClaim)
-                {
-                    <li>
-                        <a asp-action="EditClaim" asp-route-claimid="@claim.Id">@claim.ClaimType : @claim.ClaimValue</a>
-                    </li>
-                }
-            </ul>
-        } *@
-
-        @if(Model.Claims.Count > 0)
-        {
-            foreach(var c in Model.Claims)
-            {
-                <h3>@c.ClaimName</h3>
-            }
-        }
-
-
     </div>
+
 </div>
 
 
@@ -72,12 +98,75 @@
     <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
 
     <script>
-        $("#id-select-roles").multipleSelect({
-            selectAll: false,
+        var js = jQuery.noConflict(true);
+        let id = $("#userid").val();
+        $(document).ready(function () {
+
+            $("#checkAllView").click(function () {
+                $("input[name$='.CanView']:not(:disabled)").prop('checked', $(this).prop('checked'));
+            });
+
+            $("#checkAllCreate").click(function () {
+                $("input[name$='.CanCreate']:not(:disabled)").prop('checked', $(this).prop('checked'));
+            });
+
+            $("#checkAllUpdate").click(function () {
+                $("input[name$='.CanUpdate']:not(:disabled)").prop('checked', $(this).prop('checked'));
+            });
+
+            $("#checkAllDelete").click(function () {
+                $("input[name$='.CanDelete']:not(:disabled)").prop('checked', $(this).prop('checked'));
+            });
+
+            $("#checkAllBlock").click(function () {
+                $("input[name$='.CanBlock']:not(:disabled)").prop('checked', $(this).prop('checked'));
+            });
+
+            // Xử lý sự kiện khi checkbox trong cột thay đổi
+            $("input[name$='.CanView'], input[name$='.CanCreate'], input[name$='.CanUpdate'], input[name$='.CanDelete'], input[name$='.CanBlock']").change(function () {
+                // Kiểm tra nếu tất cả các checkbox trong cột được chọn thì check checkbox "Check All"
+                $("#checkAllView").prop('checked', $("input[name$='.CanView']:not(:checked):not(:disabled)").length === 0);
+                $("#checkAllCreate").prop('checked', $("input[name$='.CanCreate']:not(:checked):not(:disabled)").length === 0);
+                $("#checkAllUpdate").prop('checked', $("input[name$='.CanUpdate']:not(:checked):not(:disabled)").length === 0);
+                $("#checkAllDelete").prop('checked', $("input[name$='.CanDelete']:not(:checked):not(:disabled)").length === 0);
+                $("#checkAllBlock").prop('checked', $("input[name$='.CanBlock']:not(:checked):not(:disabled)").length === 0);
+            });
+        });
+
+        js("#id-select-roles").multipleSelect({
+            selectAll: true,
             keepOpen: false,
             isOpen: false,
             filter: true
         });
+
+        // js("#id-select-roles").change(function () {
+        //     console.log($(this).val());
+        //         $.ajax(
+        //             {
+        //                 async: false,
+        //                 type: 'post',
+        //                 url: "/ManageUser/GetListFeaturesOfRole/",
+        //                 dataType: 'json',
+        //                 contentType: 'application/json',
+        //                 data: JSON.stringify({
+        //                     Id: id,
+        //                     Roles: $(this).val()
+        //                 }),
+        //                 success: function (response) {
+        //                     // alert("Success !!");
+        //                 },
+        //                 error: function () {
+        //                     alert("Error !!");
+        //                 }
+        //             }
+        //         );
+        // });
+
+        // function SubmitRole() {
+        //     alert("Updated Successfully !")
+        // }
+
     </script>
 
     <partial name="_ValidationScriptsPartial" />

@@ -30,8 +30,7 @@ builder.Services.AddDbContext<CinemaDbContext>(options =>
 {
     string connectString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseSqlServer(connectString);
-
-    options.EnableSensitiveDataLogging(false);
+    options.EnableSensitiveDataLogging(true);
 });
 
 
@@ -96,7 +95,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ViewManageMenu", builder =>
     {
         builder.RequireAuthenticatedUser();
-        builder.RequireRole("Administrator");
+        //builder.RequireRole("Administrator");
     });
 
 });
@@ -130,53 +129,5 @@ app.MapRazorPages();
 //ContentRootPath = app.Environment.ContentRootPath;
 
 app.UseStatusCodePages();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGet("/sayhi", async (context) =>
-    {
-        await context.Response.WriteAsync($"Hello ASP.Net MVC {DateTime.Now}");
-    });
-    //endpoints.MapControllers
-    //endpoints.MapControllerRoute
-    //endpoints.MapDefaultControllersRoute
-    //endpoints.MapAreaControllersRoute
-
-    /*
-        [AcceptVerb]
-        [Route]
-        [HttpGet]
-        [HttpPost]
-        [HttpPut]
-        [HttpDelete]
-        [HttpHead]
-        [HttpPatch]
-    */
-
-    //endpoints.MapControllerRoute(
-    //    name: "firstroute",
-    //    pattern: "{url}/{id?}",
-    //    defaults: new
-    //    {
-    //        controller = "First",
-    //        action = "ViewProduct",
-    //        id = 3
-    //    },
-    //    constraints: new
-    //    {
-    //        url = new StringRouteConstraint("xemsanpham")
-    //    }
-    //    );
-
-    // Area
-
-    endpoints.MapAreaControllerRoute(
-        name: "product",
-        pattern: "/{controller}/{action=Index}/{id?}",
-        areaName: "ProductManage"
-    );
-
-    endpoints.MapRazorPages();
-});
 
 app.Run();

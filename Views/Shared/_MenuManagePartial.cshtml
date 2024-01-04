@@ -7,24 +7,25 @@
 
 @if (result.Succeeded)
 {
-    <div style="margin-right: 2vh" class="dropdown">
-        <a class="btn btn-outline-danger dropdown-toggle"
+    <div style="margin-right: 2vh" @* class="dropdown" *@>
+        @* <a class="btn btn-outline-danger dropdown-toggle"
            id="managedropdownmenu" data-toggle="dropdown">
             Manage
-        </a>
-        <div class="dropdown-menu" aria-labelledby="managedropdownmenu">
-            <a class="dropdown-item" asp-action="Index" asp-controller="DbManage" asp-area="Database">
+        </a> *@
+        <div  aria-labelledby="managedropdownmenu">
+            @* <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="DbManage" asp-area="Database">
                 Database
-            </a>
-            <a class="dropdown-item" asp-action="Index" asp-controller="Role" asp-area="Identity">
+            </a> *@
+            <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="Role" asp-area="Identity">
                 Manage Roles
             </a>
-            <a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Identity">
+            <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="User" asp-area="Identity">
                 Manage Members
             </a>
-            <a class="dropdown-item" asp-action="IndexFeature" asp-controller="DbManage" asp-area="Database">
+            <a class="btn btn-outline-success btn-sm" asp-action="IndexFeature" asp-controller="DbManage" asp-area="Database">
                 Manage Feature
             </a>
         </div>
     </div>
+
 }

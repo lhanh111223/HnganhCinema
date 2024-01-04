@@ -18,7 +18,7 @@ using Org.BouncyCastle.Bcpg.Sig;
 namespace HnganhCinema.Areas.Identity.Controllers
 {
 
-    [Authorize(Roles = RoleName.Administrator)]
+    //[Authorize(Roles = RoleName.Administrator)]
     [Area("Identity")]
     [Route("/Role/[action]")]
     public class RoleController : Controller
@@ -46,7 +46,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
             var r = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
             var roles = new List<RoleModel>();
             foreach (var _r in r)
@@ -78,8 +77,14 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            List<string> features = _context.AppClaims.Select(ac => ac.ClaimName).ToList();
-            ViewBag.allFeature = new SelectList(features);
+            var featureList = _context.AppClaims.Select(f => new SelectListItem
+            {
+                Value = f.Id.ToString(),
+                Text = f.ClaimName
+            }).ToList();
+
+
+            ViewBag.allFeature = featureList;
             return View();
         }
 
@@ -88,6 +93,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAsync(AddRoleAppClaim model)
         {
+            
             if (!ModelState.IsValid)
             {
                 return View();
@@ -99,12 +105,11 @@ namespace HnganhCinema.Areas.Identity.Controllers
             {
                 StatusMessage = $"Created role: '{model.Name}' successfully !";
 
-                if (model.Claims?.Length > 0 || model.Claims != null)
+                if (model.Features?.Length > 0 || model.Features != null)
                 {
-                    foreach (string name in model.Claims)
+                    foreach (var featureid in model.Features)
                     {
-                        var claim = _context.AppClaims.Where(c => c.ClaimName == name).First();
-
+                        await _context.AddToRoleClaims(newRole.Id, int.Parse(featureid));
                     }
                 }
 

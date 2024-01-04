@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Create a new Role";
 }
-<h2>@ViewData["Title"]</h2>
+@* <h2>@ViewData["Title"]</h2> *@
 <partial name="_StatusMessage"></partial>
 
 <hr>
@@ -11,27 +11,35 @@
 <div class="row">
     <form class="row" method="post">
         <div class="col-md-6">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+                
+            </div>
+            <h2>Features of role: </h2>
+            <div id="id-selected-texts">
             </div>
         </div>
+        
 
-        <div class="col-md-6">
+        <div class="row col-md-6">
             <div class="form-group">
-                <label asp-for="Claims"></label>
-                @Html.ListBoxFor(m => m.Claims, (IEnumerable<SelectListItem>)ViewBag.allFeature, new{
+                <label asp-for="Features"></label>
+                @Html.ListBoxFor(m => m.Features, (IEnumerable<SelectListItem>)ViewBag.allFeature, new{
                 id = "id-select-feature",
                 @class = "w-100 h-50"
                 })
             </div>
         </div>
-        <div style="margin-top:2vh" class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
-            <a class="btn btn-primary" asp-action="Index">List of Roles</a>
-        </div>
+            <div style="margin-top:2vh" class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="Index">List of Roles</a>
+            </div>
+        
     </form>
     <div id="selected-items-info"></div>
 </div>
@@ -60,6 +68,20 @@
             isOpen: false,
             filter: true,
         });
+        js("#id-select-feature").change(function () {
+            // Lấy giá trị đã chọn
+            var selectedValues = js(this).val();
+
+            // Hiển thị text của các option đã chọn
+            var selectedTexts = [];
+            js("#id-select-feature option:selected").each(function () {
+                selectedTexts.push(js(this).text());
+            });
+
+            // Hiển thị text của các option đã chọn trong một vùng hiển thị (ví dụ: div có id là 'id-selected-texts')
+            js("#id-selected-texts").text(selectedTexts.join(", "));
+        });
+        
 
     </script>
     <partial name="_ValidationScriptsPartial" />

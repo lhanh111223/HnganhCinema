@@ -1,12 +1,17 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Reflection.Metadata;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using HnganhCinema.Areas.Identity.Models.User;
 using HnganhCinema.Areas.Identity.Models.UserViewModels;
 using HnganhCinema.Data;
 using HnganhCinema.ExtendMethods;
 using HnganhCinema.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,7 +20,7 @@ using Microsoft.EntityFrameworkCore;
 namespace HnganhCinema.Areas.Identity.Controllers
 {
 
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     [Area("Identity")]
     [Route("/ManageUser/[action]")]
     public class UserController : Controller
@@ -82,7 +87,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> AddRoleAsync(string id)
         {
-            // public SelectList allRoles { get; set; }
             var model = new AddUserRoleModel();
             if (string.IsNullOrEmpty(id))
             {
@@ -98,24 +102,91 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
             model.RoleNames = (await _userManager.GetRolesAsync(model.user)).ToArray<string>();
 
+            //Danh sách các role của hệ thống
             List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
             ViewBag.allRoles = new SelectList(roleNames);
 
-            List<AppClaim> claims = (from ac in _context.AppClaims
-                                     join rc in _context.AppRoleClaims on ac.Id equals rc.ClaimId
-                                     where 
+            //Get claim of user logged in
+            var claimOfUsers = (from ur in _context.UserRoles
+                                join rc in _context.AppRoleClaims on ur.RoleId equals rc.RoleId
+                                join ac in _context.AppClaims on rc.ClaimId equals ac.Id
+                                where ur.UserId == id
+                                select ac)
+                                          .Distinct()
+                                          .ToList();
+            _logger.LogError("claim of user: " + claimOfUsers.Count);
 
+            // Những Claim(Features) đã có sẵn trong bảng UserFeatures
+            var userFeatures = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
 
-                                         ).ToList();
-            model.Claims = claims;
+            // Thêm vào List trong model để đẩy lên View
+            List<AppClaimModel> appClaimModel = new List<AppClaimModel>();
+            foreach (var claim in claimOfUsers)
+            {
+                bool flag = false;
+                foreach (var feature in userFeatures)
+                {
+                    if (claim.Id == feature.ClaimId && feature.UserId == id)
+                    {
+                        AppClaimModel added = new AppClaimModel()
+                        {
+                            Claim = feature.AppClaim,
+                            Id = feature.ClaimId,
+                            CanView = feature.CanView,
+                            CanCreate = feature.CanCreate,
+                            CanUpdate = feature.CanUpdate,
+                            CanDelete = feature.CanDelete,
+                            CanBlock = feature.CanBlock,
+                        };
+                        appClaimModel.Add(added);
+                        flag = true;
+                        break;
+                    }
+                    else
+                    {
+                        flag = false;
+                    }
+                }
+
+                if (flag == false)
+                {
+                    AppClaimModel added = new AppClaimModel()
+                    {
+                        Claim = claim,
+                        Id = claim.Id,
+                        CanView = false,
+                        CanCreate = false,
+                        CanUpdate = false,
+                        CanDelete = false,
+                        CanBlock = false,
+                    };
+                    appClaimModel.Add(added);
+
+                }
+
+            }
+
+            model.Claims = appClaimModel;
+
+            // Menu của từng Claim(Feature) 
+            model.Menu = (from ur in _context.UserRoles
+                          join r in _context.Roles on ur.RoleId equals r.Id
+                          join rc in _context.AppRoleClaims on r.Id equals rc.RoleId
+                          join ac in _context.AppClaims on rc.ClaimId equals ac.Id
+                          join am in _context.AppMenu on ac.Id equals am.ClaimId
+                          where ur.UserId == id
+                          select am)
+                                    .Distinct()
+                                    .ToList();
 
             return View(model);
         }
 
-        // GET: /ManageUser/AddRole/id
+
+        // POST: /ManageUser/AddRole/id
         [HttpPost("{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddRoleAsync(string id, [Bind("RoleNames")] AddUserRoleModel model)
+        public async Task<IActionResult> AddRoleAsync(string id, [Bind("RoleNames, Claims")] AddUserRoleModel model)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -129,15 +200,17 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 return NotFound($"Không thấy user, id = {id}.");
             }
 
+
+            if (model.RoleNames == null)
+            {
+                model.RoleNames = new string[] { };
+                var deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
+                _context.UserFeatures.RemoveRange(deleted);
+            }
             var OldRoleNames = (await _userManager.GetRolesAsync(model.user)).ToArray();
 
             var deleteRoles = OldRoleNames.Where(r => !model.RoleNames.Contains(r));
             var addRoles = model.RoleNames.Where(r => !OldRoleNames.Contains(r));
-
-            List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
-
-            ViewBag.allRoles = new SelectList(roleNames);
-
             var resultDelete = await _userManager.RemoveFromRolesAsync(model.user, deleteRoles);
             if (!resultDelete.Succeeded)
             {
@@ -152,11 +225,36 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 return View(model);
             }
 
+            List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
 
-            StatusMessage = $"Vừa cập nhật role cho user: {model.user.UserName}";
+            ViewBag.allRoles = new SelectList(roleNames);
 
+            if (model.Claims != null)
+            {
+                var deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
+                _context.UserFeatures.RemoveRange(deleted);
+                foreach (var i in model.Claims)
+                {
+                    UserFeature uf = new UserFeature()
+                    {
+                        UserId = id,
+                        ClaimId = i.Id,
+                        CanView = i.CanView,
+                        CanCreate = i.CanCreate,
+                        CanUpdate = i.CanUpdate,
+                        CanDelete = i.CanDelete,
+                        CanBlock = i.CanBlock,
+                    };
+                    _context.UserFeatures.Add(uf);
+                }
+                _context.SaveChanges();
+            }
+
+            StatusMessage = $"Updated successful for the role: {model.user.UserName}";
             return RedirectToAction("Index");
         }
+
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> SetPasswordAsync(string id)

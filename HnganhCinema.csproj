@@ -136,6 +136,36 @@
     <None Include="wwwroot\sourcetemplate\loginregister\scss\style.scss" />
     <None Include="wwwroot\sourcetemplate\loginregister\vendor\jquery\jquery-ui.min.js" />
     <None Include="wwwroot\sourcetemplate\loginregister\vendor\jquery\jquery.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\fonts\ElegantIcons.svg" />
+    <None Include="wwwroot\sourcetemplate\organi\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\sourcetemplate\organi\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\sourcetemplate\organi\js\bootstrap.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\jquery-3.3.1.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\jquery-ui.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\jquery.nice-select.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\jquery.slicknav.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\main.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\mixitup.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\js\owl.carousel.min.js" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\style.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_base.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_blog-details.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_blog-sidebar.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_blog.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_breadcrumb.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_checkout.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_contact.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_footer.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_header.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_hero.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_home-page.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_mixins.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_responsive.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_shop-details.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_shop-grid.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_shoping-cart.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_sidebar.scss" />
+    <None Include="wwwroot\sourcetemplate\organi\sass\_variable.scss" />
   </ItemGroup>
 
   <ItemGroup>
@@ -184,6 +214,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Database\Data\" />
+    <Folder Include="Helper\" />
     <Folder Include="smssave\" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-@model EditRoleModel
+﻿@model EditRoleModel
 
 @{
     ViewData["Title"] = "UPDATE ROLE";
@@ -24,11 +24,10 @@
                 id = "id-select-feature",
                 @class = "w-100 h-20"
                 })
-            </div>
-
-            <div style="margin-top: 2vh" class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" />
-                <a class="btn btn-primary" asp-action="Index">List of Roles</a>
+                <div style="margin-top: 2vh" class="form-group">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                    <a class="btn btn-primary" asp-action="Index">List of Roles</a>
+                </div>
             </div>
         </form>
         <hr>
@@ -61,6 +60,11 @@
             </tbody>
         </table> *@
     </div>
+    <div class="col-md-6" >
+    <h2>Features of role: </h2>
+        <div id ="id-selected-texts"></div>
+    </div>
+    
 
 </div>
 
@@ -85,7 +89,17 @@
 
         $(document).ready(function () {
             GetClaimOfRole();
-            console.log(ClaimData);
+            js(window).on("load", function () {
+                // Đoạn mã bạn muốn thực hiện khi trang web được tải
+                var selectedValues = js("#id-select-feature").val();
+
+                var selectedTexts = [];
+                js("#id-select-feature option:selected").each(function () {
+                    selectedTexts.push(js(this).text());
+                });
+
+                js("#id-selected-texts").text(selectedTexts.join(", "));
+            });
         });
 
         function GetClaimOfRole() {
@@ -112,11 +126,28 @@
 
 
         js("#id-select-feature").multipleSelect({
-            selectAll: false,
+            selectAll: true,
             keepOpen: false,
             isOpen: false,
             filter: true
         });
+
+        js("#id-select-feature").change(function () {
+            // Lấy giá trị đã chọn
+            var selectedValues = js(this).val();
+
+            // Hiển thị text của các option đã chọn
+            var selectedTexts = [];
+            js("#id-select-feature option:selected").each(function () {
+                selectedTexts.push(js(this).text());
+            });
+
+            // Hiển thị text của các option đã chọn trong một vùng hiển thị (ví dụ: div có id là 'id-selected-texts')
+            js("#id-selected-texts").text(selectedTexts.join(", "));
+        });
+
+
+        
     </script>
     <partial name="_ValidationScriptsPartial" />
 }
