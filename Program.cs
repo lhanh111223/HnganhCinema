@@ -11,17 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.Configure<RazorViewEngineOptions>(options =>
-{
-    // /View/Controller/Action.cshtml
-    // /MyView/Controller/Action.cshtml
 
-    // {0} Ten action
-    // {1} Ten controller
-    // {2} ten Area
-
-    options.ViewLocationFormats.Add("/MyView/{1}/{0}" + RazorViewEngine.ViewExtension);
-    options.AreaViewLocationFormats.Add("");
+builder.Services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
+builder.Services.AddSession(cfg =>
+{                                                       // Đăng ký dịch vụ Session
+    cfg.Cookie.Name = "hnganhcinema";                   // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+    cfg.IdleTimeout = new TimeSpan(0, 30, 0);           // Thời gian tồn tại của Session
 });
 
 //builder.Services.AddSingleton(typeof(ProductService), typeof(ProductService));
@@ -127,16 +122,21 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapRazorPages();
+});
+
 // URL: /{controller}/{action}/{id?}
 // Abc/Xyz = > Controller: ABC, goi method Xyz
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages();
 
 //ContentRootPath = app.Environment.ContentRootPath;
 
 app.UseStatusCodePages();
-
 app.Run();

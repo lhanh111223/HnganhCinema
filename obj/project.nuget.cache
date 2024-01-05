@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "R582r5tFsqb2TbCvVsaGJkP3OKNNJTLSuQFEhnBskqa4ObcwYy1oOSTTFb60DjDr/a8/O0dJa7WaBZvBIs8cAA==",
+  "dgSpecHash": "SzxQ5TiLxjW6TpcqISbjebMnx+y8XssgpSwGPRnoc6JfBQvocLr70mZNQpfDh3k3EnzTnN4oStFHXGzhMomycQ==",
   "success": true,
   "projectFilePath": "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj",
   "expectedPackageFiles": [
@@ -264,10 +264,10 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'DataAnnotationsExtensions 5.0.1.27' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "message": "Package 'DataAnnotationsExtensions 5.0.1.27' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
       "libraryId": "DataAnnotationsExtensions",
       "targetGraphs": [
-        "net7.0"
+        "net6.0"
       ]
     }
   ]
