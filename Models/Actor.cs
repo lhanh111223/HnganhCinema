@@ -22,6 +22,10 @@ namespace CinemaWeb.Models
         [DisplayName("Actor Name")]
         public string? ActorName { get; set; }
 
+        [Column(TypeName = "nvarchar(max)")]
+        [DisplayName("Actor's Image")]
+        public string? Avatar {  get; set; }
+
         public virtual ICollection<MovieActor> MovieActors { get; set; }
     }
 }
