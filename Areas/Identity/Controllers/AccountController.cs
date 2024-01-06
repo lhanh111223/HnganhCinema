@@ -56,9 +56,10 @@ namespace HnganhCinema.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: true);
+            //if (ModelState.IsValid)
+            //{
+                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, lockoutOnFailure: true);
+                _logger.LogError(result.ToString());
                 // Tìm UserName theo Email, đăng nhập lại
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
@@ -71,7 +72,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation(1, "User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -86,11 +86,12 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Cannot login.");
+                    ViewBag.ErrorMessage = "Username or password is incorrect !";
                     return View(model);
                 }
-            }
-            return View(model);
+            //}
+            //_logger.LogError("-============- Logged in");
+            //return View(model);
         }
 
         // POST: /Account/LogOut

@@ -1,17 +1,10 @@
 ﻿using CinemaWeb.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Org.BouncyCastle.Bcpg.Sig;
-using System.Security;
-using System.Security.Principal;
 
 namespace HnganhCinema.Models
 {
-    public class CinemaDbContext : IdentityDbContext<AppUser, IdentityRole, string, IdentityUserClaim<string>,
-                                            IdentityUserRole<string>, IdentityUserLogin<string>,
-                                            IdentityRoleClaim<string>, IdentityUserToken<string>>
+    public class CinemaDbContext : IdentityDbContext<AppUser>
     {
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {

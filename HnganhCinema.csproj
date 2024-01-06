@@ -214,7 +214,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Database\Data\" />
-    <Folder Include="Helper\" />
     <Folder Include="Uploads\" />
     <Folder Include="smssave\" />
   </ItemGroup>

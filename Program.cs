@@ -1,5 +1,7 @@
 using HnganhCinema.Data;
+using HnganhCinema.Helper;
 using HnganhCinema.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +28,6 @@ builder.Services.AddDbContext<CinemaDbContext>(options =>
 {
     string connectString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseSqlServer(connectString);
-    options.EnableSensitiveDataLogging(true);
 });
 
 
@@ -68,7 +69,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/login/";
     options.LogoutPath = "/logout/";
 
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
 builder.Services.AddAuthentication()
@@ -85,6 +85,9 @@ builder.Services.AddOptions();
 var mailsetting = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailsetting);
 builder.Services.AddSingleton<IEmailSender, SendMailService>();
+
+// Add AuthenticateHelper
+builder.Services.AddTransient<AuthenticateHelper>();
 
 builder.Services.AddAuthorization(options =>
 {

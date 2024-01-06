@@ -29,7 +29,6 @@ namespace HnganhCinema.Areas.Identity.Models.UserViewModels
 
     public class AppClaimModel
     {
-        [JsonIgnore]
         public AppClaim Claim { get; set; }
         public int Id { get; set; }
         public bool CanView { get; set; }

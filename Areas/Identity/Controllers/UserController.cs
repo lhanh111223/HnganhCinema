@@ -8,6 +8,7 @@ using HnganhCinema.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.EntityFrameworkCore;
 
 namespace HnganhCinema.Areas.Identity.Controllers
@@ -22,7 +23,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
         private readonly ILogger<RoleController> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly CinemaDbContext _context;
-
         private readonly UserManager<AppUser> _userManager;
 
         public UserController(ILogger<RoleController> logger, RoleManager<IdentityRole> roleManager, CinemaDbContext context, UserManager<AppUser> userManager)
@@ -32,8 +32,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
             _context = context;
             _userManager = userManager;
         }
-
-
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -181,6 +179,10 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRoleAsync(string id, [Bind("RoleNames, Claims")] AddUserRoleModel model)
         {
+            // Select List Role
+            List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            ViewBag.allRoles = new SelectList(roleNames);
+
             if (string.IsNullOrEmpty(id))
             {
                 return NotFound($"Không có user");
@@ -197,54 +199,161 @@ namespace HnganhCinema.Areas.Identity.Controllers
             if (model.RoleNames == null)
             {
                 model.RoleNames = new string[] { };
-                var deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
-                _context.UserFeatures.RemoveRange(deleted);
+                List<UserFeature> deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
+                _logger.LogWarning("Deleted: " + deleted.Count);
+                foreach (var d in deleted)
+                {
+                    _context.UserFeatures.Remove(d);
+                }
+                await _context.SaveChangesAsync();
             }
-            var OldRoleNames = (await _userManager.GetRolesAsync(model.user)).ToArray();
 
+            // Role cũ
+            var OldRoleNames = (await _userManager.GetRolesAsync(model.user)).ToArray();
+            // Xóa những role không còn được chọn
             var deleteRoles = OldRoleNames.Where(r => !model.RoleNames.Contains(r));
-            var addRoles = model.RoleNames.Where(r => !OldRoleNames.Contains(r));
             var resultDelete = await _userManager.RemoveFromRolesAsync(model.user, deleteRoles);
             if (!resultDelete.Succeeded)
             {
+                _logger.LogError("Cannot Delete Roles");
                 ModelState.AddModelError(resultDelete);
-                return View(model);
+                return Content("Cannot Delete roles");
             }
 
+
+            // RoleId của những Role vừa xóa
+            var deletedRoleId = _context.Roles.Where(r => deleteRoles.Contains(r.Name)).Select(r => r.Id).ToList();
+            var deleteFeatureId = _context.AppRoleClaims.Where(rc => deletedRoleId.Contains(rc.RoleId)).Select(rc => rc.ClaimId).ToList();
+
+            _logger.LogWarning("Deleted FeatureId: " + deleteFeatureId.Count());
+
+            foreach (var i in deleteFeatureId)
+            {
+                var itemToDelete = _context.UserFeatures.Where(uf => uf.UserId == id && uf.ClaimId == i).FirstOrDefault();
+                if (itemToDelete != null)
+                {
+                    _context.UserFeatures.Remove(itemToDelete);
+                }
+                else
+                {
+                    _logger.LogError("item NULL");
+                }
+            }
+
+
+
+            // Thêm những role mới được chọn
+            var addRoles = model.RoleNames.Where(r => !OldRoleNames.Contains(r)).ToList();
             var resultAdd = await _userManager.AddToRolesAsync(model.user, addRoles);
             if (!resultAdd.Succeeded)
             {
                 ModelState.AddModelError(resultAdd);
-                return View(model);
+                return Content("Cannot Add roles");
             }
 
-            List<string> roleNames = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            // RoleId của những Role vừa add
+            var addedRoleId = _context.Roles.Where(r => addRoles.Contains(r.Name)).Select(r => r.Id).ToList();
+            var addFeatureId = _context.AppRoleClaims.Where(rc => addedRoleId.Contains(rc.RoleId)).Select(rc => rc.ClaimId).ToList();
 
-            ViewBag.allRoles = new SelectList(roleNames);
+            foreach (var i in addFeatureId)
+            {
+                UserFeature uf = new UserFeature()
+                {
+                    UserId = id,
+                    ClaimId = i,
+                    CanView = true,
+                    CanCreate = true,
+                    CanUpdate = true,
+                    CanDelete = true,
+                    CanBlock = false,
+                };
+                _context.UserFeatures.Add(uf);
+            }
+
+
+
+            //if (model.Claims != null)
+            //{
+            //    var deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
+            //    _context.UserFeatures.RemoveRange(deleted);
+            //    foreach (var i in model.Claims)
+            //    {
+            //        _logger.LogError("User Feature: " + i.Id);
+            //        UserFeature uf = new UserFeature()
+            //        {
+            //            UserId = id,
+            //            ClaimId = i.Id,
+            //            CanView = i.CanView,
+            //            CanCreate = i.CanCreate,
+            //            CanUpdate = i.CanUpdate,
+            //            CanDelete = i.CanDelete,
+            //            CanBlock = i.CanBlock,
+            //        };
+            //        _context.UserFeatures.Add(uf);
+            //    }
+            //}
+
 
             if (model.Claims != null)
             {
+                // Giữ nguyên những feature của Role không thay đổi
+                // Xóa những features của Role không còn được chọn
+                foreach (var curFeature in _context.UserFeatures.Where(uf => uf.UserId == id))
+                {
+                    AppClaimModel checkExist = model.Claims.Where(c => c.Id == curFeature.ClaimId).FirstOrDefault();
+                    if (checkExist == null)
+                    {
+                        _context.UserFeatures.Remove(curFeature);
+                    }
+                    else
+                    {
+                        curFeature.UserId = id;
+                        curFeature.ClaimId = checkExist.Id;
+                        curFeature.CanView = checkExist.CanView;
+                        curFeature.CanCreate = checkExist.CanCreate;
+                        curFeature.CanUpdate = checkExist.CanUpdate;
+                        curFeature.CanDelete = checkExist.CanDelete;
+                        curFeature.CanBlock = checkExist.CanBlock;
+                        _context.UserFeatures.Update(curFeature);
+
+                    }
+                }
+                // Thêm những features của Role mới được thêm vào
+                foreach (var newFeature in model.Claims)
+                {
+                    var checkExist = _context.UserFeatures.Where(uf => uf.ClaimId == newFeature.Id).FirstOrDefault();
+                    if (checkExist == null)
+                    {
+                        UserFeature uf = new UserFeature()
+                        {
+                            UserId = id,
+                            ClaimId = newFeature.Id,
+                            CanView = true,
+                            CanCreate = true,
+                            CanUpdate = true,
+                            CanDelete = true,
+                            CanBlock = false,
+                        };
+                        _context.UserFeatures.Add(uf);
+                    }
+                }
+            }
+            else
+            {
                 var deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
                 _context.UserFeatures.RemoveRange(deleted);
-                foreach (var i in model.Claims)
-                {
-                    UserFeature uf = new UserFeature()
-                    {
-                        UserId = id,
-                        ClaimId = i.Id,
-                        CanView = i.CanView,
-                        CanCreate = i.CanCreate,
-                        CanUpdate = i.CanUpdate,
-                        CanDelete = i.CanDelete,
-                        CanBlock = i.CanBlock,
-                    };
-                    _context.UserFeatures.Add(uf);
-                }
-                _context.SaveChanges();
+
             }
+
+            await _context.SaveChangesAsync();
+
 
             StatusMessage = $"Updated successful for the role: {model.user.UserName}";
             return RedirectToAction("Index");
+
+
+            
+
         }
 
 

@@ -7,6 +7,7 @@ using HnganhCinema.Areas.Identity.Models.Role;
 using HnganhCinema.Areas.Identity.Models.RoleViewModels;
 using HnganhCinema.Data;
 using HnganhCinema.ExtendMethods;
+using HnganhCinema.Helper;
 using HnganhCinema.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,25 +28,34 @@ namespace HnganhCinema.Areas.Identity.Controllers
         private readonly ILogger<RoleController> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly CinemaDbContext _context;
-
+        private readonly AuthenticateHelper _auth;
         private readonly UserManager<AppUser> _userManager;
-
-        public RoleController(ILogger<RoleController> logger, RoleManager<IdentityRole> roleManager, CinemaDbContext context, UserManager<AppUser> userManager)
+        [TempData]
+        public string StatusMessage { get; set; }
+        private static AppUser CurrentUser;
+        public RoleController(ILogger<RoleController> logger, RoleManager<IdentityRole> roleManager, CinemaDbContext context, UserManager<AppUser> userManager
+            , AuthenticateHelper auth)
         {
             _logger = logger;
             _roleManager = roleManager;
             _context = context;
             _userManager = userManager;
+            _auth = auth;
+
         }
 
-        [TempData]
-        public string StatusMessage { get; set; }
 
-        //
+
         // GET: /Role/Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            CurrentUser = _userManager.GetUserAsync(User).Result;
+            if (CurrentUser == null || !_auth.CanAccess(CurrentUser.Id, "Manage Roles", "View"))
+            {
+                return View("AccessDenied");
+            }
+
             var r = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
             var roles = new List<RoleModel>();
             foreach (var _r in r)
@@ -93,7 +103,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAsync(AddRoleAppClaim model)
         {
-            
+
             if (!ModelState.IsValid)
             {
                 return View();
