@@ -18,7 +18,7 @@ namespace CinemaWeb.Models
         public int MovieId { get; set; }
 
 
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} must be from {2} to {1} characters")]
         [DisplayName("Movie Name")]
         public string? MovieName { get; set; }
 

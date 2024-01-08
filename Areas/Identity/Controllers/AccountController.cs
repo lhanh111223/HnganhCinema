@@ -669,11 +669,11 @@ namespace HnganhCinema.Areas.Identity.Controllers
             }
         }
 
-        [Route("/accessdenied.html")]
+        
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {
-            return View();
+            return View("AccessDenied");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace CinemaWeb.Models
         public int? RoomId { get; set; }
 
         [Required]
-        [StringLength(10, MinimumLength = 2, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(10, MinimumLength = 2, ErrorMessage = "{0} must be from {2} to {1} characters")]
         public string SeatName { get; set; }
         public int PriceId { get; set; }
 

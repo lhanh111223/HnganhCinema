@@ -12,30 +12,19 @@
 
 @{
     AppUser CurrentUser = _userManager.GetUserAsync(User).Result;
+
 }
 
 @if (result.Succeeded && CurrentUser != null)
 {
+    var roleName = await _userManager.GetRolesAsync(CurrentUser);
     <div style="margin-right: 2vh" @* class="dropdown" *@>
-        <div  aria-labelledby="managedropdownmenu">
-            
-            @if(_auth.CanAccess(CurrentUser.Id, "Manage Roles", "View"))
+        <div aria-labelledby="managedropdownmenu">
+            @if (roleName.Any(r => r == "Administrator" || r == "Staff" || r == "Editor"))
             {
-            <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="Role" asp-area="Identity">
-                Manage Roles
-            </a>
-            }
-            @if (_auth.CanAccess(CurrentUser.Id, "Manage Members", "View"))
-            {
-            <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="User" asp-area="Identity">
-                Manage Members
+                <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="Home" asp-area="Identity">
+                    Manager View
                 </a>
-            }
-            @if (_auth.CanAccess(CurrentUser.Id, "Manage Features", "View"))
-            {
-            <a class="btn btn-outline-success btn-sm" asp-action="IndexFeature" asp-controller="DbManage" asp-area="Database">
-                Manage Features
-            </a>
             }
         </div>
     </div>

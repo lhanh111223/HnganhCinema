@@ -257,42 +257,19 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
             foreach (var i in addFeatureId)
             {
+                var menuOfFeature = _context.AppMenu.Where(m => m.ClaimId == i).FirstOrDefault();
                 UserFeature uf = new UserFeature()
                 {
                     UserId = id,
                     ClaimId = i,
-                    CanView = true,
-                    CanCreate = true,
-                    CanUpdate = true,
-                    CanDelete = true,
-                    CanBlock = false,
+                    CanView = menuOfFeature.CanView,
+                    CanCreate = menuOfFeature.CanCreate,
+                    CanUpdate = menuOfFeature.CanUpdate,
+                    CanDelete = menuOfFeature.CanDelete,
+                    CanBlock = menuOfFeature.CanBlock,
                 };
                 _context.UserFeatures.Add(uf);
             }
-
-
-
-            //if (model.Claims != null)
-            //{
-            //    var deleted = _context.UserFeatures.Where(uf => uf.UserId == id).ToList();
-            //    _context.UserFeatures.RemoveRange(deleted);
-            //    foreach (var i in model.Claims)
-            //    {
-            //        _logger.LogError("User Feature: " + i.Id);
-            //        UserFeature uf = new UserFeature()
-            //        {
-            //            UserId = id,
-            //            ClaimId = i.Id,
-            //            CanView = i.CanView,
-            //            CanCreate = i.CanCreate,
-            //            CanUpdate = i.CanUpdate,
-            //            CanDelete = i.CanDelete,
-            //            CanBlock = i.CanBlock,
-            //        };
-            //        _context.UserFeatures.Add(uf);
-            //    }
-            //}
-
 
             if (model.Claims != null)
             {
@@ -318,25 +295,30 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
                     }
                 }
-                // Thêm những features của Role mới được thêm vào
-                foreach (var newFeature in model.Claims)
-                {
-                    var checkExist = _context.UserFeatures.Where(uf => uf.ClaimId == newFeature.Id).FirstOrDefault();
-                    if (checkExist == null)
-                    {
-                        UserFeature uf = new UserFeature()
-                        {
-                            UserId = id,
-                            ClaimId = newFeature.Id,
-                            CanView = true,
-                            CanCreate = true,
-                            CanUpdate = true,
-                            CanDelete = true,
-                            CanBlock = false,
-                        };
-                        _context.UserFeatures.Add(uf);
-                    }
-                }
+                //// Thêm những features của Role mới được thêm vào
+                //foreach (var newFeature in model.Claims)
+                //{
+                //    var checkExist = _context.UserFeatures.Where(uf => uf.ClaimId == newFeature.Id).FirstOrDefault();
+                //    if (checkExist == null)
+                //    {
+                //        var menuOfFeature = _context.AppMenu.Where(m => m.ClaimId == newFeature.Id).FirstOrDefault();
+                //        if (menuOfFeature != null)
+                //        {
+                //            _logger.LogError($"{menuOfFeature.CanBlock}- { newFeature.Id}");
+                //            UserFeature uf = new UserFeature()
+                //            {
+                //                UserId = id,
+                //                ClaimId = newFeature.Id,
+                //                CanView = menuOfFeature.CanView,
+                //                CanCreate = menuOfFeature.CanCreate,
+                //                CanUpdate = menuOfFeature.CanUpdate,
+                //                CanDelete = menuOfFeature.CanDelete,
+                //                CanBlock = menuOfFeature.CanBlock,
+                //            };
+                //            _context.UserFeatures.Add(uf);
+                //        }
+                //    }
+                //}
             }
             else
             {
@@ -350,10 +332,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
             StatusMessage = $"Updated successful for the role: {model.user.UserName}";
             return RedirectToAction("Index");
-
-
-            
-
         }
 
 

@@ -14,7 +14,7 @@ namespace HnganhCinema.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage ="Must input Feature")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage ="{0} must be from {1} to {2} characters")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage ="{0} must be from {2} to {1} characters")]
         [DisplayName("Feature")]
         public string ClaimName {  get; set; }
 

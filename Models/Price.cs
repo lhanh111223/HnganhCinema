@@ -17,7 +17,7 @@ namespace CinemaWeb.Models
         public int PriceId { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must be from {2} to {1} characters")]
         public string PriceName { get; set; }
 
         [Required]
