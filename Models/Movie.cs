@@ -38,7 +38,8 @@ namespace CinemaWeb.Models
 
         [Column(TypeName = "date")]
         public DateTime EndDate { get; set; }
-        public int? Status { get; set; }
+        [Required]
+        public int Status { get; set; }
 
         public virtual ICollection<MovieActor> MovieActors { get; set; }
         public virtual ICollection<MovieGerne> MovieGernes { get; set; }

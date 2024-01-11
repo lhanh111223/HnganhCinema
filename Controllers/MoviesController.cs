@@ -9,6 +9,8 @@ using CinemaWeb.Models;
 using HnganhCinema.Models;
 using HnganhCinema.Helper;
 using Microsoft.AspNetCore.Identity;
+using HnganhCinema.ViewModels.MovieViewModels;
+using HnganhCinema.Data;
 
 namespace HnganhCinema.Controllers
 {
@@ -42,7 +44,7 @@ namespace HnganhCinema.Controllers
         public async Task<IActionResult> GetData()
         {
             var results = _context.Movies.ToList();
-            return Json(new {data = results});
+            return Json(new { data = results });
         }
 
         // GET: Movies/Details/5 GetDetail
@@ -71,24 +73,65 @@ namespace HnganhCinema.Controllers
             {
                 return View("AccessDenied");
             }
+
+            var typeList = Enum.GetValues(typeof(ENUM.MovieTypeEnum))
+                                        .Cast<ENUM.MovieTypeEnum>()
+                                        .Select((value) => new SelectListItem
+                                        {
+                                            Value = value.ToString().Substring(1),
+                                            Text = value.ToString().Substring(1)
+                                        })
+                                        .ToList();
+            ViewBag.typeList = typeList;
+
+            var statusList = Enum.GetValues(typeof(ENUM.MovieStatusEnum)).Cast<ENUM.MovieStatusEnum>()
+                                            .Select((value, index) => new SelectListItem
+                                            {
+                                                Value = index.ToString(),
+                                                Text = value.ToString()
+                                            })
+                                            .ToList();
+            ViewBag.statusList = statusList;
+
             return View();
         }
 
         // POST: Movies/Create -- PostCreate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovieId,MovieName,Description,Type,Image,Time,ReleaseDate,EndDate,Status")] Movie movie)
+        public async Task<IActionResult> Create([Bind("MovieId,MovieName,Description,Type,Image,Time,ReleaseDate,EndDate,Status")] CreateMovieViewModel movie)
         {
-            if (ModelState.IsValid)
+            if (movie != null)
             {
-                _context.Add(movie);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                var file = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                            + Path.GetExtension(movie.Image.FileName);
+                var serverFile = Path.Combine("Uploads", "MovieImage", file);
+
+                using (var fs = new FileStream(serverFile, FileMode.Create))
+                {
+                    await movie.Image.CopyToAsync(fs);
+                }
+                _context.Movies.Add(new Movie
+                {
+                    MovieName = movie.MovieName,
+                    Description = movie.Description,
+                    Type = movie.Type,
+                    Image = file,
+                    Time = movie.Time,
+                    ReleaseDate = movie.ReleaseDate,
+                    EndDate = movie.EndDate,
+                    Status = int.Parse(movie.Status) + 1,
+                });
+                var result = await _context.SaveChangesAsync();
+                if (result != 0)
+                    return RedirectToAction("Index");
+
             }
             return View(movie);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Movies/Edit/5 
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Movies == null)
@@ -101,7 +144,39 @@ namespace HnganhCinema.Controllers
             {
                 return NotFound();
             }
-            return View(movie);
+
+            var typeList = Enum.GetValues(typeof(ENUM.MovieTypeEnum))
+                                        .Cast<ENUM.MovieTypeEnum>()
+                                        .Select((value) => new SelectListItem
+                                        {
+                                            Value = value.ToString().Substring(1),
+                                            Text = value.ToString().Substring(1)
+                                        })
+                                        .ToList();
+            ViewBag.typeList = typeList;
+
+            var statusList = Enum.GetValues(typeof(ENUM.MovieStatusEnum)).Cast<ENUM.MovieStatusEnum>()
+                                            .Select((value, index) => new SelectListItem
+                                            {
+                                                Value = index.ToString(),
+                                                Text = value.ToString()
+                                            })
+                                            .ToList();
+            ViewBag.statusList = statusList;
+
+            var editMovieViewModel = new EditMovieViewModel
+            {
+                MovieId = id.Value,
+                MovieName = movie.MovieName,
+                Description = movie.Description,
+                Type = movie.Type,
+                Image = movie.Image,
+                Time = movie.Time,
+                ReleaseDate = movie.ReleaseDate,
+                EndDate = movie.EndDate,
+                Status = movie.Status.ToString(),
+            };
+            return View(editMovieViewModel);
         }
 
         // POST: Movies/Edit/5
@@ -109,34 +184,54 @@ namespace HnganhCinema.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MovieId,MovieName,Description,Type,Image,Time,ReleaseDate,EndDate,Status")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("MovieId,MovieName,Description,Type,Image,ChangeImage,Time,ReleaseDate,EndDate,Status")] EditMovieViewModel model)
         {
-            if (id != movie.MovieId)
+            if (id != model.MovieId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var movie = _context.Movies.Find(id);
+            if (model.ChangeImage != null)
             {
-                try
+                var file = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                            + Path.GetExtension(model.ChangeImage.FileName);
+                var serverFile = Path.Combine("Uploads", "MovieImage", file);
+                
+                using (var fs = new FileStream(serverFile, FileMode.Create))
                 {
-                    _context.Update(movie);
-                    await _context.SaveChangesAsync();
+                    await model.ChangeImage.CopyToAsync(fs);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MovieExists(movie.MovieId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var deleteImage = "Uploads/MovieImage/" + movie.Image;
+                System.IO.File.Delete(deleteImage);
+                movie.Image = file;
             }
-            return View(movie);
+
+            try
+            {
+                movie.MovieName = model.MovieName;
+                movie.Description = model.Description;
+                movie.Type = model.Type;
+                movie.Time = model.Time;
+                movie.ReleaseDate = model.ReleaseDate;
+                movie.EndDate = model.EndDate;
+                movie.Status = int.Parse(model.Status);
+                _context.Update(movie);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MovieExists(model.MovieId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Movies/Delete/5
@@ -171,14 +266,14 @@ namespace HnganhCinema.Controllers
             {
                 _context.Movies.Remove(movie);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-          return (_context.Movies?.Any(e => e.MovieId == id)).GetValueOrDefault();
+            return (_context.Movies?.Any(e => e.MovieId == id)).GetValueOrDefault();
         }
     }
 }

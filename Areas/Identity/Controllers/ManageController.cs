@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SQLitePCL;
 
 namespace HnganhCinema.Areas.Identity.Controllers
 {
@@ -25,17 +26,21 @@ namespace HnganhCinema.Areas.Identity.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ManageController> _logger;
+        private readonly CinemaDbContext _context;
 
         public ManageController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
         IEmailSender emailSender,
-        ILogger<ManageController> logger)
+        ILogger<ManageController> logger,
+        CinemaDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
+
         }
 
         //
@@ -66,7 +71,8 @@ namespace HnganhCinema.Areas.Identity.Controllers
                     UserName = user.UserName,
                     UserEmail = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                }
+                },
+                CurrentUserAvatar = user.Avatar,
 
             };
             _logger.LogWarning(model.profile.UserName);
@@ -375,7 +381,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         public async Task<IActionResult> EditProfileAsync()
         {
             var user = await GetCurrentUserAsync();
-            
+
             var model = new EditExtraProfileModel()
             {
                 UserName = user.UserName,
@@ -396,6 +402,25 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
         }
 
+        [HttpPost, ActionName("UploadPhoto")]
+        public async Task<IActionResult> UploadPhotoAsync([Bind("Avatar")] IndexViewModel model)
+        {
+            var user = await GetCurrentUserAsync();
+            if (model != null)
+            {
+                var fileTemp = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + Path.GetExtension(model.Avatar.FileName);
+                var file = Path.Combine("Uploads", "UserAvatar", fileTemp);
+                using (var filestream = new FileStream(file, FileMode.Create))
+                {
+                    await model.Avatar.CopyToAsync(filestream);
+                }
+                user.Avatar = fileTemp;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                model.CurrentUserAvatar = user.Avatar;
+            }
+            return RedirectToAction("Index");
+        }
 
     }
 }

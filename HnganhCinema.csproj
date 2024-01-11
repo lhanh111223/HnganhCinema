@@ -214,8 +214,9 @@
 
   <ItemGroup>
     <Folder Include="Areas\Database\Data\" />
-    <Folder Include="Uploads\" />
     <Folder Include="smssave\" />
+    <Folder Include="Uploads\MovieImage\" />
+    <Folder Include="Uploads\UserAvatar\" />
   </ItemGroup>
 
 </Project>
