@@ -45,8 +45,20 @@
             }
             @if (_auth.CanAccess(CurrentUser.Id, "Manage Movies", "View"))
             {
-                <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="Movies">
+                <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="ManageMovies" asp-area="Manager">
                     Manage Movies
+                </a>
+            }
+            @if (_auth.CanAccess(CurrentUser.Id, "Manage Cinemas", "View"))
+            {
+                <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="ManageCinemas" asp-area="Manager">
+                    Manage Cinemas
+                </a>
+            }
+            @if (_auth.CanAccess(CurrentUser.Id, "Manage Rooms", "View"))
+            {
+                <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="ManageRooms" asp-area="Manager">
+                    Manage Rooms
                 </a>
             }
         </div>

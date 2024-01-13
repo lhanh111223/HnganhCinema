@@ -10,9 +10,22 @@
 
         public enum MovieStatusEnum
         {
+            Closed,
             Upcoming,
             Screening,
             
+        }
+        public enum CinemaStatusEnum
+        {
+            Maintenance,
+            Activate,
+            Closed,
+        }
+
+        public enum RoomStatusEnum
+        {
+            Closed,
+            Open,
         }
     }
 }

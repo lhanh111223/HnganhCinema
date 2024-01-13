@@ -3781,12 +3781,8 @@
       "PackagePath": "staticwebassets\\sourcetemplate\\organi\\fonts\\fontawesome-webfont.woff2"
     },
     {
-      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\banner\\banner-1.jpg",
-      "PackagePath": "staticwebassets\\sourcetemplate\\organi\\img\\banner\\banner-1.jpg"
-    },
-    {
-      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\banner\\banner-2.jpg",
-      "PackagePath": "staticwebassets\\sourcetemplate\\organi\\img\\banner\\banner-2.jpg"
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\banner\\banner.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\organi\\img\\banner\\banner.jpg"
     },
     {
       "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\blog\\blog-1.jpg",

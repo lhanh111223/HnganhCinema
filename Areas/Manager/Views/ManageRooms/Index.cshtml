@@ -1,0 +1,111 @@
+﻿@model IEnumerable<HnganhCinema.Areas.Manager.Models.RoomViewModels.IndexRoomViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table" id="table-rooms">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cinema)
+            </th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.min.js"></script>
+    <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script>
+        var js = jQuery.noConflict(true);
+        // Instance variable
+        let RoomsData = [];
+
+
+        $(document).ready(function () {
+            LoadRoomsData();
+        });
+
+        function LoadRoomsData() {
+            js.ajax({
+                async: false,
+                url: '/Manager/ManageRooms/GetData',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.data);
+                    CinemasData = data.data;
+                },
+                error: function (msg) {
+                    console.log(msg);
+                }
+            });
+
+            $("#table-rooms").DataTable({
+                data: CinemasData,
+                columns: [
+                    {
+                        data: null,
+                        render: function (data) {
+                            return '<a style="text-decoration:none; font-weight: bolder;" href="/Manager/ManageRooms/Details/' + data.roomId + '">' + 'Room NO '+ data.roomNo + '</a>';
+                        }
+                    },
+                    { data: 'type' },
+                    {
+                        data: 'status',
+                        render: function (data) {
+                            if (data === 'Open') return '<p style="color: green; font-weight: bold" >Open</p>';
+                            else return '<p style="color: red; font-weight: bold">Closed</p>';
+                        }
+                    },
+                    { data: 'cinema' },
+
+                    {
+                        data: 'roomId',
+                        render: function (data) {
+                            return '<a class="btn btn-outline-success" href="/Manager/ManageRooms/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
+                        }
+                    },
+                    {
+                        data: 'roomId',
+                        render: function (data) {
+                            return '<a class="btn btn-outline-danger" href="/Manager/ManageRooms/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
+                        }
+                    }
+                ]
+            });
+
+        }
+
+
+    </script>
+}

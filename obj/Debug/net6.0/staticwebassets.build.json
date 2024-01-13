@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "oiUP3fzXHHIYGJ2S7RlHkZao+zp69Z7vel6nDQVR7AE=",
+  "Hash": "heoI80RP71Mk3zCwKWPpW5T3AyWXcteEyiHS8ebWOdY=",
   "Source": "HnganhCinema",
   "BasePath": "_content/HnganhCinema",
   "Mode": "Default",
@@ -17119,12 +17119,12 @@
       "OriginalItemSpec": "wwwroot\\sourcetemplate\\organi\\fonts\\fontawesome-webfont.woff2"
     },
     {
-      "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\banner\\banner-1.jpg",
+      "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\banner\\banner.jpg",
       "SourceId": "HnganhCinema",
       "SourceType": "Discovered",
       "ContentRoot": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\",
       "BasePath": "_content/HnganhCinema",
-      "RelativePath": "sourcetemplate/organi/img/banner/banner-1.jpg",
+      "RelativePath": "sourcetemplate/organi/img/banner/banner.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -17133,24 +17133,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\sourcetemplate\\organi\\img\\banner\\banner-1.jpg"
-    },
-    {
-      "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\banner\\banner-2.jpg",
-      "SourceId": "HnganhCinema",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\",
-      "BasePath": "_content/HnganhCinema",
-      "RelativePath": "sourcetemplate/organi/img/banner/banner-2.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\sourcetemplate\\organi\\img\\banner\\banner-2.jpg"
+      "OriginalItemSpec": "wwwroot\\sourcetemplate\\organi\\img\\banner\\banner.jpg"
     },
     {
       "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\organi\\img\\blog\\blog-1.jpg",

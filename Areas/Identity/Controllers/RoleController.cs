@@ -242,20 +242,18 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
             role.Name = model.Name;
             var result = await _roleManager.UpdateAsync(role);
-
+            var roleClaimsDelete = _context.AppRoleClaims.Where(rc => rc.RoleId == roleid).ToList();
+            _context.AppRoleClaims.RemoveRange(roleClaimsDelete);
             if (model.Features != null)
             {
-                var roleClaimsDelete = _context.AppRoleClaims.Where(rc => rc.RoleId == roleid).ToList();
-                _context.AppRoleClaims.RemoveRange(roleClaimsDelete);
                 foreach (var featureid in model.Features)
                 {
                     await _context.AddToRoleClaims(roleid, int.Parse(featureid));
                 }
             }
-
             if (result.Succeeded)
             {
-                StatusMessage = $"Change name successful for: {model.Name}";
+                StatusMessage = $"Update uccessful for: {model.Name}";
                 return RedirectToAction(nameof(Index));
             }
             else

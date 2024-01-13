@@ -21,7 +21,7 @@ namespace CinemaWeb.Models
         public string PriceName { get; set; }
 
         [Required]
-        [Min(1, ErrorMessage = "{0} must be from {1}")]
+        [Range(1, 1000,ErrorMessage = "{0} must be from {1}")]
         [Column(TypeName ="money")]
         public decimal UnitPrice { get; set; }
 
