@@ -9,7 +9,6 @@
       "HnganhCinema/1.0.0": {
         "dependencies": {
           "Bogus": "35.0.1",
-          "DataAnnotationsExtensions": "5.0.1.27",
           "MailKit": "4.3.0",
           "Microsoft.AspNetCore.Authentication": "2.2.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "2.2.0",
@@ -78,14 +77,6 @@
           "lib/netstandard1.5/Castle.Core.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "4.4.1.0"
-          }
-        }
-      },
-      "DataAnnotationsExtensions/5.0.1.27": {
-        "runtime": {
-          "lib/NETFramework40/DataAnnotationsExtensions.dll": {
-            "assemblyVersion": "5.0.1.27",
-            "fileVersion": "5.0.1.27"
           }
         }
       },
@@ -3066,13 +3057,6 @@
       "sha512": "sha512-zanbjWC0Y05gbx4eGXkzVycOQqVOFVeCjVsDSyuao9P4mtN1w3WxxTo193NGC7j3o2u3AJRswaoC6hEbnGACnQ==",
       "path": "castle.core/4.4.1",
       "hashPath": "castle.core.4.4.1.nupkg.sha512"
-    },
-    "DataAnnotationsExtensions/5.0.1.27": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-lw4n4XzY62raAOrrlPdkh4h3PXenReARIazAPzs8AvlkKDAK9pe7kcUL3dh3T095/Q9+LezoXCfjEgDPslmGyg==",
-      "path": "dataannotationsextensions/5.0.1.27",
-      "hashPath": "dataannotationsextensions.5.0.1.27.nupkg.sha512"
     },
     "elFinder.NetCore/1.3.6": {
       "type": "package",

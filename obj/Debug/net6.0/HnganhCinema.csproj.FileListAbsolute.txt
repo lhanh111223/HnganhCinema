@@ -19,7 +19,6 @@ E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\HnganhCinema.pdb
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\Bogus.dll
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\BouncyCastle.Cryptography.dll
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\Castle.Core.dll
-E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\DataAnnotationsExtensions.dll
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\elFinder.NetCore.dll
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\Humanizer.dll
 E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\MailKit.dll

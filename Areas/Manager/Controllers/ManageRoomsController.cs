@@ -10,6 +10,8 @@ using HnganhCinema.Models;
 using HnganhCinema.Helper;
 using Microsoft.AspNetCore.Identity;
 using HnganhCinema.Areas.Manager.Models.RoomViewModels;
+using HnganhCinema.Data;
+using Bogus;
 
 namespace HnganhCinema.Areas.Manager.Controllers
 {
@@ -22,6 +24,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
         private readonly AuthenticateHelper _auth;
         private readonly UserManager<AppUser> _userManager;
         private static AppUser CurrentUser;
+        private static char[] rowName = { '-', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
         public ManageRoomsController(CinemaDbContext context, RoleManager<IdentityRole> roleManager, AuthenticateHelper auth, UserManager<AppUser> userManager)
         {
             _context = context;
@@ -44,8 +47,8 @@ namespace HnganhCinema.Areas.Manager.Controllers
         public async Task<IActionResult> GetData()
         {
             List<IndexRoomViewModel> listRooms = new List<IndexRoomViewModel>();
-            var results = _context.Rooms.Include(r => r.Cinema).ToList();
-            foreach(var r in results)
+            var results = _context.Rooms.Include(r => r.Cinema).ToList().OrderBy(r=>r.CinemaId);
+            foreach (var r in results)
             {
                 listRooms.Add(new IndexRoomViewModel
                 {
@@ -81,7 +84,26 @@ namespace HnganhCinema.Areas.Manager.Controllers
         // GET: Manager/ManageRooms/Create
         public IActionResult Create()
         {
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Address");
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name");
+            var statusList = Enum.GetValues(typeof(ENUM.RoomStatusEnum))
+                        .Cast<ENUM.RoomStatusEnum>()
+                        .Select((value, index) => new SelectListItem
+                        {
+                            Value = index.ToString(),
+                            Text = value.ToString()
+                        })
+                        .ToList();
+            ViewBag.Status = statusList;
+
+            var typeList = Enum.GetValues(typeof(ENUM.MovieTypeEnum))
+                                        .Cast<ENUM.MovieTypeEnum>()
+                                        .Select((value) => new SelectListItem
+                                        {
+                                            Value = value.ToString().Substring(1),
+                                            Text = value.ToString().Substring(1)
+                                        })
+                                        .ToList();
+            ViewBag.Type = typeList;
             return View();
         }
 
@@ -90,16 +112,95 @@ namespace HnganhCinema.Areas.Manager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomId,CinemaId,RoomNo,NumberRow,NumberCol,Type,Status")] Room room)
+        public async Task<IActionResult> Create([Bind("RoomId,CinemaId,RoomNo,NumberRow,NumberCol,Type,Status,RowsVip")] CreateRoomViewModel model)
         {
+
+            if (_context.Rooms.Any(r => r.CinemaId == model.CinemaId && r.RoomNo == model.RoomNo))
+            {
+                var statusList = Enum.GetValues(typeof(ENUM.RoomStatusEnum))
+                        .Cast<ENUM.RoomStatusEnum>()
+                        .Select((value, index) => new SelectListItem
+                        {
+                            Value = index.ToString(),
+                            Text = value.ToString()
+                        })
+                        .ToList();
+                ViewBag.Status = statusList;
+
+                var typeList = Enum.GetValues(typeof(ENUM.MovieTypeEnum))
+                                            .Cast<ENUM.MovieTypeEnum>()
+                                            .Select((value) => new SelectListItem
+                                            {
+                                                Value = value.ToString().Substring(1),
+                                                Text = value.ToString().Substring(1)
+                                            })
+                                            .ToList();
+                ViewBag.Type = typeList;
+                ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name");
+                ViewData["ErrorMessage"] = "This room is already existed in this Cinema !";
+                return View();
+            }
+
+
             if (ModelState.IsValid)
             {
-                _context.Add(room);
+                // Add room
+                var room = new Room()
+                {
+                    CinemaId = model.CinemaId,
+                    RoomNo = model.RoomNo,
+                    NumberRow = model.NumberRow,
+                    NumberCol = model.NumberCol,
+                    Type = model.Type,
+                    Status = model.Status,
+                    RowsVip = model.RowsVip,
+                };
+                _context.Rooms.Add(room);
+                _context.SaveChanges();
+
+                // Add Seats
+                for (int i = 1; i <= room.NumberRow; i++)
+                {
+                    for (int j = 1; j <= room.NumberCol; j++)
+                    {
+                        Seat seat = new Seat();
+                        seat.RoomId = room.RoomId;
+                        seat.SeatName = (rowName[i] + "" + j);
+
+                        if (model.RowsVip != null)
+                        {
+                            if (model.RowsVip.Contains(i.ToString()))
+                            {
+                                // Rows seat Vip
+                                if (room.Type == "2D")      // 2D
+                                    seat.PriceId = 3;
+                                else if (room.Type == "3D")  // 3D
+                                    seat.PriceId = 1;
+                            }
+                            else
+                            {
+                                if (room.Type == "2D")      // 2D
+                                    seat.PriceId = 4;
+                                else if (room.Type == "3D")  // 3D
+                                    seat.PriceId = 2;
+                            }
+                        }
+                        else
+                        {
+                            if (room.Type == "2D")      // 2D
+                                seat.PriceId = 4;
+                            else if (room.Type == "3D")  // 3D
+                                seat.PriceId = 2;
+                        }
+                        _context.Seats.Add(seat);
+                    }
+                }
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Address", room.CinemaId);
-            return View(room);
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name", model.CinemaId);
+            return View(model);
         }
 
         // GET: Manager/ManageRooms/Edit/5
@@ -115,8 +216,42 @@ namespace HnganhCinema.Areas.Manager.Controllers
             {
                 return NotFound();
             }
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Address", room.CinemaId);
-            return View(room);
+
+            var statusList = Enum.GetValues(typeof(ENUM.RoomStatusEnum))
+                        .Cast<ENUM.RoomStatusEnum>()
+                        .Select((value, index) => new SelectListItem
+                        {
+                            Value = index.ToString(),
+                            Text = value.ToString()
+                        })
+                        .ToList();
+            ViewBag.Status = statusList;
+
+            var typeList = Enum.GetValues(typeof(ENUM.MovieTypeEnum))
+                                        .Cast<ENUM.MovieTypeEnum>()
+                                        .Select((value) => new SelectListItem
+                                        {
+                                            Value = value.ToString().Substring(1),
+                                            Text = value.ToString().Substring(1)
+                                        })
+                                        .ToList();
+            ViewBag.Type = typeList;
+
+
+            var model = new EditRoomViewModel()
+            {
+                RoomId = room.RoomId,
+                CinemaId = room.CinemaId,
+                RoomNo = room.RoomNo,
+                NumberRow = room.NumberRow,
+                NumberCol = room.NumberCol,
+                Type = room.Type,
+                Status = room.Status,
+                RowsVip = room.RowsVip,
+            };
+
+            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name", room.CinemaId);
+            return View(model);
         }
 
         // POST: Manager/ManageRooms/Edit/5
@@ -124,9 +259,11 @@ namespace HnganhCinema.Areas.Manager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomId,CinemaId,RoomNo,NumberRow,NumberCol,Type,Status")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("RoomId,CinemaId,RoomNo,NumberRow,NumberCol,Type,Status,RowsVip")] EditRoomViewModel model)
         {
-            if (id != room.RoomId)
+            var room = _context.Rooms.Find(model.RoomId);
+
+            if (id != model.RoomId)
             {
                 return NotFound();
             }
@@ -135,12 +272,91 @@ namespace HnganhCinema.Areas.Manager.Controllers
             {
                 try
                 {
+
+                    room.Type = model.Type;
+                    room.Status = model.Status;
+
+                    // xóa hết ghế cũ và update ghế mới khi số lượng rol, col thay đổi
+                    if (model.NumberCol != room.NumberCol || model.NumberRow != room.NumberRow /*|| model.RowsVip != room.RowsVip*/)
+                    {
+                        room.NumberCol = model.NumberCol;
+                        room.NumberRow = model.NumberRow;
+                        _context.Seats.RemoveRange(_context.Seats.Where(s => s.RoomId == model.RoomId));
+                        // Add Seats
+                        for (int i = 1; i <= model.NumberRow; i++)
+                        {
+                            for (int j = 1; j <= model.NumberCol; j++)
+                            {
+                                Seat seat = new Seat();
+                                seat.RoomId = room.RoomId;
+                                seat.SeatName = (rowName[i] + "" + j);
+
+                                if (model.RowsVip != null)
+                                {
+                                    if (model.RowsVip.Contains(i.ToString()))
+                                    {
+                                        // Rows seat Vip
+                                        if (room.Type == "2D")      // 2D
+                                            seat.PriceId = 3;
+                                        else if (room.Type == "3D")  // 3D
+                                            seat.PriceId = 1;
+                                    }
+                                    else
+                                    {
+                                        if (room.Type == "2D")      // 2D
+                                            seat.PriceId = 4;
+                                        else if (room.Type == "3D")  // 3D
+                                            seat.PriceId = 2;
+                                    }
+                                }
+                                else
+                                {
+                                    if (room.Type == "2D")      // 2D
+                                        seat.PriceId = 4;
+                                    else if (room.Type == "3D")  // 3D
+                                        seat.PriceId = 2;
+                                }
+                                _context.Seats.Add(seat);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (model.RowsVip != null && model.RowsVip != room.RowsVip)
+                        {
+                            for (int i = 1; i <= model.NumberRow; i++)
+                            {
+                                for (int j = 1; j <= model.NumberCol; j++)
+                                {
+                                    Seat seat = _context.Seats.Where(s => s.SeatName == (rowName[i] + "" + j)).FirstOrDefault();
+
+                                    if (model.RowsVip.Contains(i.ToString()))
+                                    {
+                                        // Rows seat Vip
+                                        if (room.Type == "2D")      // 2D
+                                            seat.PriceId = 3;
+                                        else if (room.Type == "3D")  // 3D
+                                            seat.PriceId = 1;
+                                    }
+                                    else
+                                    {
+                                        if (room.Type == "2D")      // 2D
+                                            seat.PriceId = 4;
+                                        else if (room.Type == "3D")  // 3D
+                                            seat.PriceId = 2;
+                                    }
+                                    room.RowsVip = model.RowsVip;
+                                    _context.Seats.Update(seat);
+                                }
+                            }
+                        }
+                    }
                     _context.Update(room);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.RoomId))
+                    if (!RoomExists(model.RoomId))
                     {
                         return NotFound();
                     }
@@ -152,7 +368,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Address", room.CinemaId);
-            return View(room);
+            return View(model);
         }
 
         // GET: Manager/ManageRooms/Delete/5
@@ -188,14 +404,18 @@ namespace HnganhCinema.Areas.Manager.Controllers
             {
                 _context.Rooms.Remove(room);
             }
-            
-            await _context.SaveChangesAsync();
+
+            var result = await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                return Content("Error to Delete");
+            }
             return RedirectToAction(nameof(Index));
         }
 
         private bool RoomExists(int id)
         {
-          return (_context.Rooms?.Any(e => e.RoomId == id)).GetValueOrDefault();
+            return (_context.Rooms?.Any(e => e.RoomId == id)).GetValueOrDefault();
         }
     }
 }

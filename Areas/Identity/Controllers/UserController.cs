@@ -295,30 +295,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
 
                     }
                 }
-                //// Thêm những features của Role mới được thêm vào
-                //foreach (var newFeature in model.Claims)
-                //{
-                //    var checkExist = _context.UserFeatures.Where(uf => uf.ClaimId == newFeature.Id).FirstOrDefault();
-                //    if (checkExist == null)
-                //    {
-                //        var menuOfFeature = _context.AppMenu.Where(m => m.ClaimId == newFeature.Id).FirstOrDefault();
-                //        if (menuOfFeature != null)
-                //        {
-                //            _logger.LogError($"{menuOfFeature.CanBlock}- { newFeature.Id}");
-                //            UserFeature uf = new UserFeature()
-                //            {
-                //                UserId = id,
-                //                ClaimId = newFeature.Id,
-                //                CanView = menuOfFeature.CanView,
-                //                CanCreate = menuOfFeature.CanCreate,
-                //                CanUpdate = menuOfFeature.CanUpdate,
-                //                CanDelete = menuOfFeature.CanDelete,
-                //                CanBlock = menuOfFeature.CanBlock,
-                //            };
-                //            _context.UserFeatures.Add(uf);
-                //        }
-                //    }
-                //}
             }
             else
             {

@@ -1,0 +1,259 @@
+﻿@model HnganhCinema.Areas.Manager.Models.ShowtimeViewModels.CreateShowtimeViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+<head>
+    <style>
+
+    </style>
+</head>
+<h1>Create</h1>
+
+<h4>Showtime</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" id="movie-type" value="@ViewBag.Type" />
+            <input type="hidden" id="movie-id" asp-for="MovieId" value="@ViewBag.Movie" />
+            <div class="form-group">
+                <label @* asp-for="MovieId" *@ class="control-label">Movie Name</label>
+                <select disabled asp-for="MovieId" class="form-control" asp-items="ViewBag.MovieId"></select>
+            </div>
+            <div class="form-group">
+                <label @* asp-for="CinemaId" *@ class="control-label">Cinema</label>
+                <select onchange="changeCinema()" id="select-cinema" asp-for="CinemaId" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label @* asp-for="RoomId" *@class="control-label">Room No</label>
+                <select onchange="getShowtimesData()" id="select-room" asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+                <input onchange="inputStartTime()" type="datetime-local" value="null" id="start-time" asp-for="StartTime" class="form-control" />
+            </div>
+            @* <div class="form-group">
+            <label asp-for="SeatStatus" class="control-label"></label>
+            <input asp-for="SeatStatus" class="form-control" />
+            <span asp-validation-for="SeatStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <input asp-for="Status" class="form-control" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+            </div> *@
+            <div id="button-create" class="form-group">
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8" id="list-showtime">
+
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<div class=" row">
+    <h2>Schedule</h2>
+    <div id="timeline" class="col-md-12">
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!-- Sử dụng CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+        // instance variable
+        let timeline_showtime = [];
+
+
+        $(document).ready(function () {
+            getSelectCinemaData();
+            getRoomData();
+            getShowtimesData();
+            getShowtimeOfRoom();
+        });
+
+        // onload -> get list showtime of current room
+        function getShowtimeOfRoom() {
+            let data = {
+                roomid: $('#select-room').val();
+            }
+            
+            $.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetShowtimeOfRoom',
+                type: 'GET',
+                data : data,
+                dataType: 'json',
+                success: function (data) {
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        // onload -> get list showtimes of current date and showtimes of current film
+        function getShowtimesData() {
+            let html = '';
+
+            let movie = $('#movie-id').val();
+            let cinema = $('#select-cinema').val();
+            let room = $('#select-room').val();
+            let data = {
+                MovieId: movie,
+                CinemaId: cinema,
+                RoomId: room
+            };
+            $.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetShowtimesData',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    if (data.success === true) {
+                        for (var i = 0; i < data.listId.length; i++) {
+                            var existingItem = timeline_showtime.find(item => item.id === data.listId[i]);
+                            if (!existingItem) {
+                                timeline_showtime.push({
+                                    id: data.listId[i],
+                                    content: data.listName[i],
+                                    start: data.listStartTime[i],
+                                    end: data.listEndTime[i]
+                                });
+                            }
+                        }
+                        // Tùy chọn của timeline
+                        var options = {
+                            stack: true,
+                            showMajorLabels: true,
+                            showMinorLabels: true,
+                            zoomMin: 1000 * 60 * 30, // Zoom tối thiểu là 30 phút
+                            orientation: 'top',
+                        };
+                        // Lựa chọn thẻ div
+                        var container = document.getElementById('timeline');
+                        // Tạo timeline
+                        container.innerHTML = "";
+                        var timeline = new vis.Timeline(container, timeline_showtime, options);
+                    } else {
+                        $('#timeline').html('<h2>No Showtime</h2>');
+                    }
+
+                },
+                error: function (mess) {
+                    console.log(mess);
+                }
+            });
+        }
+
+
+        // check input start time
+        function inputStartTime() {
+
+            // getShowtimesData();
+
+            let StartTime = $('#start-time').val();
+            if (StartTime !== '') {
+                // console.log(StartTime);
+                // Chuẩn hóa định dạng thời gian
+                StartTime = StartTime.replace("T", " ");
+                StartTime = StartTime.toString();
+                var data = {
+                    StartTime: StartTime,
+                    MovieId: $('#movie-id').val(),
+                    RoomId: $('#select-room').val()
+                }
+                $.ajax({
+                    url: '/Manager/ManageShowtimes/CheckStartEndTime',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    success: function (data) {
+                        if (data.success == false) {
+                            $('#button-create').html('<p style="color: red;">Start time must be from now and cannot overlap with other showtimes in this Room</p>');
+                        } else {
+                            $('#button-create').html('<input type="submit" value="Create" class="btn btn-primary" />');
+                        }
+                    },
+                    error: function (mess) {
+                        console.log(mess);
+                    }
+                });
+            }
+        }
+
+        // onload -> get list cinema to select
+        function getSelectCinemaData() {
+            $.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetSelectCinemaData',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    let html = '';
+                    // console.log(data.data);
+                    for (var i = 0; i < data.data.length; i++) {
+                        html += ('<option value = ' + data.data[i].cinemaId + '>' + data.data[i].name + '</option>');
+                    }
+                    $('#select-cinema').html(html);
+                },
+                error: function (mess) {
+                    console.log(mess);
+                }
+            });
+        }
+
+        // onload -> get list Room of current selected cinema and type same as movie type
+        function getRoomData() {
+            let data = {
+                cinemaId: $('#select-cinema').val(),
+                type: $('#movie-type').val()
+            };
+
+            $.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetRoomData',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    let html = '';
+                    // console.log(data.data);
+                    for (var i = 0; i < data.data.length; i++) {
+                        html += ('<option value = ' + data.data[i].roomId + '>' + data.data[i].roomNo + '</option>');
+                    }
+                    $('#select-room').html(html);
+                },
+                error: function (mess) {
+                    console.log(mess);
+                }
+            });
+            getShowtimesData();
+        }
+
+        // onchange selected cinema
+        function changeCinema() {
+            getRoomData();
+        }
+
+    </script>
+}
+
+

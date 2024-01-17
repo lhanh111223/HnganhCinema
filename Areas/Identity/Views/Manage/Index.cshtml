@@ -1,7 +1,7 @@
 ﻿@model IndexViewModel
 
 @{
-    ViewData["Title"] = "Quản lý tài khoản của bạn";
+    ViewData["Title"] = "MANAGE YOUR PROFILE";
 }
 
 <h1>@ViewData["Title"].</h1>
@@ -13,7 +13,6 @@
     <meta charset="utf-8">
 
 
-    <title>bs5 edit profile account details - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -191,9 +190,9 @@
                                     @if (Model.PhoneNumber != null)
                                     {
                                         <a style="text-decoration:none" class="btn btn-primary btn-sm" asp-controller="Manage" asp-action="AddPhoneNumber">Change</a>
-                                        <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post" role="form">
+                                        @* <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post" role="form">
                                             <button type="submit" class="btn btn-danger btn-sm">Remove phone</button>
-                                        </form>
+                                        </form> *@
                                     }
                                     else
                                     {

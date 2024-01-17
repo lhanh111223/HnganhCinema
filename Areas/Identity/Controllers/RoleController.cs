@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Linq;
@@ -192,27 +192,11 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 Value = f.Id.ToString(),
                 Text = f.ClaimName
             }).ToList();
-
-
             ViewBag.allFeature = featureList;
 
             model.role = role;
             ModelState.Clear();
             return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetClaim([FromQuery] string roleid)
-        {
-            if (roleid == null) return NotFound("Not found ROLE");
-            var role = await _roleManager.FindByIdAsync(roleid);
-            if (role == null)
-            {
-                return NotFound("Not found ROLE");
-            }
-
-            var Claims = await _context.RoleClaims.Where(rc => rc.RoleId == role.Id).ToListAsync();
-            return Json(Claims);
         }
 
         // POST: /Role/Edit/1
@@ -251,6 +235,40 @@ namespace HnganhCinema.Areas.Identity.Controllers
                     await _context.AddToRoleClaims(roleid, int.Parse(featureid));
                 }
             }
+
+            // Lấy ra những member (id) có role là role vừa cập nhật
+            var memberId = (from member in _context.Users
+                            join userrole in _context.UserRoles on member.Id equals userrole.UserId
+                            where userrole.RoleId == roleid
+                            select member.Id
+                            ).ToList();
+
+            // Lấy ra những feature mới được thêm vào và thêm vào bảng UserFeature (userId - featureId)
+            var featureId = _context.AppRoleClaims.Where(rc => rc.RoleId == roleid).Select(f => f.ClaimId).ToList();
+
+            foreach(var m in memberId)
+            {
+                foreach(var f in featureId)
+                {
+                    if (!_context.UserFeatures.Any(uf => uf.ClaimId == f))
+                    {
+                        var menu = _context.AppMenu.Where(m => m.ClaimId == f).FirstOrDefault();
+                        var addUserFeature = new UserFeature()
+                        {
+                            UserId = m,
+                            ClaimId = f,
+                            CanView = menu.CanView,
+                            CanBlock = menu.CanBlock,
+                            CanCreate = menu.CanCreate,
+                            CanUpdate = menu.CanUpdate,
+                            CanDelete = menu.CanDelete,
+                        };
+                        _context.UserFeatures.Add(addUserFeature);
+                    }
+                }
+            }
+            _context.SaveChanges();
+
             if (result.Succeeded)
             {
                 StatusMessage = $"Update uccessful for: {model.Name}";
@@ -261,17 +279,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 ModelState.AddModelError(result);
             }
 
-            if (model?.Features?.Length > 0)
-            {
-                foreach (var feature in model.Features)
-                {
-                    var addFeature = new AppRoleClaim
-                    {
-                        RoleId = role.Id,
-                        ClaimValue = feature,
-                    };
-                }
-            }
             return View(model);
         }
 

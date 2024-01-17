@@ -4,6 +4,7 @@
 @{
 }
 
+@using HnganhCinema.Models;
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using HnganhCinema.Helper
@@ -61,6 +62,13 @@
                     Manage Rooms
                 </a>
             }
+            @if (_auth.CanAccess(CurrentUser.Id, "Manage Showtimes", "View"))
+            {
+                <a class="btn btn-outline-success btn-sm" asp-action="Index" asp-controller="ManageShowtimes" asp-area="Manager">
+                    Manage Showtimes
+                </a>
+            }
+            
         </div>
     </div>
 

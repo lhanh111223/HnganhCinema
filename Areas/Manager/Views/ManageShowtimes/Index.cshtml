@@ -1,0 +1,120 @@
+﻿@model IEnumerable<HnganhCinema.Areas.Manager.Models.ShowtimeViewModels.IndexShowtimeViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="SelectMovie">Create New</a>
+</p>
+<table class="table" id="table-showtimes">
+    <thead>
+        <tr>
+            <th>
+                Cinema
+            </th>
+            <th>
+                Room No
+            </th>
+            <th>
+                Movie
+            </th>
+            <th>
+                Start Time
+            </th>
+            <th>
+                End Time
+            </th>
+            <th>
+                Status
+            </th>
+
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.min.js"></script>
+    <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script>
+        var js = jQuery.noConflict(true);
+        // Instance variable
+        let showtimeData = [];
+
+
+        $(document).ready(function () {
+            LoadShowtimeData();
+        });
+
+        function LoadShowtimeData() {
+            js.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetShowtimeData',
+                type: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.showtimes);
+                    showtimeData = data.showtimes;
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            $('#table-showtimes').DataTable({
+                data: showtimeData,
+                columns: [
+                    { data: 'cinema' },
+                    { data: 'room' },
+                    { data: 'movie' },
+                    {
+                        data: 'startTime',
+                        render: function (data) {
+                            return '<p>'+data.substring(0, 10) +' | ' + data.substring(11, 16) +'</p>';
+                        }
+                    },
+                    {
+                        data: 'endTime',
+                        render: function (data) {
+                            return '<p>'+data.substring(0, 10) +' | ' + data.substring(11, 16) +'</p>';
+                        }
+                    },
+                    
+                    { data: 'status' },
+                    {
+                        data: 'id',
+                        render: function (data) {
+                            return '<a class="btn btn-outline-success" href="/Manager/ManageShowtimes/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function (data) {
+                            return '<a class="btn btn-outline-danger" href="/Manager/ManageShowtimes/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
+                        }
+                    }
+
+                ]
+            });
+
+        }
+
+
+    </script>
+}

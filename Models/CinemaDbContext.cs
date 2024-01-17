@@ -6,6 +6,10 @@ namespace HnganhCinema.Models
 {
     public class CinemaDbContext : IdentityDbContext<AppUser>
     {
+        public CinemaDbContext()
+        {
+        }
+
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {
         }

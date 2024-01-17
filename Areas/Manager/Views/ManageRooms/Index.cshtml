@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Cinema)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.RoomNo)
             </th>
             <th>
@@ -20,9 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cinema)
             </th>
             <th>Update</th>
             <th>Delete</th>
@@ -73,6 +73,11 @@
             $("#table-rooms").DataTable({
                 data: CinemasData,
                 columns: [
+                    { data: 'cinema',
+                        render: function (data) {
+                            return '<p style="font-weight: bold;">'+data+'</p>';
+                        }
+                    },
                     {
                         data: null,
                         render: function (data) {
@@ -87,7 +92,6 @@
                             else return '<p style="color: red; font-weight: bold">Closed</p>';
                         }
                     },
-                    { data: 'cinema' },
 
                     {
                         data: 'roomId',

@@ -63,7 +63,10 @@ namespace HnganhCinema.Areas.Manager.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(price);
-                await _context.SaveChangesAsync();
+                var entry = _context.Entry(price);
+                _context.SaveChanges();
+                var newId = price.PriceId;
+                Console.WriteLine(newId + "");
                 return RedirectToAction(nameof(Index));
             }
             return View(price);

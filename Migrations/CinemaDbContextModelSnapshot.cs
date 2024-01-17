@@ -58,6 +58,9 @@ namespace HnganhCinema.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ActorId");
 
                     b.ToTable("Actors");
@@ -172,6 +175,9 @@ namespace HnganhCinema.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MovieName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -179,7 +185,7 @@ namespace HnganhCinema.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("Time")
@@ -280,6 +286,9 @@ namespace HnganhCinema.Migrations
 
                     b.Property<int>("RoomNo")
                         .HasColumnType("int");
+
+                    b.Property<string>("RowsVip")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -423,6 +432,9 @@ namespace HnganhCinema.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
