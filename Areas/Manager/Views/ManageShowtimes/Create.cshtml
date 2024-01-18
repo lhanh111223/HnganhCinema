@@ -5,7 +5,9 @@
 }
 <head>
     <style>
-
+        .vis-item .vis-item-content {
+            white-space: normal !important;
+        }
     </style>
 </head>
 <h1>Create</h1>
@@ -19,13 +21,18 @@
 
             <input type="hidden" id="movie-type" value="@ViewBag.Type" />
             <input type="hidden" id="movie-id" asp-for="MovieId" value="@ViewBag.Movie" />
+            @if (ViewBag.cinema != null && ViewBag.room != null)
+            {
+                <input type="hidden" id="viewbag-cinemaid" asp-for="CinemaId" value="@ViewBag.cinema" />
+                <input type="hidden" id="viewbag-roomid" asp-for="RoomId" value="@ViewBag.room" />
+            }
             <div class="form-group">
                 <label @* asp-for="MovieId" *@ class="control-label">Movie Name</label>
                 <select disabled asp-for="MovieId" class="form-control" asp-items="ViewBag.MovieId"></select>
             </div>
             <div class="form-group">
                 <label @* asp-for="CinemaId" *@ class="control-label">Cinema</label>
-                <select onchange="changeCinema()" id="select-cinema" asp-for="CinemaId" class="form-control"></select>
+                <select onchange="changeCinema()" id="select-cinema" asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId"></select>
             </div>
             <div class="form-group">
                 <label @* asp-for="RoomId" *@class="control-label">Room No</label>
@@ -51,11 +58,10 @@
         </form>
     </div>
     <div class="col-md-8" id="list-showtime">
-
     </div>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="SelectMovie">Back to List</a>
 </div>
 <div class=" row">
     <h2>Schedule</h2>
@@ -77,30 +83,39 @@
 
     <script>
         // instance variable
-        let timeline_showtime = [];
-
-
         $(document).ready(function () {
             getSelectCinemaData();
             getRoomData();
-            getShowtimesData();
-            getShowtimeOfRoom();
+
         });
 
         // onload -> get list showtime of current room
         function getShowtimeOfRoom() {
+            let html = '<h1>List showtimes of Room</h1>';
             let data = {
-                roomid: $('#select-room').val();
+                roomid: $('#select-room').val()
             }
-            
+
             $.ajax({
                 async: false,
                 url: '/Manager/ManageShowtimes/GetShowtimeOfRoom',
                 type: 'GET',
-                data : data,
+                data: data,
                 dataType: 'json',
                 success: function (data) {
-
+                    if (data.success === true) {
+                        for (var i = 0; i < data.day.length; i++) {
+                            html += ('<h5>' + data.day[i] + '</h5>');
+                            for (var j = 0; j < data.start.length; j++) {
+                                if (data.start[j].includes(data.day[i])) {
+                                    html += ('<button style="margin-right: 1rem; margin-bottom: 0.5rem;" class = "btn btn-success btn-sm">'
+                                        + data.start[j].substring(11, 16) + ' -> ' + data.end[j].substring(11, 16) + ' | <strong style="color: yellow;">' + data.movie[j] + '</strong>'
+                                        + '</button>');
+                                }
+                            }
+                        }
+                    }
+                    $('#list-showtime').html(html);
                 },
                 error: function (err) {
                     console.log(err);
@@ -111,6 +126,7 @@
         // onload -> get list showtimes of current date and showtimes of current film
         function getShowtimesData() {
             let html = '';
+            let timeline_showtime = [];
 
             let movie = $('#movie-id').val();
             let cinema = $('#select-cinema').val();
@@ -161,13 +177,12 @@
                     console.log(mess);
                 }
             });
+            getShowtimeOfRoom();
         }
 
 
         // check input start time
         function inputStartTime() {
-
-            // getShowtimesData();
 
             let StartTime = $('#start-time').val();
             if (StartTime !== '') {
@@ -201,11 +216,22 @@
 
         // onload -> get list cinema to select
         function getSelectCinemaData() {
+            let data = '';
+            if ($('#viewbag-cinemaid').val() !== null && $('#viewbag-roomid').val() !== null) {
+                let cinema = $('#viewbag-cinemaid').val();
+                let room = $('#viewbag-roomid').val();
+                data = {
+                    cinema: cinema,
+                    room: room
+                }
+            }
+
             $.ajax({
                 async: false,
                 url: '/Manager/ManageShowtimes/GetSelectCinemaData',
                 type: 'GET',
                 dataType: 'json',
+                data: (data === '' ? "" : data),
                 success: function (data) {
                     let html = '';
                     // console.log(data.data);
@@ -222,9 +248,15 @@
 
         // onload -> get list Room of current selected cinema and type same as movie type
         function getRoomData() {
+            let room = '';
+            if ($('#viewbag-cinemaid').val() !== null && $('#viewbag-roomid').val() !== null) {
+                room = $('#viewbag-roomid').val();
+            }
+
             let data = {
                 cinemaId: $('#select-cinema').val(),
-                type: $('#movie-type').val()
+                type: $('#movie-type').val(),
+                room: room===''?"":room
             };
 
             $.ajax({

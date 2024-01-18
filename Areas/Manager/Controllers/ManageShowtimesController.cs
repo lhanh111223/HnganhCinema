@@ -44,14 +44,6 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 return View("AccessDenied");
             }
 
-            // Lấy tất cả những Showtime có EndTime bé hơn thời điểm hiện tại và chuyển trạng thái thành Closed
-            var ChangedShowtimeStatus = _context.Showtimes.Where(s => s.EndTime <= DateTime.Now).ToList();
-            foreach (var s in ChangedShowtimeStatus)
-            {
-                s.Status = "Closed";
-                _context.Showtimes.Update(s);
-            }
-            await _context.SaveChangesAsync();
             return View();
         }
         public async Task<IActionResult> GetShowtimeData()
@@ -72,7 +64,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 index.Cinema = i.Cinema.Name;
                 index.Room = i.Room.RoomNo;
                 index.Movie = i.Movie.MovieName;
-                index.StartTime = i.StartTime;
+                index.StartTime = i.StartTime.ToString("MM-dd-yyyy HH:mm");
                 index.EndTime = i.EndTime;
                 index.Status = i.Status;
                 list.Add(index);
@@ -110,25 +102,82 @@ namespace HnganhCinema.Areas.Manager.Controllers
             return View("ListMovies", movies);
         }
 
-        // GET: Manager/ManageShowtimes/Create
-        public IActionResult Create([FromQuery] int MovieId, [FromQuery] string Type)
+        // GET: Manager/ManageShowtimes/Create GET
+        public IActionResult Create([FromQuery] int MovieId, [FromQuery] string Type, [FromQuery] int cinema, [FromQuery] int room)
         {
-            ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name");
+
             ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "MovieName", MovieId);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo");
+
+            if (cinema != 0 && room != 0)
+            {
+                ViewBag.cinema = cinema;
+                ViewBag.room = room;
+                ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name", cinema);
+                ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo", room);
+            }
+            else
+            {
+                ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Name");
+                ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomNo");
+            }
 
             ViewBag.Type = Type;
             ViewBag.Movie = MovieId;
             return View();
         }
 
+
         // getShowtimeOfRoom();
         [HttpGet]
         public async Task<IActionResult> GetShowtimeOfRoom([Bind("roomid")] int RoomId)
         {
-            
+            // lấy distinct tất cả các ngày có trong showtime kể từ ngày hôm nay
+            var AllDays = _context.Showtimes
+                .Where(s => s.StartTime.DayOfYear >= DateTime.Now.DayOfYear && s.RoomId == RoomId)
+                .OrderBy(s => s.StartTime)
+                .Select(s => s.StartTime.ToString("MM-dd-yyyy"))
+                .ToList();
 
-            return Ok();
+            var start = _context.Showtimes
+                .Where(s => s.StartTime.DayOfYear >= DateTime.Now.DayOfYear && s.RoomId == RoomId)
+                .OrderBy(s => s.StartTime)
+                .Select(s => s.StartTime.ToString("MM-dd-yyyy HH:mm"))
+                .ToList();
+
+            var end = _context.Showtimes
+                .Where(s => s.StartTime.DayOfYear >= DateTime.Now.DayOfYear && s.RoomId == RoomId)
+                .OrderBy(s => s.StartTime)
+                .Select(s => s.EndTime.ToString("MM-dd-yyyy HH:mm"))
+                .ToList();
+
+            var movie = _context.Showtimes.Include(s => s.Movie)
+                .Where(s => s.StartTime.DayOfYear >= DateTime.Now.DayOfYear && s.RoomId == RoomId)
+                .OrderBy(s => s.StartTime)
+                .Select(s => s.Movie.MovieName)
+                .ToList();
+
+            if (AllDays.Any() && start.Any() && end.Any())
+            {
+                List<string> Days = new List<string>();
+                foreach (var s in AllDays.Distinct())
+                {
+                    Days.Add(s);
+                }
+                List<string> Starts = new List<string>();
+                foreach (var d in start)
+                {
+                    Starts.Add(d);
+                }
+                List<string> Ends = new List<string>();
+                foreach (var d in end)
+                {
+                    Ends.Add(d);
+                }
+
+                return Json(new { success = true, start = Starts, end = Ends, day = Days, movie = movie });
+            }
+
+            return Json(new { success = false });
         }
 
         // On Create
@@ -157,7 +206,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 }
 
                 List<string> endtime = new List<string>();
-                foreach(var d in listEndTime)
+                foreach (var d in listEndTime)
                 {
                     Console.WriteLine(d.ToString("yyyy/MM/dd HH:mm"));
                     endtime.Add(d.ToString("yyyy/MM/dd HH:mm"));
@@ -165,7 +214,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
 
                 List<string> movieName = new List<string>();
                 List<int> showtimeId = new List<int>();
-                foreach(var d in _context.Showtimes.Where(s=>s.RoomId == RoomId && s.StartTime.DayOfYear >= DateTime.Now.DayOfYear)
+                foreach (var d in _context.Showtimes.Where(s => s.RoomId == RoomId && s.StartTime.DayOfYear >= DateTime.Now.DayOfYear)
                     .OrderBy(s => s.ShowtimeId)
                     .Include(s => s.Movie)
                     .ToList())
@@ -183,22 +232,26 @@ namespace HnganhCinema.Areas.Manager.Controllers
         // Get Select Cinema Ajax
         [HttpGet]
         [Route("/Manager/ManageShowtimes/GetSelectCinemaData")]
-        public IActionResult GetSelectCinemaData()
+        public IActionResult GetSelectCinemaData([Bind("cinema")] int cinema)
         {
-            var cinemas = _context.Cinemas.Where(c => c.Status == 1).ToList();
+            var cinemas = _context.Cinemas.Where(c => c.Status == 1)
+                .OrderBy(c => c.CinemaId == cinema ? 0 : 1)
+                .ToList();
             return Json(new { data = cinemas });
         }
 
         // Get Room data Ajax
         [HttpPost]
         [Route("/Manager/ManageShowtimes/GetRoomData")]
-        public IActionResult GetRoomData([Bind("cinemaId")] int cinemaId, [Bind("type")] string type)
+        public IActionResult GetRoomData([Bind("cinemaId")] int cinemaId, [Bind("type")] string type, [Bind("room")] int room)
         {
-            var rooms = _context.Rooms.Where(r => r.CinemaId == cinemaId && r.Type == type).ToList();
+            var rooms = _context.Rooms.Where(r => r.CinemaId == cinemaId && r.Type == type)
+                .OrderBy(c => c.RoomId == room ? 0 : 1)
+                .ToList();
             return Json(new { data = rooms });
         }
 
-        // POST: Manager/ManageShowtimes/Create
+        // POST: Manager/ManageShowtimes/Create Post
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -228,10 +281,9 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 }
                 Showtime.EndTime = model.StartTime.AddMinutes(time);
 
-                //Showtime.SeatStatus = "";
                 _context.Showtimes.Add(Showtime);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "ManageShowtimes", new { MovieId = model.MovieId, Type = SelectedMovie.Type, cinema = model.CinemaId, room = model.RoomId, area = "Manager" });
             }
             ViewData["CinemaId"] = new SelectList(_context.Cinemas, "CinemaId", "Address", model.CinemaId);
             ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "Description", model.MovieId);
@@ -289,6 +341,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
             }
             else
             {
+                if (NewStart.Hour < 8) return Json(new { success = false });
                 return Json(new { success = true });
             }
 

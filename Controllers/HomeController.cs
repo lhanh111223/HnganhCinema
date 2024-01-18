@@ -26,7 +26,16 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         var movies = _context.Movies.ToList();
-        ViewBag.Movies = movies;    
+        ViewBag.Movies = movies;
+
+        // Lấy tất cả những Showtime có EndTime bé hơn thời điểm hiện tại và chuyển trạng thái thành Closed
+        var ChangedShowtimeStatus = _context.Showtimes.Where(s => s.EndTime <= DateTime.Now).ToList();
+        foreach (var s in ChangedShowtimeStatus)
+        {
+            s.Status = "Closed";
+            _context.Showtimes.Update(s);
+        }
+        _context.SaveChanges();
 
         return View();
     }

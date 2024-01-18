@@ -9,7 +9,7 @@ namespace HnganhCinema.Areas.Manager.Models.ShowtimeViewModels
         public string Movie { get; set; }
         public int Room { get; set; }
         [DisplayName("Start time")]
-        public DateTime StartTime { get; set; }
+        public string StartTime { get; set; }
         [DisplayName("End time")]
         public DateTime EndTime { get; set; }
 
