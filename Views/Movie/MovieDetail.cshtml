@@ -48,7 +48,11 @@
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg">
         <img src="~/sourcetemplate/organi/img/breadcrumb.jpg" />
+        
     </section>
+    <div>
+        <a class="btn btn-primary btn-sm" href="/">Back to Home</a>
+    </div>
     <!-- Breadcrumb Section End -->
     <!-- Product Details Section Begin -->
     <section class="product-details spad">
@@ -86,7 +90,7 @@
 
                         </ul>
                         <hr />
-                        <a href="#" class="primary-btn">BUY TICKET</a>
+                        <a class="primary-btn" asp-action="MovieShowtimes" asp-controller="Movie" asp-route-movieid="@Model.MovieId">BUY TICKET</a>
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
 
                     </div>

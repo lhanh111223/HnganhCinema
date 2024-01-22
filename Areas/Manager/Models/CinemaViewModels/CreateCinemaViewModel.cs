@@ -29,5 +29,8 @@ namespace HnganhCinema.Areas.Manager.Models.CinemaViewModels
 
         [Required]
         public string Status { get; set; }
+        [Required(ErrorMessage = "Please choose Province")]
+        [DisplayName("Choose Province")]
+        public int ProvinceId {  get; set; }
     }
 }

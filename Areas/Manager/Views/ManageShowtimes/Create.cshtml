@@ -23,8 +23,8 @@
             <input type="hidden" id="movie-id" asp-for="MovieId" value="@ViewBag.Movie" />
             @if (ViewBag.cinema != null && ViewBag.room != null)
             {
-                <input type="hidden" id="viewbag-cinemaid" asp-for="CinemaId" value="@ViewBag.cinema" />
-                <input type="hidden" id="viewbag-roomid" asp-for="RoomId" value="@ViewBag.room" />
+                <input type="hidden" id="viewbag-cinemaid"  value="@ViewBag.cinema" />
+                <input type="hidden" id="viewbag-roomid"  value="@ViewBag.room" />
             }
             <div class="form-group">
                 <label @* asp-for="MovieId" *@ class="control-label">Movie Name</label>
@@ -131,6 +131,8 @@
             let movie = $('#movie-id').val();
             let cinema = $('#select-cinema').val();
             let room = $('#select-room').val();
+            // $('#viewbag-movieid').val() = movie;
+
             let data = {
                 MovieId: movie,
                 CinemaId: cinema,

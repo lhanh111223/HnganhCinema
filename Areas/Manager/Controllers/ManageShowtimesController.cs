@@ -67,6 +67,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 index.StartTime = i.StartTime.ToString("MM-dd-yyyy HH:mm");
                 index.EndTime = i.EndTime;
                 index.Status = i.Status;
+                index.CinemaId = i.CinemaId;
                 list.Add(index);
             }
             return Json(new { showtimes = list });

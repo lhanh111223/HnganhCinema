@@ -1,43 +1,101 @@
 ﻿@model IEnumerable<HnganhCinema.Areas.Manager.Models.ShowtimeViewModels.IndexShowtimeViewModel>
-
+@using CinemaWeb.Models;
+@inject CinemaDbContext _context
 @{
     ViewData["Title"] = "Index";
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Active"] = "true";
 }
+<head>
+    <style>
+        .dropdown-submenu {
+            position: relative;
+            width: 10rem;
+        }
 
+            .dropdown-submenu .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -1px;
+                width: 10rem;
+            }
+
+        .dropdown-item {
+            white-space: normal !important;
+        }
+    </style>
+</head>
 <h1>Index</h1>
 
 <p>
-    <a asp-action="SelectMovie">Create New</a>
+    <a class="btn btn-success btn-sm" asp-action="SelectMovie">Create New</a>
 </p>
-<table class="table" id="table-showtimes">
-    <thead>
-        <tr>
-            <th>
-                Cinema
-            </th>
-            <th>
-                Room No
-            </th>
-            <th>
-                Movie
-            </th>
-            <th>
-                Start Time
-            </th>
-            <th>
-                End Time
-            </th>
-            <th>
-                Status
-            </th>
+@{
+    List<Province> provinces = _context.Provinces.ToList();
+    List<Cinema> cinemas = _context.Cinemas.ToList();
+}
 
-            <th>Booking</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-3">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <span>Select Cinema</span>
+            </button>
+            <ul class="dropdown-menu all" aria-labelledby="dropdownMenuButton">
+                <li id="menu-cinema" class="dropdown-submenu">
+                    <a class="dropdown-item" href="0">All Cinema</a>
+                    @foreach (var p in provinces)
+                    {
+                        <a class="dropdown-item" href="#">@p.ProvinceName</a>
+                        <ul class="dropdown-menu select-submenu">
+                            @foreach (var c in cinemas)
+                            {
+                                if (c.ProvinceId == p.ProvinceId)
+                                {
+                                    <li><a class="dropdown-item" href="@c.CinemaId">@c.Name</a></li>
+                                }
+                            }
+                        </ul>
+                    }
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <table class="table" id="table-showtimes">
+            <thead>
+                <tr>
+                    <th>
+                        Cinema
+                    </th>
+                    <th>
+                        Room No
+                    </th>
+                    <th>
+                        Movie
+                    </th>
+                    <th>
+                        Start Time
+                    </th>
+                    <th>
+                        End Time
+                    </th>
+                    <th>
+                        Status
+                    </th>
+
+                    <th>Booking</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>
 
 @section Scripts{
     @{
@@ -60,7 +118,61 @@
 
         $(document).ready(function () {
             LoadShowtimeData();
+            LoadMenuCinema();
         });
+
+        function ChangeCinema(cinemaid) {
+            cinemaid = parseInt(cinemaid);
+            js.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetShowtimeData',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (cinemaid !== 0) {
+                        showtimeData = data.showtimes.filter(item => item.cinemaId === cinemaid);
+                        
+                    } else {
+                        showtimeData = data.showtimes;
+                    }
+                    table.clear().draw();
+                    table.rows.add(showtimeData).draw();
+                },
+                error: function (msg) {
+                    console.log(msg);
+                }
+            });
+        }
+
+        function LoadMenuCinema() {
+
+            $('.dropdown-submenu a').on("click", function (e) {
+                $(this).parents('ul').find('.dropdown-submenu ul').hide();
+                $(this).next('ul').toggle();
+                var selectedValue = $(this).attr('href');
+                if (selectedValue === '0') {
+                    ChangeCinema(selectedValue);
+                    $('.dropdown-menu').each(function (index, e) {
+                        $(e).removeClass("show");
+                    });;
+                }
+                e.stopPropagation();
+                e.preventDefault();
+
+
+            });
+            $('.select-submenu a').on("click", function (e) {
+                var selectedValue = $(this).attr('href');
+                ChangeCinema(selectedValue);
+                $('#h1-title').text('List Rooms of ' + $(this).text());
+                // Ẩn tất cả submenu khi chọn một mục con
+                $('.dropdown-menu').each(function (index, e) {
+                    $(e).removeClass("show");
+                });;
+
+            });
+
+        }
 
         function LoadShowtimeData() {
             js.ajax({
@@ -71,50 +183,53 @@
                 success: function (data) {
                     console.log(data.showtimes);
                     showtimeData = data.showtimes;
+                    table.clear().draw();
+                    table.rows.add(showtimeData).draw();
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
 
-            $('#table-showtimes').DataTable({
-                data: showtimeData,
-                columns: [
-                    { data: 'cinema' },
-                    { data: 'room' },
-                    { data: 'movie' },
-                    {
-                        data: 'startTime',
-                        render: function (data) {
-                            return '<p>'+data.substring(0, 10) +' | ' + data.substring(11, 16) +'</p>';
-                        }
-                    },
-                    {
-                        data: 'endTime',
-                        render: function (data) {
-                            return '<p>' + data.substring(11, 16) +'</p>';
-                        }
-                    },
-                    
-                    { data: 'status' },
-                    {
-                        data: 'id',
-                        render: function (data) {
-                            return '<a class="btn btn-outline-success" href="/Manager/ManageShowtimes/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
-                        }
-                    },
-                    {
-                        data: 'id',
-                        render: function (data) {
-                            return '<a class="btn btn-outline-danger" href="/Manager/ManageShowtimes/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
-                        }
-                    }
-
-                ]
-            });
-
         }
+        
 
+        // Data table generate
+        var table = $('#table-showtimes').DataTable({
+            data: showtimeData,
+            columns: [
+                { data: 'cinema' },
+                { data: 'room' },
+                { data: 'movie' },
+                {
+                    data: 'startTime',
+                    render: function (data) {
+                        return '<p>' + data.substring(0, 10) + ' | ' + data.substring(11, 16) + '</p>';
+                    }
+                },
+                {
+                    data: 'endTime',
+                    render: function (data) {
+                        return '<p>' + data.substring(11, 16) + '</p>';
+                    }
+                },
+
+                { data: 'status' },
+                {
+                    data: 'id',
+                    render: function (data) {
+                        return '<a class="btn btn-outline-success" href="/Manager/ManageShowtimes/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
+                    }
+                },
+                {
+                    data: 'id',
+                    render: function (data) {
+                        return '<a class="btn btn-outline-danger" href="/Manager/ManageShowtimes/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
+                    }
+                }
+
+            ]
+        });
 
     </script>
 }

@@ -1,40 +1,52 @@
-﻿@model IEnumerable<CinemaWeb.Models.Cinema>
+﻿@model HnganhCinema.Areas.Manager.Models.CinemaViewModels.IndexCinemaViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manage Cinema";
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Active"] = "true";
 }
 
 <h1>List of Cinemas</h1>
 
+
 <p>
     <a class="btn btn-success " asp-action="Create">Create New</a>
 </p>
-<table class="table" id="table-cinemas">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                Update
-            </th>
-            <th>
-                Delete
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-3">
+        <h5>Province:</h5>
+        <select onchange="LoadCinemasData()" id="province-id" class="form-control" asp-items="@ViewBag.provinceList"></select>
+    </div>
+    <div class="col-md-9">
+        <table class="table" id="table-cinemas">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProvinceName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        Update
+                    </th>
+                    <th>
+                        Delete
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -55,60 +67,74 @@
 
 
         $(document).ready(function () {
-            LoadMoviesData();
+            LoadCinemasData();
         });
 
-        function LoadMoviesData() {
+        function LoadCinemasData() {
+            // var province = parseInt($('#province-id').val());
+            var province = parseInt($('#province-id').val());
             js.ajax({
                 async: false,
                 url: '/Manager/ManageCinemas/GetData',
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data.data);
-                    CinemasData = data.data;
+                    table.clear().draw();
+                    if (province === 0) {
+                        table.rows.add(data.data).draw();
+                    } else {
+                        table.rows.add(data.data.filter(item => item.provinceId === province)).draw();
+                    }
                 },
                 error: function (msg) {
                     console.log(msg);
                 }
             });
 
-            $("#table-cinemas").DataTable({
-                data: CinemasData,
-                columns: [
-                    {
-                        data: null,
-                        render: function (data) {
-                            return '<a style="text-decoration:none; font-weight: bolder;" href="/Manager/ManageCinemas/Details/' + data.cinemaId + '">' + data.name + '</a>';
-                        }
-                    },
-                    { data: 'address' },
-                    { data: 'phone' },
-                    {
-                        data: 'status',
-                        render: function (data) {
-                            if (data === 1) return '<p style="color: green; font-weight: bold" >Activate</p>';
-                            else if (data === 0) return '<p style="color: orange; font-weight: bold" >Maintenance</p>';
-                            else return '<p style="color: red; font-weight: bold">Closed</p>';
-                        }
-                    },
-                    {
-                        data: 'cinemaId',
-                        render: function (data) {
-                            return '<a class="btn btn-outline-success" href="/Manager/ManageCinemas/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
-                        }
-                    },
-                    {
-                        data: 'cinemaId',
-                        render: function (data) {
-                            return '<a class="btn btn-outline-danger" href="/Manager/ManageCinemas/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
-                        }
-                    }
-                ]
-            });
-
         }
 
+
+        // DataTable
+        var table = $("#table-cinemas").DataTable({
+            data: CinemasData,
+            columns: [
+                {
+                    data: null,
+                    render: function (data) {
+                        return '<a style="text-decoration:none; font-weight: bolder;" href="/Manager/ManageCinemas/Details/' + data.cinemaId + '">' + data.name + '</a>';
+                    }
+                },
+                { data: 'provinceName' },
+                { data: 'phone' },
+                {
+                    data: 'status',
+                    render: function (data) {
+                        if (data === 1) return '<p style="color: green; font-weight: bold" >Activate</p>';
+                        else if (data === 0) return '<p style="color: orange; font-weight: bold" >Maintenance</p>';
+                        else return '<p style="color: red; font-weight: bold">Closed</p>';
+                    }
+                },
+                {
+                    data: 'cinemaId',
+                    render: function (data) {
+                        return '<a class="btn btn-outline-success" href="/Manager/ManageCinemas/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
+                    }
+                },
+                {
+                    data: 'cinemaId',
+                    render: function (data) {
+                        return '<a class="btn btn-outline-danger" href="/Manager/ManageCinemas/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
+                    }
+                }
+            ]
+        });
+
+        js("#select-province").multipleSelect({
+            selectAll: true,
+            keepOpen: false,
+            isOpen: false,
+            filter: true,
+        });
 
     </script>
 }

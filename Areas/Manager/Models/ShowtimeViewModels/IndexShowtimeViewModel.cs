@@ -6,6 +6,7 @@ namespace HnganhCinema.Areas.Manager.Models.ShowtimeViewModels
     {
         public int Id { get; set; }
         public string Cinema { get; set; }
+        public int? CinemaId {  get; set; }
         public string Movie { get; set; }
         public int Room { get; set; }
         [DisplayName("Start time")]

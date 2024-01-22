@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HnganhCinema.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -36,6 +37,9 @@ namespace CinemaWeb.Models
         [Required(ErrorMessage = "Must input {0}")]
         public string? Description { get; set; }
         public int? Status { get; set; }
+
+        public int? ProvinceId { get; set; } 
+        public virtual Province? Province {  get; set; }
 
         public virtual ICollection<AccountCinema>? AccountCinemas { get; set; }
         public virtual ICollection<Room>? Rooms { get; set; }

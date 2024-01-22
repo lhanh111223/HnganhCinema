@@ -42,6 +42,24 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 return View("AccessDenied");
             }
 
+            List<Province> provinces = _context.Provinces.ToList();
+            ViewBag.provinceList = provinces;
+            List<Cinema> cinemas = _context.Cinemas.ToList();
+            ViewBag.cinemaList = cinemas;
+            //provinces.Insert(0, new Province()
+            //{
+            //    ProvinceId = 0,
+            //    ProvinceName = "All Provinces"
+            //});
+            //ViewBag.provinceList = new SelectList(provinces, "ProvinceId", "ProvinceName", 0);
+
+
+            //cinemas.Insert(0, new Cinema()
+            //{
+            //    CinemaId = 0,
+            //    Name = "All Cinemas"
+            //});
+            //ViewBag.cinemaList = new SelectList(cinemas, "CinemaId", "Name", 0);
             return View();
         }
         public async Task<IActionResult> GetData()
@@ -56,7 +74,9 @@ namespace HnganhCinema.Areas.Manager.Controllers
                     RoomNo = r.RoomNo,
                     Type = r.Type,
                     Cinema = r.Cinema.Name,
-                    Status = r.Status == 0 ? "Closed" : "Open"
+                    Status = r.Status == 0 ? "Closed" : "Open",
+                    CinemaId = r.Cinema.CinemaId,
+                    ProvinceId = r.Cinema.ProvinceId
                 });
             }
             return Json(new { data = listRooms });

@@ -7,6 +7,8 @@
         public string Type {  get; set; }
         public string Cinema {  get; set; }
         public string Status {  get; set; }
+        public int CinemaId {  get; set; }
+        public int? ProvinceId {  get; set; }
 
     }
 }

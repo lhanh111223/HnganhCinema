@@ -43,13 +43,37 @@ namespace HnganhCinema.Areas.Manager.Controllers
                 return View("AccessDenied");
             }
 
+            List<Province> province = _context.Provinces.ToList();
+            Province add = new Province
+            {
+                ProvinceId = 0,
+                ProvinceName = "All"
+            };
+            province.Insert(0, add);
+            ViewData["provinceList"] = new SelectList(province, "ProvinceId", "ProvinceName", 0);
             return View();
         }
 
         public async Task<IActionResult> GetData()
         {
-            var results = _context.Cinemas.ToList();
-            return Json(new { data = results });
+            var results = _context.Cinemas.Include(r => r.Province).ToList();
+
+            var cinema = new List<IndexCinemaViewModel>();
+            foreach(var r in results)
+            {
+                cinema.Add(new IndexCinemaViewModel
+                {
+                    CinemaId = r.CinemaId,
+                    Name = r.Name,
+                    Phone = r.Phone,
+                    ProvinceId = r.ProvinceId,
+                    ProvinceName = r.Province.ProvinceName,
+                    Status = r.Status,
+                });
+            }
+
+
+            return Json(new { data = cinema});
         }
 
         // GET: Manager/ManageCinemas/Details/5
@@ -89,6 +113,8 @@ namespace HnganhCinema.Areas.Manager.Controllers
                                     .ToList();
             ViewBag.statusList = statusList;
 
+            var province = _context.Provinces.ToList();
+            ViewBag.provinceList = new SelectList(province, "ProvinceId", "ProvinceName");
             return View();
         }
 
@@ -97,7 +123,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CinemaId,Name,Image,Address,Phone,Description,Status")] CreateCinemaViewModel cinema)
+        public async Task<IActionResult> Create([Bind("CinemaId,Name,Image,Address,Phone,Description,Status,ProvinceId")] CreateCinemaViewModel cinema)
         {
             if (cinema != null)
             {
@@ -116,6 +142,7 @@ namespace HnganhCinema.Areas.Manager.Controllers
                     Phone = cinema.Phone,
                     Description = cinema.Description,
                     Status = int.Parse(cinema.Status),
+                    ProvinceId = cinema.ProvinceId,
                 });
                 var result = await _context.SaveChangesAsync();
                 if (result != 0)
