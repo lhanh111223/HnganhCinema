@@ -23,8 +23,8 @@
             <input type="hidden" id="movie-id" asp-for="MovieId" value="@ViewBag.Movie" />
             @if (ViewBag.cinema != null && ViewBag.room != null)
             {
-                <input type="hidden" id="viewbag-cinemaid"  value="@ViewBag.cinema" />
-                <input type="hidden" id="viewbag-roomid"  value="@ViewBag.room" />
+                <input type="hidden" id="viewbag-cinemaid" value="@ViewBag.cinema" />
+                <input type="hidden" id="viewbag-roomid" value="@ViewBag.room" />
             }
             <div class="form-group">
                 <label @* asp-for="MovieId" *@ class="control-label">Movie Name</label>
@@ -86,8 +86,36 @@
         $(document).ready(function () {
             getSelectCinemaData();
             getRoomData();
+            getSuggestStartTime();
 
         });
+
+        // onload -> suggest start time
+        function getSuggestStartTime() {
+            let movieId = $('#movie-id').val();
+            let roomId = $('#select-room').val();
+            let data = {
+                movieId: movieId,
+                roomId: roomId
+            };
+            $.ajax({
+                async: false,
+                url: '/Manager/ManageShowtimes/GetSuggestStartTime',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    console.log(data.suggestTime);
+                    console.log(data.suggestTime.slice(0,16));
+
+                    $('#start-time').val(data.suggestTime.slice(0, 16));
+                    $('#button-create').html('<input type="submit" value="Create" class="btn btn-primary" />'); 
+                },
+                error: function (err) {
+                    console.log('Error');
+                }
+            });
+        }
 
         // onload -> get list showtime of current room
         function getShowtimeOfRoom() {
@@ -180,6 +208,7 @@
                 }
             });
             getShowtimeOfRoom();
+            getSuggestStartTime();
         }
 
 
@@ -258,7 +287,7 @@
             let data = {
                 cinemaId: $('#select-cinema').val(),
                 type: $('#movie-type').val(),
-                room: room===''?"":room
+                room: room === '' ? "" : room
             };
 
             $.ajax({

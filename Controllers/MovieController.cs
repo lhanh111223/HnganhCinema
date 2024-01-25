@@ -16,6 +16,7 @@ namespace HnganhCinema.Controllers
         private readonly CinemaDbContext _context;
         private readonly AuthenticateHelper _auth;
         private readonly UserManager<AppUser> _userManager;
+        private static AppUser CurrentUser;
 
         public MovieController(ILogger<HomeController> logger, CinemaDbContext context, RoleManager<IdentityRole> roleManager, AuthenticateHelper auth, UserManager<AppUser> userManager)
         {
@@ -39,7 +40,16 @@ namespace HnganhCinema.Controllers
         [HttpGet]
         public IActionResult MovieShowtimes([FromQuery] int movieid)
         {
-            var cinemas = _context.Cinemas.Where(c => c.Status == 1);
+            CurrentUser = _userManager.GetUserAsync(User).Result;
+            if(CurrentUser == null)
+            {
+                return Redirect("/login/");
+            }
+            var cinemas = _context.Cinemas
+                .Include(c => c.Showtimes)
+                .Where(c => c.Status == 1)
+                .OrderByDescending(c => c.Showtimes.Where(c=>c.StartTime >= DateTime.Now).Count());
+
             ViewData["Cinemas"] = new SelectList(cinemas, "CinemaId", "Name");
 
             ViewBag.MovieId = movieid;

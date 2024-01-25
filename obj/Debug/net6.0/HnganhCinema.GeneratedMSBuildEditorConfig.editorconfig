@@ -308,6 +308,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/ASP.NET/Project/HnganhCinema/Views/Booking/SelectSeat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xTZWxlY3RTZWF0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/ASP.NET/Project/HnganhCinema/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

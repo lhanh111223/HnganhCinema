@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "9WrE3opeQCXizfO/FpsnyFgpvmtLvgsRCax5OoMZeuo=",
+  "Hash": "SZDqUnTBdRmj88XqUUoPgKo4ziS/2fRzPtGfHyJktPM=",
   "Source": "HnganhCinema",
   "BasePath": "_content/HnganhCinema",
   "Mode": "Default",
@@ -1069,6 +1069,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "E:\\ASP.NET\\Project\\HnganhCinema\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\HnganhCinema.bundle.scp.css"
+    },
+    {
+      "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\css\\Booking\\seat.css",
+      "SourceId": "HnganhCinema",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\",
+      "BasePath": "_content/HnganhCinema",
+      "RelativePath": "css/Booking/seat.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\Booking\\seat.css"
     },
     {
       "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\css\\movieshowtimes.css",
@@ -18443,23 +18460,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\metadata\\sponsors.yml"
-    },
-    {
-      "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\package.json",
-      "SourceId": "HnganhCinema",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\",
-      "BasePath": "_content/HnganhCinema",
-      "RelativePath": "sourcetemplate/adminview/vendor/fontawesome-free/package.json",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\package.json"
     },
     {
       "Identity": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\scss\\_animated.scss",

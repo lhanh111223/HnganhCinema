@@ -159,7 +159,7 @@
                                 if (data.showtime[j].startDate === data.date[i]) {
                                     html += (
                                         '<div class="col-12 col-md-4 col-lg-2">' +
-                                        '<a href="#">' +
+                                        '<a href="/Booking/GetSeat?RoomId=' + data.showtime[j].roomId + '&ShowtimeId=' + data.showtime[j].showtimeId+ '">' +
                                         '<div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">' +
                                         '<div class="timeline-icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>' +
                                         '<div class="timeline-text">' +

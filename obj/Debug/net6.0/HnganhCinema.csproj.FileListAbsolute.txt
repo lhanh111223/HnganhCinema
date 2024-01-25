@@ -323,3 +323,4 @@ E:\ASP.NET\Project\HnganhCinema\obj\Debug\net6.0\refint\HnganhCinema.dll
 E:\ASP.NET\Project\HnganhCinema\obj\Debug\net6.0\HnganhCinema.pdb
 E:\ASP.NET\Project\HnganhCinema\obj\Debug\net6.0\HnganhCinema.genruntimeconfig.cache
 E:\ASP.NET\Project\HnganhCinema\obj\Debug\net6.0\ref\HnganhCinema.dll
+E:\ASP.NET\Project\HnganhCinema\bin\Debug\net6.0\PayPal.dll

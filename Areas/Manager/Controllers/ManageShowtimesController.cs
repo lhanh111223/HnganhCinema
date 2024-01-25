@@ -106,7 +106,8 @@ namespace HnganhCinema.Areas.Manager.Controllers
         // GET: Manager/ManageShowtimes/Create GET
         public IActionResult Create([FromQuery] int MovieId, [FromQuery] string Type, [FromQuery] int cinema, [FromQuery] int room)
         {
-
+            var selectedMovie = _context.Movies.Find(MovieId);
+            var time = selectedMovie.Time;
             ViewData["MovieId"] = new SelectList(_context.Movies, "MovieId", "MovieName", MovieId);
 
             if (cinema != 0 && room != 0)
@@ -127,6 +128,66 @@ namespace HnganhCinema.Areas.Manager.Controllers
             return View();
         }
 
+        // suggest start time
+        [HttpPost]
+        public async Task<IActionResult> GetSuggestStartTime([Bind("movieId")] int MovieId, [Bind("roomId")] int RoomId)
+        {
+            var time = _context.Movies.Find(MovieId).Time;
+            var surplus = time % 10;
+            if (surplus <= 5)
+            {
+                time += (5 - surplus);
+            }
+            else
+            {
+                time += (10 - surplus);
+            }
+            var ShowtimesInDay = _context.Showtimes
+                                .Where(s => s.StartTime.Date == DateTime.Now.Date && s.RoomId == RoomId)
+                                .OrderBy(s => s.StartTime)
+                                .ToList();
+            // Đặt thời điểm bắt đầu và kết thúc của mỗi khoảng thời gian
+            DateTime startTime = DateTime.Now;
+            DateTime endTime = DateTime.Now.AddHours(24 - DateTime.Now.Hour); // 00:00 PM
+
+            if (ShowtimesInDay.Any())
+            {
+                bool flag = true;
+                for (DateTime currentTime = startTime; currentTime < endTime; currentTime = currentTime.AddMinutes(5))
+                {
+                    flag = true;
+                    DateTime newStart = currentTime;
+                    DateTime newEnd = newStart.AddMinutes(time);
+                    foreach (var s in ShowtimesInDay)
+                    {
+                        if (CheckTime(s.StartTime, s.EndTime, newStart, newEnd) == false)
+                        {
+                            flag = false;
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (flag)
+                    {
+                        return Json(new { success = true, suggestTime = newStart });
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                
+            }
+            else
+            {
+                return Json(new { success = true, suggestTime = startTime.AddMinutes(5) });
+            }
+            return Ok();
+        }
 
         // getShowtimeOfRoom();
         [HttpGet]

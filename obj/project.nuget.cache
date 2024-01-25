@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WKfHLTZTDrlS03x22XjEaEsvlUJym8zA8wIXNpQI8cxEaIqUHb/OSc4zlQKGhfiVPyL5UqQg0h1WBDbAID5oPg==",
+  "dgSpecHash": "pttpYIiec8LgYSFZSifcrpfIg8wkAZr16R96Q2+Z3+hif0RipjLQbF6OxqHbzdYeG8Tuz3L0mFka4GGWtSfWqA==",
   "success": true,
   "projectFilePath": "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj",
   "expectedPackageFiles": [
@@ -177,6 +177,7 @@
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\nuget.projectmodel\\6.6.1\\nuget.projectmodel.6.6.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\nuget.protocol\\6.6.1\\nuget.protocol.6.6.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\nuget.versioning\\6.6.1\\nuget.versioning.6.6.1.nupkg.sha512",
+    "C:\\Users\\Hoang Anh\\.nuget\\packages\\paypal\\1.9.1\\paypal.1.9.1.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\runtime.native.system\\4.3.0\\runtime.native.system.4.3.0.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\runtime.native.system.data.sqlclient.sni\\4.7.0\\runtime.native.system.data.sqlclient.sni.4.7.0.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
@@ -258,5 +259,16 @@
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\Hoang Anh\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'PayPal 1.9.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "PayPal",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

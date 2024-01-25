@@ -58,37 +58,37 @@ namespace HnganhCinema.Areas.Identity.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             //if (ModelState.IsValid)
             //{
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, lockoutOnFailure: true);
-                _logger.LogError(result.ToString());
-                // Tìm UserName theo Email, đăng nhập lại
-                if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
+            var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, lockoutOnFailure: true);
+            _logger.LogError(result.ToString());
+            // Tìm UserName theo Email, đăng nhập lại
+            if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
+            {
+                var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
+                if (user != null)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
-                    if (user != null)
-                    {
-                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
-                    }
+                    result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
                 }
+            }
 
-                if (result.Succeeded)
-                {
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                }
+            if (result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            if (result.RequiresTwoFactor)
+            {
+                return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+            }
 
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "Your account has been BLOCKED !");
-                    return View("Lockout");
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "Username or password is incorrect !";
-                    return View(model);
-                }
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning(2, "Your account has been BLOCKED !");
+                return View("Lockout");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Username or password is incorrect !";
+                return View(model);
+            }
             //}
             //_logger.LogError("-============- Logged in");
             //return View(model);
@@ -122,50 +122,44 @@ namespace HnganhCinema.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            var user = new AppUser { UserName = model.UserName, Email = model.Email };
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                _logger.LogInformation("Đã tạo user mới.");
 
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("Đã tạo user mới.");
+                // Phát sinh token để xác nhận email
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    // Phát sinh token để xác nhận email
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                // https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
+                var callbackUrl = Url.ActionLink(
+                    action: nameof(ConfirmEmail),
+                    values:
+                        new
+                        {
+                            area = "Identity",
+                            userId = user.Id,
+                            code = code
+                        },
+                    protocol: Request.Scheme);
 
-                    // https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
-                    var callbackUrl = Url.ActionLink(
-                        action: nameof(ConfirmEmail),
-                        values:
-                            new
-                            {
-                                area = "Identity",
-                                userId = user.Id,
-                                code = code
-                            },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(model.Email,
-                        "Xác nhận địa chỉ email",
-                        @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
+                await _emailSender.SendEmailAsync(model.Email,
+                    "Xác nhận địa chỉ email",
+                    @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
                            hãy <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>bấm vào đây</a> 
                            để kích hoạt tài khoản.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-
+                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                {
+                    return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
                 }
-
-                ModelState.AddModelError(result);
+                else
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -555,7 +549,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             model.ReturnUrl ??= Url.Content("~/");
             if (!ModelState.IsValid)
             {
-                foreach(var e in ModelState.Values.SelectMany(v => v.Errors))
+                foreach (var e in ModelState.Values.SelectMany(v => v.Errors))
                 {
                     _logger.LogError(e.ErrorMessage);
                 }
@@ -669,7 +663,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             }
         }
 
-        
+
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {

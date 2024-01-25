@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\HnganhCinema.bundle.scp.css"
     },
     {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\css\\Booking\\seat.css",
+      "PackagePath": "staticwebassets\\css\\Booking\\seat.css"
+    },
+    {
       "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\css\\movieshowtimes.css",
       "PackagePath": "staticwebassets\\css\\movieshowtimes.css"
     },
@@ -4091,10 +4095,6 @@
     {
       "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\metadata\\sponsors.yml",
       "PackagePath": "staticwebassets\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\metadata\\sponsors.yml"
-    },
-    {
-      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\package.json",
-      "PackagePath": "staticwebassets\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\package.json"
     },
     {
       "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\adminview\\vendor\\fontawesome-free\\scss\\_animated.scss",

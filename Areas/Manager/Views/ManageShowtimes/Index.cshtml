@@ -184,7 +184,7 @@
                     console.log(data.showtimes);
                     showtimeData = data.showtimes;
                     table.clear().draw();
-                    table.rows.add(showtimeData).draw();
+                    table.rows.add(data.showtimes).draw();
                 },
                 error: function (err) {
                     console.log(err);
@@ -228,6 +228,9 @@
                     }
                 }
 
+            ],
+            order: [
+                [3, 'desc'] // Sắp xếp theo cột có index là 3 (startTime), giảm dần ('desc')
             ]
         });
 
