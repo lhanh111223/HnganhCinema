@@ -41,7 +41,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         // GET: /Account/Login
         [HttpGet("/login/")]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string returnUrl = "/")
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -54,44 +54,57 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            if(returnUrl == null)
+            {
+                returnUrl = Url.Content("~/");
+                ViewData["ReturnUrl"] = returnUrl;
+            }
             ViewData["ReturnUrl"] = returnUrl;
-            //if (ModelState.IsValid)
-            //{
-            var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, lockoutOnFailure: true);
-            _logger.LogError(result.ToString());
-            // Tìm UserName theo Email, đăng nhập lại
-            if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
+            if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
-                if (user != null)
+                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, lockoutOnFailure: true);
+                
+                // Tìm UserName theo Email, đăng nhập lại
+                if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
-                    result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
+                    var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
+                    if (user != null)
+                    {
+                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
+                    }
                 }
-            }
 
-            if (result.Succeeded)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            if (result.RequiresTwoFactor)
-            {
-                return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-            }
+                if (result.Succeeded)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                if (result.RequiresTwoFactor)
+                {
+                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                }
 
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning(2, "Your account has been BLOCKED !");
-                return View("Lockout");
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning(2, "Your account has been BLOCKED !");
+                    return View("Lockout");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Username or password is incorrect !";
+                    return View(model);
+                }
             }
             else
             {
-                ViewBag.ErrorMessage = "Username or password is incorrect !";
-                return View(model);
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        _logger.LogError($"ModelState Error: {error.ErrorMessage}");
+                    }
+                }
             }
-            //}
-            //_logger.LogError("-============- Logged in");
-            //return View(model);
+            return View(model);
         }
 
         // POST: /Account/LogOut

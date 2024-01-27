@@ -10,11 +10,11 @@
     AppUser CurrentUser = _userManager.GetUserAsync(User).Result;
 }
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AXokaFSOJiRvRJh1ypW4D4eQfn8_k7A8F-b5j5_57I6MxAf4c6FqvAOJuxLxh671qjEByzuL8e0QeWWt"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="~/css/booking/seat.css" rel="stylesheet" />
-    <link href="~/sourcetemplate/adminview/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" type="text/css" />
+
     <style>
         .switch {
             display: inline-block;
@@ -66,220 +66,238 @@
             .slider.round:before {
                 border-radius: 50%;
             }
+
+        .modal {
+            overflow-y: hidden !important;
+            position: fixed !important;
+        }
+
+        .modal-backdrop {
+            z-index: -1;
+        }
+
+            .modal-backdrop.show{
+                opacity: 0.5;
+            }
+
+        .modal-dialog{
+            margin-right: 50rem;
+            max-width: 100rem !important;
+        }
+
+        .modal-content{
+            width: 45rem !important;
+            height: 45rem !important;
+        }
     </style>
 </head>
 
-<body>
-    <input type="hidden" id="showtime-id" value="@showtime.ShowtimeId" />
-    <input type="hidden" id="booking-date" value="@showtime.StartTime.ToString("MM-dd-yyyy HH:mm")" />
-    <input type="hidden" id="account-id" value="@CurrentUser.Id" />
-    <input type="hidden" id="point" value="@CurrentUser.TotalPoint.GetValueOrDefault().ToString("#,##0.00")" />
-    <div class="movie-container">
-    </div>
+@* <body > *@
 
-    <div style="margin-top: 0rem;" class="container">
+@* Modal Book Confirm *@
+<div style="color: black;" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" @* data-backdrop="false" *@>
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Booking Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body mx-4">
+                        <div class="row">
+                            <ul class="list-unstyled">
+                                <li style="text-align: center; font-size: 1.5rem; padding-bottom:0.5rem;" class="font-weight-bold">@movie.MovieName</li>
+                                <li class="text-black"><span class="text-black font-weight-bold">Cinema: </span> @ViewBag.cinema</li>
+                                <li class="text-black"><span class="text-black font-weight-bold">Room No: </span> P @room.RoomNo</li>
+                                <li class="text-black"><span class="text-black font-weight-bold">Time: </span> @showtime.StartTime.ToString("MM-dd-yyyy HH:mm")</li>
+                                <li class="text-black"><span id="seats-text-bill" class="text-black font-weight-bold">Seats: </span> </li>
+                            </ul>
 
-        <div class="row">
-            <div class="row col-md-8">
-                <ul class="showcase">
-                    <li>
-                        <div class="seat"></div>
-                        <small>Normal</small>
-                    </li>
-                    <li>
-                        <div style="background-color: orange" class="seat normal"></div>
-                        <small>Vip</small>
-                    </li>
-                    <li>
-                        <div class="seat selected"></div>
-                        <small>Selected</small>
-                    </li>
-                    <li>
-                        <div class="seat occupied"></div>
-                        <small>Occupied</small>
-                    </li>
-                </ul>
-                <div class="screen"></div>
-                @{
-                    var count = 0;
-                }
-                @for (int i = 1; i <= room.NumberRow; i++)
-                {
-                    <div class="row col-md-12">
-                        @for (int j = 1; j <= room.NumberCol; j++)
-                        {
-                            count++;
-                            if (ViewBag.seatStatus != null)
-                            {
-                                if (ViewBag.seatStatus.Contains(Model[count].SeatId.ToString()))
-                                {
-                                    <div id="@(Model[count].SeatId)"
-                                         class="col col-lg-1 place mx-auto unbooked seat occupied">
-                                        @(Model[count].SeatName)
-                                    </div>
-                                }
-                                else if (Model[count].PriceId == 2 || Model[count].PriceId == 4)
-                                {
-                                    <div onclick="getSelectedSeat(this)"
-                                         id="@(Model[count].SeatId)"
-                                         class="col col-lg-1 place mx-auto unbooked seat normal">
-                                        @(Model[count].SeatName)
-                                    </div>
-                                }
-                                else if (Model[count].PriceId == 1 || Model[count].PriceId == 3)
-                                {
-                                    <div onclick="getSelectedSeat(this)"
-                                         id="@(Model[count].SeatId)"
-                                         class="col col-lg-1 place mx-auto unbooked seat vip">
-                                        @(Model[count].SeatName)
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                if (Model[count].PriceId == 2 || Model[count].PriceId == 4)
-                                {
-                                    <div onclick="getSelectedSeat(this)"
-                                         id="@(Model[count].SeatId)"
-                                         class="col col-lg-1 place mx-auto unbooked seat normal">
-                                        @(Model[count].SeatName)
-                                    </div>
-                                }
-                                else if (Model[count].PriceId == 1 || Model[count].PriceId == 3)
-                                {
-                                    <div onclick="getSelectedSeat(this)"
-                                         id="@(Model[count].SeatId)"
-                                         class="col col-lg-1 place mx-auto unbooked seat vip">
-                                        @(Model[count].SeatName)
-                                    </div>
-                                }
-                            }
+                            <hr>
+                            <div class="col-xl-10">
+                                <p>PRICE </p>
+                            </div>
+                            <div class="col-xl-2">
+                                <p id="bill-price" class="float-end">
 
-                        }
+                                </p>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-10">
+                                <p>POINTS USED</p>
+                            </div>
+                            <div class="col-xl-2">
+                                <p id="bill-point" class="float-end">
+
+                                </p>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="row text-black">
+
+                            <div class="col-xl-12">
+                                <p id="bill-amount" class="float-end fw-bold">
+
+                                </p>
+                            </div>
+                            <hr style="border: 2px solid black;">
+                        </div>
                     </div>
-                }
+                </div>
             </div>
-
-            <div class="col-md-1">
+            <div class="modal-footer">
+                <div id="paypal-button-container">
+                </div>
             </div>
-            <div class="col-md-3">
-                <div>
-                    <div class="movie-container">
-                        <div class="movie-card">
-                            <img src="/Contents/MovieImage/@movie.Image" alt="Movie 1">
-                            <h3>@movie.MovieName</h3>
-                            <strong>Time:</strong><span>@movie.Time minutes</span><br>
+        </div>
+    </div>
+</div>
 
-                            <strong>Type:</strong><span> @movie.Type</span><br>
-                            <hr />
-                            <strong>Cinema: </strong><span> @ViewBag.cinema</span><br>
-                            <strong>Date: </strong><span> @showtime.StartTime.ToShortDateString()</span><br>
-                            <strong>Start Time: </strong><span> @showtime.StartTime.ToString("HH:mm")</span><br>
-                            <strong>Room No: </strong><span> @room.RoomNo</span><br>
-                            <strong>Seats: &nbsp;</strong><span id="seats-text"> </span><br>
-                            <hr />
-                            @if (CurrentUser.TotalPoint > 0)
+<input type="hidden" id="showtime-id" value="@showtime.ShowtimeId" />
+<input type="hidden" id="booking-date" value="@showtime.StartTime.ToString("MM-dd-yyyy HH:mm")" />
+<input type="hidden" id="account-id" value="@CurrentUser.Id" />
+<input type="hidden" id="point" value="@CurrentUser.TotalPoint.GetValueOrDefault().ToString("#,##0.00")" />
+
+<div class="movie-container">
+</div>
+
+<div style="margin-bottom: 0rem; margin-top: -1rem;" class="container d-flex">
+
+    <div class="row">
+        <div style="margin-top: 3rem;" class="col-md-8">
+            <ul class="showcase">
+                <li>
+                    <div class="seat"></div>
+                    <small>Normal</small>
+                </li>
+                <li>
+                    <div style="background-color: orange" class="seat normal"></div>
+                    <small>Vip</small>
+                </li>
+                <li>
+                    <div class="seat selected"></div>
+                    <small>Selected</small>
+                </li>
+                <li>
+                    <div class="seat occupied"></div>
+                    <small>Occupied</small>
+                </li>
+            </ul>
+            <div class="screen"></div>
+            @{
+                var count = 0;
+            }
+            @for (int i = 1; i <= room.NumberRow; i++)
+            {
+                <div class="col-md-12 row mt-5">
+                    @for (int j = 1; j <= room.NumberCol; j++)
+                    {
+                        count++;
+                        if (ViewBag.seatStatus != null)
+                        {
+                            if (ViewBag.seatStatus.Contains(Model[count].SeatId.ToString()))
                             {
-                                <div>
-                                    <strong>Use Points: </strong><span>@CurrentUser.TotalPoint.GetValueOrDefault().ToString("#,##0.00")</span><strong>&nbsp;&nbsp;&nbsp;</strong>
-                                    <label class="switch" for="use-point">
-                                        <input onchange="usedPoint()" type="checkbox" id="use-point" />
-                                        <div class="slider round"></div>
-                                    </label>
+                                <div id="@(Model[count].SeatId)"
+                                     class="col col-lg-1 place mx-auto unbooked seat occupied">
+                                    @(Model[count].SeatName)
                                 </div>
                             }
-                            <strong>Price: </strong><span id="price-text">0</span><strong> $</strong><br />
-                            <hr />
+                            else if (Model[count].PriceId == 2 || Model[count].PriceId == 4)
+                            {
+                                <div onclick="getSelectedSeat(this)"
+                                     id="@(Model[count].SeatId)"
+                                     class="col col-lg-1 place mx-auto unbooked seat normal">
+                                    @(Model[count].SeatName)
+                                </div>
+                            }
+                            else if (Model[count].PriceId == 1 || Model[count].PriceId == 3)
+                            {
+                                <div onclick="getSelectedSeat(this)"
+                                     id="@(Model[count].SeatId)"
+                                     class="col col-lg-1 place mx-auto unbooked seat vip">
+                                    @(Model[count].SeatName)
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            if (Model[count].PriceId == 2 || Model[count].PriceId == 4)
+                            {
+                                <div onclick="getSelectedSeat(this)"
+                                     id="@(Model[count].SeatId)"
+                                     class="col col-lg-1 place mx-auto unbooked seat normal">
+                                    @(Model[count].SeatName)
+                                </div>
+                            }
+                            else if (Model[count].PriceId == 1 || Model[count].PriceId == 3)
+                            {
+                                <div onclick="getSelectedSeat(this)"
+                                     id="@(Model[count].SeatId)"
+                                     class="col col-lg-1 place mx-auto unbooked seat vip">
+                                    @(Model[count].SeatName)
+                                </div>
+                            }
+                        }
 
-                            <button class="btn btn-success btn-sm" style="display: none;" onclick="bookShowtime()" id="btn-book">Book</button>
-                            
-                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-3">
+            <div>
+                <div class="movie-container">
+                    <div class="movie-card">
+                        <img src="/Contents/MovieImage/@movie.Image" alt="Movie 1">
+                        <h3>@movie.MovieName</h3>
+                        <strong>Time:</strong><span>@movie.Time minutes</span><br>
+
+                        <strong>Type:</strong><span> @movie.Type</span><br>
+                        <hr />
+                        <strong>Cinema: </strong><span> @ViewBag.cinema</span><br>
+                        <strong>Date: </strong><span> @showtime.StartTime.ToShortDateString()</span><br>
+                        <strong>Start Time: </strong><span> @showtime.StartTime.ToString("HH:mm")</span><br>
+                        <strong>Room No: </strong><span> @room.RoomNo</span><br>
+                        <strong>Seats: &nbsp;</strong><span id="seats-text"> </span><br>
+                        <hr />
+                        @if (CurrentUser.TotalPoint > 0)
+                        {
+                            <div>
+                                <strong>Use Points: </strong><span>@CurrentUser.TotalPoint.GetValueOrDefault().ToString("#,##0.00")</span><strong>&nbsp;&nbsp;&nbsp;</strong>
+                                <label class="switch" for="use-point">
+                                    <input onchange="usedPoint()" type="checkbox" id="use-point" />
+                                    <div class="slider round"></div>
+                                </label>
+                            </div>
+                        }
+                        <strong>Price: </strong><span id="price-text">0</span><strong> $</strong><br />
+                        <hr />
+
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter"
+                                style="display: none;" onclick="generatePurchase()" id="btn-book">
+                            Book
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+</div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="container mb-5 mt-3">
-                <div class="container">
-                    <div class="row my-2 mx-1 justify-content-center">
-                        <table class="table table-striped table-borderless">
-                            <thead style="background-color:#84B0CA ;" class="text-white">
-                                <tr>
-                                    <th scope="col">Movie Name</th>
-                                    <th scope="col">Start Time</th>
-                                    <th scope="col">Seat</th>
-                                    <th scope="col">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Spider Man - No Way Home</td>
-                                    <td>11-30-2024 19:00</td>
-                                    <td>A1, A2, A3, A4</td>
-                                    <td>$ 40</td>
-                                </tr>
-                            </tbody>
 
-                        </table>
-                    </div>
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <p class="text-muted">Invoice</p>
-                            <ul class="list-unstyled">
-                                <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">ID:</span>#123-456
-                                </li>
-                                <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Creation Date: </span>Jun 23,2021
-                                </li>
-                                <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
-                                        Unpaid
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-6">
-                            <p class="text-muted">Invoice</p>
-                            <ul class="list-unstyled">
-                                <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">ID:</span>#123-456
-                                </li>
-                                <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Creation Date: </span>Jun 23,2021
-                                </li>
-                                <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
-                                        Unpaid
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <hr style="color: black;" />
-                    <div style="color: black;" class="row">
-                        <div class="col-xl-10">
-                            <p>Thank you for your purchase</p>
-                        </div>
-                        <div class="col-xl-2">
-                            <button type="button" class="btn btn-primary text-capitalize"
-                                    style="background-color:#60bdf3 ;">
-                                Pay Now
-                            </button>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+@section Scripts{
     <script src="https://www.paypal.com/sdk/js?client-id=AXokaFSOJiRvRJh1ypW4D4eQfn8_k7A8F-b5j5_57I6MxAf4c6FqvAOJuxLxh671qjEByzuL8e0QeWWt"></script>
+    <link href="~/css/booking/seat.css" rel="stylesheet" />
+
 
     <script>
         // instance variable
@@ -287,6 +305,7 @@
         let seatText = [];
         let totalMoney = 0;
         let pointUsed = 0;
+
 
         $(function () {
             $(".place").click(function () {
@@ -302,45 +321,48 @@
         });
 
 
-        // function generatePurchase() {
-        //     $('#paypal-button-container').html('');
-        //     purchase_units = [
-        //         {
-        //             amount: {
-        //                 currency_code: "USD",
-        //                 value: parseFloat($('#price-text').text().trim()).toString(),
-        //                 breakdown: {
-        //                     item_total: { currency_code: "USD", value: "100" },
-        //                 },
-        //             },
-        //             items: [
-        //                 {
-        //                     name: "Spider Man - No Way Home",
-        //                     quantity: "1",
-        //                     category: "PHYSICAL_GOODS",
-        //                     unit_amount: { currency_code: "USD", value: parseFloat($('#price-text').text().trim()).toString() },
-        //                 },
-        //             ],
-        //             description: 'Ghế đã chọn: A1, A2, A3, A4\nNgày chiếu: 11-03-2024 19:00', // Mô tả đơn hàng
-
-        //         },
-        //     ];
-        //     paypal.Buttons({
-        //         createOrder: function (data, actions) {
-        //             // Truyền thông tin đơn hàng
-        //             return actions.order.create({
-        //                 purchase_units: purchase_units,
-        //             });
-        //         },
-        //         onApprove: function (data, actions) {
-        //             return actions.order.capture().then(function (details) {
-        //                 if (details.status === "COMPLETED") {
-        //                     bookShowtime();
-        //                 }
-        //             });
-        //         },
-        //     }).render('#paypal-button-container');
-        // }
+        function generatePurchase() {
+            var amount = parseFloat($('#price-text').text().trim());
+            if (amount > 0) {
+                $('#paypal-button-container').html('');
+                purchase_units = [
+                    {
+                        amount: {
+                            currency_code: "USD",
+                            value: amount.toString(),
+                            breakdown: {
+                                item_total: { currency_code: "USD", value: amount.toString() },
+                            },
+                        },
+                        items: [
+                            {
+                                name: "@movie.MovieName",
+                                quantity: "1",
+                                category: "PHYSICAL_GOODS",
+                                unit_amount: { currency_code: "USD", value: amount.toString() },
+                            },
+                        ],
+                    },
+                ];
+                paypal.Buttons({
+                    createOrder: function (data, actions) {
+                        // Truyền thông tin đơn hàng
+                        return actions.order.create({
+                            purchase_units: purchase_units,
+                        });
+                    },
+                    onApprove: function (data, actions) {
+                        return actions.order.capture().then(function (details) {
+                            if (details.status === "COMPLETED") {
+                                bookShowtime();
+                            }
+                        });
+                    },
+                }).render('#paypal-button-container');
+            } else {
+                $('#paypal-button-container').html('<button class="btn btn-primary" onclick="bookShowtime()">Confirm</button>');
+            }
+        }
 
         function usedPoint() {
             var point = parseFloat($('#point').val());
@@ -355,9 +377,12 @@
                     pointUsed = totalMoney;
                 }
                 $('#price-text').html(total);
+                $('#bill-amount').html('Total Amount: ' + total + '$');
             } else {
                 $('#price-text').html(totalMoney);
+                $('#bill-amount').html('Total Amount: ' + totalMoney + '$');
             }
+            $('#bill-point').text(pointUsed);
         }
 
         function bookShowtime() {
@@ -370,6 +395,9 @@
                 Amount: parseFloat($('#price-text').text().trim()),
                 PointUsed: pointUsed,
                 SeatStatus: selectedSeats.toString(),
+                MovieName: "@movie.MovieName",
+                Cinema: "@ViewBag.cinema",
+                RoomNo: "@room.RoomNo",
             };
 
             $.ajax({
@@ -379,7 +407,9 @@
                 dataType: 'json',
                 data: data,
                 success: function (data) {
-
+                    if (data.success) {
+                        window.location.href = '@Url.Action("ThankYou", "Booking")';
+                    }
                 },
                 error: function (err) {
                     console.log(err);
@@ -399,6 +429,7 @@
             }
             console.log(selectedSeats.toString());
             $('#seats-text').html(seatText.join(", "));
+            $('#seats-text-bill').html('Seats: ' + seatText.join(", "));
             getTotalPrice();
         }
 
@@ -417,10 +448,12 @@
                     console.log(data.price);
                     if (data.success) {
                         $('#price-text').html(data.price.toString());
-                        $('#paypal-button-container').css('display', 'block');
+                        $('#btn-book').css('display', 'block');
+                        $('#bill-price').html(data.price.toString() + '$');
                     } else {
                         $('#price-text').html('0');
-                        $('#paypal-button-container').css('display', 'none');
+                        $('#bill-price').html('0' + '$');
+                        $('#btn-book').css('display', 'none');
                     }
 
                     totalMoney = data.price;
@@ -433,4 +466,7 @@
             });
         }
     </script>
-</body>
+    }
+@* </body> *@
+
+

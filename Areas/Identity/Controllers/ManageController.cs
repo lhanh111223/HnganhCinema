@@ -75,7 +75,6 @@ namespace HnganhCinema.Areas.Identity.Controllers
                 CurrentUserAvatar = user.Avatar,
 
             };
-            _logger.LogWarning(model.profile.UserName);
             return View(model);
         }
         public enum ManageMessageId

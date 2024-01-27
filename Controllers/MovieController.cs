@@ -26,14 +26,15 @@ namespace HnganhCinema.Controllers
             _auth = auth;
             _userManager = userManager;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
+        [HttpGet]
         public IActionResult MovieDetail(int? id)
         {
             var movie = _context.Movies.Find(id);
+            if (movie == null)
+            {
+                return NotFound();
+            }
             return View(movie);
         }
 
@@ -48,7 +49,7 @@ namespace HnganhCinema.Controllers
             var cinemas = _context.Cinemas
                 .Include(c => c.Showtimes)
                 .Where(c => c.Status == 1)
-                .OrderByDescending(c => c.Showtimes.Where(c=>c.StartTime >= DateTime.Now).Count());
+                .OrderByDescending(c => c.Showtimes.Count(st => st.Status == "Screening" && st.MovieId == movieid));
 
             ViewData["Cinemas"] = new SelectList(cinemas, "CinemaId", "Name");
 
