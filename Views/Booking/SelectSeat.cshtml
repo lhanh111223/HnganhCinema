@@ -440,7 +440,7 @@
 
             $.ajax({
                 async: false,
-                url: '/Booking/GetTotalPrice',
+                url: '@Url.Action("GetTotalPrice","Booking")'/* '/Booking/GetTotalPrice' */, // @Url.Action("GetTotalPrice","Booking")
                 type: 'POST',
                 data: data,
                 dataType: 'json',

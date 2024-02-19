@@ -10725,6 +10725,338 @@
       "PackagePath": "staticwebassets\\sourcetemplate\\adminview\\vendor\\jquery\\jquery.slim.min.map"
     },
     {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\animate.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\animate.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\fontawesome.min.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\fontawesome.min.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\magnific-popup.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\magnific-popup.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\owl.carousel.min.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\owl.carousel.min.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\owl.video.play.html",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\owl.video.play.html"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\responsive.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\responsive.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\css\\style.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\css\\style.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.html",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.html"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.svg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.svg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.woff",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticon.woff"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticond41d.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Flaticond41d.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Gilbert Bold-Preview_1004.otf",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Gilbert Bold-Preview_1004.otf"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\Gilbert-Color Bold-Preview_1004.otf",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\Gilbert-Color Bold-Preview_1004.otf"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.html",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.html"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.svg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.svg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.woff",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.woff"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.woff2",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400.woff2"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400d41d.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-brands-400d41d.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.html",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.html"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.svg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.svg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.woff",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.woff"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.woff2",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400.woff2"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400d41d.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-regular-400d41d.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.html",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.html"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.svg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.svg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.woff",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.woff"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.woff2",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900.woff2"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900d41d.eot",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\fa-solid-900d41d.eot"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\fonts\\flaticon.css",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\fonts\\flaticon.css"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\about-bg.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\about-bg.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\about-venu.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\about-venu.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\about.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\about.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\banner-bottom-img.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\banner-bottom-img.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\banner.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\banner.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\blog-1.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\blog-1.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\blog-2.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\blog-2.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\blog-3.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\blog-3.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\blog-4.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\blog-4.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\blog-5.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\blog-5.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\blog-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\blog-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\breadcrump-bg.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\breadcrump-bg.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\commentor-1.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\commentor-1.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\commentor-2.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\commentor-2.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\contact-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\contact-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\countdown.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\countdown.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-1.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-1.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-2.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-2.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-3.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-3.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-4.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-4.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-5.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-5.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-6.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-6.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\dj-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\dj-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\event-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\event-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\faq-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\faq-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-1.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-1.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-2.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-2.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-3.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-3.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-4.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-4.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-5.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-5.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-6.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-6.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery-7.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery-7.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\gallery.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\gallery.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\logo.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\logo.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\single-event-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\single-event-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\single-event.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\single-event.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\subscribe-newsletter-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\subscribe-newsletter-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\testimonial-1.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\testimonial-1.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\testimonial-2.jpg",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\testimonial-2.jpg"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\testimonial-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\testimonial-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\ticket-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\ticket-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\img\\venu-bg.png",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\img\\venu-bg.png"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\jquery.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\jquery.js"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\jquery.magnific-popup.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\jquery.magnific-popup.js"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\main.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\main.js"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\owl.carousel.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\owl.carousel.js"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\waypoints.min.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\waypoints.min.js"
+    },
+    {
+      "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\dgocky\\assets\\js\\wow.min.js",
+      "PackagePath": "staticwebassets\\sourcetemplate\\dgocky\\assets\\js\\wow.min.js"
+    },
+    {
       "Id": "E:\\ASP.NET\\Project\\HnganhCinema\\wwwroot\\sourcetemplate\\loginregister\\css\\style.css",
       "PackagePath": "staticwebassets\\sourcetemplate\\loginregister\\css\\style.css"
     },

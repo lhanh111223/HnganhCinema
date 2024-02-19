@@ -67,6 +67,7 @@ namespace HnganhCinema.Controllers
             return View("SelectSeat", listSeats);
         }
 
+        //
         public async Task<IActionResult> GetTotalPrice([Bind("SelectedSeats")] string SelectedSeats)
         {
             decimal total = 0;

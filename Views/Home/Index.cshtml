@@ -105,7 +105,7 @@
             <div class="row featured__filter">
                 @foreach (var m in movies.Where(movie => movie.Status != 0))
                 {
-                    <div class="movie-card col-lg-3 col-md-4 col-sm-6 mix @(m.Status == 1 ?"upcoming":(m.Status == 2 ? "screening" : ""))">
+                    <div class="movie-card col-md-3 mix @(m.Status == 1 ?"upcoming":(m.Status == 2 ? "screening" : ""))">
                         <div class="featured__item">
                             <div class="featured__item__pic set-bg" data-setbg="/Contents/MovieImage/@m.Image">
                                 <ul class="featured__item__pic__hover">
