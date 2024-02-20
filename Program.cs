@@ -22,6 +22,9 @@ builder.Services.AddSession(cfg =>
     cfg.IdleTimeout = new TimeSpan(0, 30, 0);           // Thời gian tồn tại của Session
 });
 
+// set up kestrel
+builder.WebHost.UseUrls("http://0.0.0.0:5000", "https://localhost:5001");
+
 //builder.Services.AddSingleton(typeof(ProductService), typeof(ProductService));
 //builder.Services.AddSingleton(typeof(PlanetService), typeof(PlanetService));
 
