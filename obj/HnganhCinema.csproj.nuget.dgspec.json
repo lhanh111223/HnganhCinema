@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj": {}
+    "D:\\MyProject\\OJT\\HnganhCinema\\HnganhCinema.csproj": {}
   },
   "projects": {
-    "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj": {
+    "D:\\MyProject\\OJT\\HnganhCinema\\HnganhCinema.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj",
+        "projectUniqueName": "D:\\MyProject\\OJT\\HnganhCinema\\HnganhCinema.csproj",
         "projectName": "HnganhCinema",
-        "projectPath": "E:\\ASP.NET\\Project\\HnganhCinema\\HnganhCinema.csproj",
-        "packagesPath": "C:\\Users\\Hoang Anh\\.nuget\\packages\\",
-        "outputPath": "E:\\ASP.NET\\Project\\HnganhCinema\\obj\\",
+        "projectPath": "D:\\MyProject\\OJT\\HnganhCinema\\HnganhCinema.csproj",
+        "packagesPath": "C:\\Users\\anhle\\.nuget\\packages\\",
+        "outputPath": "D:\\MyProject\\OJT\\HnganhCinema\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hoang Anh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\anhle\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,6 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -194,7 +199,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
