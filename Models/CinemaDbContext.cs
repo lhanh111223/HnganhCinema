@@ -6,6 +6,10 @@ namespace HnganhCinema.Models
 {
     public class CinemaDbContext : IdentityDbContext<AppUser>
     {
+        public CinemaDbContext()
+        {
+        }
+
         public CinemaDbContext(DbContextOptions<CinemaDbContext> options) : base(options)
         {
         }
@@ -26,7 +30,7 @@ namespace HnganhCinema.Models
         public virtual DbSet<AppRoleClaim> AppRoleClaims { get; set; } = null!;
         public virtual DbSet<AppMenu> AppMenu { get; set; } = null!;
         public virtual DbSet<UserFeature> UserFeatures { get; set; } = null!;
-
+        public virtual DbSet<Province> Provinces { get; set; } = null!;
 
         // Custom method
         public async Task<bool> AddToRoleClaims(string roleId, int ClaimId)
@@ -69,6 +73,14 @@ namespace HnganhCinema.Models
             }
 
             // Setting DB
+
+            modelBuilder.Entity<Cinema>(entity =>
+            {
+                entity.HasOne(d => d.Province)
+                    .WithMany(p => p.Cinemas)
+                    .HasForeignKey(d => d.ProvinceId)
+                    .HasConstraintName("FK_Cinema_Province");
+            });
 
             modelBuilder.Entity<AppRoleClaim>(entity =>
             {
@@ -218,6 +230,6 @@ namespace HnganhCinema.Models
 
         }
 
-        
+
     }
 }

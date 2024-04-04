@@ -13,7 +13,8 @@ namespace HnganhCinema.Areas.Identity.Models.RoleViewModels
         public string Name { get; set; }
         public List<IdentityRoleClaim<string>>? Claims { get; set; }
         public List<AppClaim>? AppClaims { get; set; }
-        public string? []? Features { get; set; }
+        //[Required(ErrorMessage ="Please choose at least one feature for this role !")]
+        public string[]? Features { get; set; }
         public IdentityRole? role { get; set; }
     }
 }

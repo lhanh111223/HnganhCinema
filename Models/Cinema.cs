@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HnganhCinema.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,11 +8,11 @@ namespace CinemaWeb.Models
 {
     public partial class Cinema
     {
-        public Cinema()
-        {
-            Rooms = new HashSet<Room>();
-            Showtimes = new HashSet<Showtime>();
-        }
+        //public Cinema()
+        //{
+        //    Rooms = new HashSet<Room>();
+        //    Showtimes = new HashSet<Showtime>();
+        //}
 
         [Key]
         public int CinemaId { get; set; }
@@ -25,7 +26,7 @@ namespace CinemaWeb.Models
         public string? Image { get; set; }
 
         [Required(ErrorMessage = "Must input {0}")]
-        [StringLength(255, MinimumLength = 10, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(255, MinimumLength = 10, ErrorMessage = "{0} must be from {2} to {1} characters")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Must input {0}")]
@@ -37,8 +38,11 @@ namespace CinemaWeb.Models
         public string? Description { get; set; }
         public int? Status { get; set; }
 
-        public virtual ICollection<AccountCinema> AccountCinemas { get; set; }
-        public virtual ICollection<Room> Rooms { get; set; }
-        public virtual ICollection<Showtime> Showtimes { get; set; }
+        public int? ProvinceId { get; set; } 
+        public virtual Province? Province {  get; set; }
+
+        public virtual ICollection<AccountCinema>? AccountCinemas { get; set; }
+        public virtual ICollection<Room>? Rooms { get; set; }
+        public virtual ICollection<Showtime>? Showtimes { get; set; }
     }
 }

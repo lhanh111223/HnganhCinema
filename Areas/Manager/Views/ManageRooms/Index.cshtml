@@ -1,0 +1,239 @@
+﻿@using CinemaWeb.Models;
+@model IEnumerable<HnganhCinema.Areas.Manager.Models.RoomViewModels.IndexRoomViewModel>
+@inject CinemaDbContext _context
+@{
+    ViewData["Title"] = "Manage Room";
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Active"] = "true";
+}
+<head>
+    <style>
+        .dropdown-submenu {
+            position: relative;
+            width: 10rem;
+        }
+
+            .dropdown-submenu .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -1px;
+                width: 10rem;
+            }
+
+        .dropdown-item {
+            white-space: normal !important;
+        }
+    </style>
+</head>
+<h1 id="h1-title">List Rooms</h1>
+
+<p>
+    <a class="btn btn-success btn-sm" asp-action="Create">Create New</a>
+</p>
+
+@{
+    List<Province> provinces = _context.Provinces.ToList();
+    List<Cinema> cinemas = _context.Cinemas.ToList();
+}
+
+<div class="row">
+    <div class="col-md-3">
+        @* <h5>Province</h5>
+        <select id="select-province" onchange="changeProvince()" class="form-control" asp-items="@ViewBag.provinceList"></select>
+        <hr />
+        <h5>Cinema</h5>
+        <select id="select-cinema" onchange="changeCinema()" class="form-control" asp-items="@ViewBag.cinemaList"></select> *@
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <span>Select Cinema</span>
+            </button>
+            <ul class="dropdown-menu all" aria-labelledby="dropdownMenuButton">
+                <li id="menu-cinema" class="dropdown-submenu">
+                    <a class="dropdown-item" href="0">All Cinema</a>
+                    @foreach (var p in provinces)
+                    {
+                        <a class="dropdown-item" href="#">@p.ProvinceName</a>
+                        <ul class="dropdown-menu select-submenu">
+                            @foreach (var c in cinemas)
+                            {
+                                if(c.ProvinceId == p.ProvinceId)
+                                {
+                                    <li><a class="dropdown-item" href="@c.CinemaId">@c.Name</a></li>
+                                }
+                            }
+                        </ul>
+                    }
+                </li>
+
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="col-md-9">
+        <table class="table" id="table-rooms">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cinema)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RoomNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Type)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.js"></script>
+    <script src="~/lib/multiple-select/multiple-select.min.js"></script>
+    <link rel="stylesheet" href="~/lib/multiple-select/multiple-select.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script>
+        var js = jQuery.noConflict(true);
+        // Instance variable
+        let RoomsData = [];
+
+        $(document).ready(function () {
+            LoadRoomsData();
+            LoadMenuCinema();
+        });
+
+        function ChangeCinema(cinemaid) {
+            console.log(cinemaid);
+            js.ajax({
+                async: false,
+                url: '/Manager/ManageRooms/GetData',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (parseInt(cinemaid) !== 0) {
+                        RoomsData = data.data.filter(item => item.cinemaId === parseInt(cinemaid));
+                    } else {
+                        RoomsData = data.data;
+                    }
+                    table.clear().draw();
+                    table.rows.add(RoomsData).draw();
+                },
+                error: function (msg) {
+                    console.log(msg);
+                }
+            });
+        }
+
+        function LoadMenuCinema() {
+
+            $('.dropdown-submenu a').on("click", function (e) {
+                $(this).parents('ul').find('.dropdown-submenu ul').hide();
+                $(this).next('ul').toggle();
+                var selectedValue = $(this).attr('href');
+                if(selectedValue === '0'){
+                    ChangeCinema(selectedValue);
+                    $('.dropdown-menu').each(function (index, e) {
+                        $(e).removeClass("show");
+                    });;
+                }
+                e.stopPropagation();
+                e.preventDefault();
+
+
+            });
+            $('.select-submenu a').on("click", function (e) {
+                var selectedValue = $(this).attr('href');
+                ChangeCinema(selectedValue);
+                $('#h1-title').text('List Rooms of ' + $(this).text());
+                // Ẩn tất cả submenu khi chọn một mục con
+                $('.dropdown-menu').each(function (index, e) {
+                    $(e).removeClass("show");
+                });;
+
+            });
+
+        }
+
+        function LoadRoomsData() {
+            js.ajax({
+                async: false,
+                url: '/Manager/ManageRooms/GetData',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.data);
+                    RoomsData = data.data
+
+                    table.clear().draw();
+                    table.rows.add(RoomsData).draw();
+                },
+                error: function (msg) {
+                    console.log(msg);
+                }
+            });
+
+        }
+
+
+        // Data table
+        var table = $("#table-rooms").DataTable({
+            data: RoomsData,
+            columns: [
+                {
+                    data: 'cinema',
+                    render: function (data) {
+                        return '<p style="font-weight: bold;">' + data + '</p>';
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data) {
+                        return '<a style="text-decoration:none; font-weight: bolder;" href="/Manager/ManageRooms/Details/' + data.roomId + '">' + 'Room NO ' + data.roomNo + '</a>';
+                    }
+                },
+                { data: 'type' },
+                {
+                    data: 'status',
+                    render: function (data) {
+                        if (data === 'Open') return '<p style="color: green; font-weight: bold" >Open</p>';
+                        else return '<p style="color: red; font-weight: bold">Closed</p>';
+                    }
+                },
+
+                {
+                    data: 'roomId',
+                    render: function (data) {
+                        return '<a class="btn btn-outline-success" href="/Manager/ManageRooms/Edit/' + data + '"><i class="material-icons">&#xE254;</i> </a>';
+                    }
+                },
+                {
+                    data: 'roomId',
+                    render: function (data) {
+                        return '<a class="btn btn-outline-danger" href="/Manager/ManageRooms/Delete/' + data + '"><i class="material-icons">delete</i> </a>';
+                    }
+                }
+            ]
+        });
+
+
+    </script>
+}

@@ -42,22 +42,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRGF0YWJhc2VcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Files/Views/FileManager/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRmlsZXNcVmlld3NcRmlsZU1hbmFnZXJcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/MyProject/OJT/HnganhCinema/Areas/Files/Views/Shared/_LayoutFileManager.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRmlsZXNcVmlld3NcU2hhcmVkXF9MYXlvdXRGaWxlTWFuYWdlci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/MyProject/OJT/HnganhCinema/Areas/Files/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRmlsZXNcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/MyProject/OJT/HnganhCinema/Areas/Files/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcRmlsZXNcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/MyProject/OJT/HnganhCinema/Areas/Identity/Views/Account/ConfirmEmail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxDb25maXJtRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -124,6 +108,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MyProject/OJT/HnganhCinema/Areas/Identity/Views/Account/VerifyCode.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcQWNjb3VudFxWZXJpZnlDb2RlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Identity/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProject/OJT/HnganhCinema/Areas/Identity/Views/Manage/AddPhoneNumber.cshtml]
@@ -210,32 +198,124 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/Movies/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXE1vdmllc1xDcmVhdGUuY3NodG1s
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageCinemas/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VDaW5lbWFzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/Movies/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXE1vdmllc1xEZWxldGUuY3NodG1s
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageCinemas/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VDaW5lbWFzXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/Movies/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXE1vdmllc1xEZXRhaWxzLmNzaHRtbA==
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageCinemas/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VDaW5lbWFzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/Movies/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXE1vdmllc1xFZGl0LmNzaHRtbA==
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageCinemas/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VDaW5lbWFzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/Movies/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXE1vdmllc1xJbmRleC5jc2h0bWw=
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageCinemas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VDaW5lbWFzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageMovies/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VNb3ZpZXNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/MyProject/OJT/HnganhCinema/Areas/Movies/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTW92aWVzXFZpZXdzXF9WaWV3U3RhcnQuY3NodG1s
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageMovies/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VNb3ZpZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageMovies/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VNb3ZpZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageMovies/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VNb3ZpZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageMovies/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VNb3ZpZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManagePrices/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VQcmljZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManagePrices/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VQcmljZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManagePrices/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VQcmljZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManagePrices/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VQcmljZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManagePrices/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VQcmljZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageRooms/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VSb29tc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageRooms/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VSb29tc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageRooms/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VSb29tc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageRooms/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VSb29tc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageRooms/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VSb29tc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageShowtimes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VTaG93dGltZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageShowtimes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VTaG93dGltZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageShowtimes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VTaG93dGltZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageShowtimes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VTaG93dGltZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageShowtimes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VTaG93dGltZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/ManageShowtimes/ListMovies.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xNYW5hZ2VTaG93dGltZXNcTGlzdE1vdmllcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Areas/Manager/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcTWFuYWdlclxWaWV3c1xfVmlld1N0YXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Views/Booking/SelectSeat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xTZWxlY3RTZWF0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Views/Booking/ThankYou.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xUaGFua1lvdS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProject/OJT/HnganhCinema/Views/Home/Index.cshtml]
@@ -244,6 +324,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MyProject/OJT/HnganhCinema/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Views/Movie/MovieDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcTW92aWVEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Views/Movie/MovieShowtimes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVcTW92aWVTaG93dGltZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProject/OJT/HnganhCinema/Views/Shared/AccessDenied.cshtml]
@@ -256,6 +344,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MyProject/OJT/HnganhCinema/Views/Shared/_AlertMessage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BbGVydE1lc3NhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Views/Shared/_LayoutAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProject/OJT/HnganhCinema/Views/Shared/_LoginPartial.cshtml]
@@ -272,6 +364,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MyProject/OJT/HnganhCinema/Views/Shared/_StatusMessage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdGF0dXNNZXNzYWdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProject/OJT/HnganhCinema/Views/Shared/_Summernote.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdW1tZXJub3RlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProject/OJT/HnganhCinema/Views/Shared/_ValidationScriptsPartial.cshtml]

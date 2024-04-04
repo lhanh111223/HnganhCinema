@@ -41,7 +41,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
         // GET: /Account/Login
         [HttpGet("/login/")]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string returnUrl = "/")
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -54,12 +54,16 @@ namespace HnganhCinema.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            if(returnUrl == null)
+            {
+                returnUrl = Url.Content("~/");
+                ViewData["ReturnUrl"] = returnUrl;
+            }
             ViewData["ReturnUrl"] = returnUrl;
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, true, lockoutOnFailure: true);
-                _logger.LogError(result.ToString());
+                
                 // Tìm UserName theo Email, đăng nhập lại
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
@@ -89,9 +93,18 @@ namespace HnganhCinema.Areas.Identity.Controllers
                     ViewBag.ErrorMessage = "Username or password is incorrect !";
                     return View(model);
                 }
-            //}
-            //_logger.LogError("-============- Logged in");
-            //return View(model);
+            }
+            else
+            {
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        _logger.LogError($"ModelState Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+            return View(model);
         }
 
         // POST: /Account/LogOut
@@ -122,50 +135,44 @@ namespace HnganhCinema.Areas.Identity.Controllers
         {
             returnUrl ??= Url.Content("~/");
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            var user = new AppUser { UserName = model.UserName, Email = model.Email };
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                _logger.LogInformation("Đã tạo user mới.");
 
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("Đã tạo user mới.");
+                // Phát sinh token để xác nhận email
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                    // Phát sinh token để xác nhận email
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                // https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
+                var callbackUrl = Url.ActionLink(
+                    action: nameof(ConfirmEmail),
+                    values:
+                        new
+                        {
+                            area = "Identity",
+                            userId = user.Id,
+                            code = code
+                        },
+                    protocol: Request.Scheme);
 
-                    // https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
-                    var callbackUrl = Url.ActionLink(
-                        action: nameof(ConfirmEmail),
-                        values:
-                            new
-                            {
-                                area = "Identity",
-                                userId = user.Id,
-                                code = code
-                            },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(model.Email,
-                        "Xác nhận địa chỉ email",
-                        @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
+                await _emailSender.SendEmailAsync(model.Email,
+                    "Xác nhận địa chỉ email",
+                    @$"Bạn đã đăng ký tài khoản trên RazorWeb, 
                            hãy <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>bấm vào đây</a> 
                            để kích hoạt tài khoản.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-
+                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                {
+                    return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
                 }
-
-                ModelState.AddModelError(result);
+                else
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -555,7 +562,7 @@ namespace HnganhCinema.Areas.Identity.Controllers
             model.ReturnUrl ??= Url.Content("~/");
             if (!ModelState.IsValid)
             {
-                foreach(var e in ModelState.Values.SelectMany(v => v.Errors))
+                foreach (var e in ModelState.Values.SelectMany(v => v.Errors))
                 {
                     _logger.LogError(e.ErrorMessage);
                 }
@@ -669,11 +676,11 @@ namespace HnganhCinema.Areas.Identity.Controllers
             }
         }
 
-        [Route("/accessdenied.html")]
+
         [AllowAnonymous]
         public IActionResult AccessDenied()
         {
-            return View();
+            return View("AccessDenied");
         }
     }
 }

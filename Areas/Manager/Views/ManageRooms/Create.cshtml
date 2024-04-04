@@ -1,0 +1,162 @@
+﻿@model HnganhCinema.Areas.Manager.Models.RoomViewModels.CreateRoomViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+    <head>
+        <style>
+            .seat {
+                margin: 0.5rem;
+                width: 2.5rem;
+                height: 2rem;
+                background: green;
+                color: white;
+                border-color: blue;
+            }
+        </style>
+    </head>
+<h1>Create</h1>
+
+<h4>Room</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="btn btn-close" data-dismiss="alert"></button>
+                    @ViewData["ErrorMessage"]
+                </div>
+            }
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="RowsVip" type="hidden" id="row-vip" value="" />
+            <div class="form-group">
+                <label asp-for="CinemaId" class="control-label"></label>
+                <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.CinemaId" ></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomNo" class="control-label"></label>
+                <span asp-validation-for="RoomNo" class="text-danger"></span>
+                <input asp-for="RoomNo" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberRow" class="control-label"></label>
+                <span asp-validation-for="NumberRow" class="text-danger"></span>
+                <input oninput="generateSeats()" id="rowInput" asp-for="NumberRow" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberCol" class="control-label"></label>
+                <span asp-validation-for="NumberCol" class="text-danger"></span>
+                <input oninput="generateSeats()" id="seatInput" asp-for="NumberCol" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <span asp-validation-for="Type" class="text-danger"></span>
+                <select asp-for="Type" class="form-control" asp-items="ViewBag.Type"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <span asp-validation-for="Status" class="text-danger"></span>
+                <select asp-for="Status" class="form-control" asp-items="ViewBag.Status"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8 seat-checkbox" id="seatContainer">
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script>
+
+        let rowName = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+        $(document).ready(function () {
+        });
+
+        function handleCheckboxClick(checkbox) {
+            var v = document.getElementsByName('rowvip');
+            var temp = [];
+            for (var i = 0; i < v.length; i++) {
+                if (v[i].checked && !temp.includes(v[i].value)) {
+                    temp.push(v[i].value);
+                } else {
+                    temp.splice(i, 1);
+                }
+            }
+
+            $("#row-vip").val(temp.toString());
+            console.log($("#row-vip").val());
+
+            if (checkbox.checked) {
+                $(".row-" + checkbox.value).css('background', 'red');
+            } else {
+                $(".row-" + checkbox.value).css('background', 'green');
+            }
+        }
+
+        function generateSeats() {
+            // Lấy giá trị từ input
+            var numberOfRows = document.getElementById("rowInput").value;
+            var seatsPerRow = document.getElementById("seatInput").value;
+
+            // // Kiểm tra xem giá trị nhập vào có phải là số không
+            // if (isNaN(numberOfRows) || isNaN(seatsPerRow)) {
+            //     alert("Please enter valid numbers.");
+            //     return;
+            // }
+
+            // Chuyển đổi giá trị từ chuỗi sang số nguyên
+            numberOfRows = parseInt(numberOfRows);
+            seatsPerRow = parseInt(seatsPerRow);
+
+            // // Kiểm tra xem giá trị là số dương không
+            // if (numberOfRows <= 0 || seatsPerRow <= 0) {
+            //     alert("Please enter positive numbers.");
+            //     return;
+            // }
+
+            // Tạo checkbox tượng trưng cho từng ghế
+            var seatContainer = document.getElementById("seatContainer");
+            seatContainer.innerHTML = ""; // Xóa nội dung cũ
+
+            if (numberOfRows >= 3 && seatsPerRow >= 3 && numberOfRows <= 15 && seatsPerRow <= 15) {
+                for (var row = 1; row <= numberOfRows; row++) {
+                    var checkVip = document.createElement("input");
+                    checkVip.type = 'checkbox';
+                    checkVip.name = 'rowvip';
+                    checkVip.value = row;
+                    checkVip.onclick = function () {
+                        handleCheckboxClick(this);
+                    }
+
+                    for (var seat = 1; seat <= seatsPerRow; seat++) {
+                        var button = document.createElement("button");
+                        button.className = "seat row-" + row;
+                        seatContainer.appendChild(button);
+                        button.textContent = rowName[row - 1] + "" + seat;
+                    }
+
+                    seatContainer.appendChild(checkVip);
+                    seatContainer.appendChild(document.createElement("br"));
+                }
+            }
+        }
+    </script>
+}

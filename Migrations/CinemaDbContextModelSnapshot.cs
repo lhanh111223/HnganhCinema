@@ -58,6 +58,9 @@ namespace HnganhCinema.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ActorId");
 
                     b.ToTable("Actors");
@@ -131,10 +134,15 @@ namespace HnganhCinema.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("CinemaId");
+
+                    b.HasIndex("ProvinceId");
 
                     b.ToTable("Cinemas");
                 });
@@ -172,6 +180,9 @@ namespace HnganhCinema.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MovieName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -179,7 +190,7 @@ namespace HnganhCinema.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("Time")
@@ -269,7 +280,7 @@ namespace HnganhCinema.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"), 1L, 1);
 
-                    b.Property<int?>("CinemaId")
+                    b.Property<int>("CinemaId")
                         .HasColumnType("int");
 
                     b.Property<int>("NumberCol")
@@ -280,6 +291,9 @@ namespace HnganhCinema.Migrations
 
                     b.Property<int>("RoomNo")
                         .HasColumnType("int");
+
+                    b.Property<string>("RowsVip")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -334,7 +348,7 @@ namespace HnganhCinema.Migrations
                     b.Property<int?>("CinemaId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EndTime")
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("MovieId")
@@ -346,7 +360,7 @@ namespace HnganhCinema.Migrations
                     b.Property<string>("SeatStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("StartTime")
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
@@ -424,6 +438,9 @@ namespace HnganhCinema.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -488,6 +505,23 @@ namespace HnganhCinema.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("HnganhCinema.Models.Province", b =>
+                {
+                    b.Property<int>("ProvinceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProvinceId"), 1L, 1);
+
+                    b.Property<string>("ProvinceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProvinceId");
+
+                    b.ToTable("Provinces");
                 });
 
             modelBuilder.Entity("HnganhCinema.Models.UserFeature", b =>
@@ -716,6 +750,18 @@ namespace HnganhCinema.Migrations
                     b.Navigation("Showtime");
                 });
 
+            modelBuilder.Entity("CinemaWeb.Models.Cinema", b =>
+                {
+                    b.HasOne("HnganhCinema.Models.Province", "Province")
+                        .WithMany("Cinemas")
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Cinema_Province");
+
+                    b.Navigation("Province");
+                });
+
             modelBuilder.Entity("CinemaWeb.Models.MovieActor", b =>
                 {
                     b.HasOne("CinemaWeb.Models.Actor", "Actor")
@@ -755,6 +801,8 @@ namespace HnganhCinema.Migrations
                     b.HasOne("CinemaWeb.Models.Cinema", "Cinema")
                         .WithMany("Rooms")
                         .HasForeignKey("CinemaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_Room_Cinema");
 
                     b.Navigation("Cinema");
@@ -960,6 +1008,11 @@ namespace HnganhCinema.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("UserFeatures");
+                });
+
+            modelBuilder.Entity("HnganhCinema.Models.Province", b =>
+                {
+                    b.Navigation("Cinemas");
                 });
 #pragma warning restore 612, 618
         }

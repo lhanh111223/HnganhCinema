@@ -15,8 +15,8 @@ namespace CinemaWeb.Models
         public int? MovieId { get; set; }
         public int? RoomId { get; set; }
         public int? CinemaId { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public string? SeatStatus { get; set; }
         public string? Status { get; set; }
 

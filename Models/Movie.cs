@@ -18,7 +18,7 @@ namespace CinemaWeb.Models
         public int MovieId { get; set; }
 
 
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} must be from {2} to {1} characters")]
         [DisplayName("Movie Name")]
         public string? MovieName { get; set; }
 
@@ -38,7 +38,8 @@ namespace CinemaWeb.Models
 
         [Column(TypeName = "date")]
         public DateTime EndDate { get; set; }
-        public int? Status { get; set; }
+        [Required]
+        public int Status { get; set; }
 
         public virtual ICollection<MovieActor> MovieActors { get; set; }
         public virtual ICollection<MovieGerne> MovieGernes { get; set; }

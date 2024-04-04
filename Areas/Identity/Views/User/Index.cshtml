@@ -1,6 +1,8 @@
 @model UserListModel
 @{
     ViewData["Title"] = "List of Members";
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Active"] = "true";
 }
 <h2>@ViewData["Title"]</h2>
 <partial name="_StatusMessage"></partial>

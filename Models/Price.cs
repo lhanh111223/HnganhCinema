@@ -1,5 +1,4 @@
-﻿using DataAnnotationsExtensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,11 +16,11 @@ namespace CinemaWeb.Models
         public int PriceId { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "{0} must be from {2} to {1} characters")]
         public string PriceName { get; set; }
 
         [Required]
-        [Min(1, ErrorMessage = "{0} must be from {1}")]
+        [Range(1, 1000,ErrorMessage = "{0} must be from {1}")]
         [Column(TypeName ="money")]
         public decimal UnitPrice { get; set; }
 

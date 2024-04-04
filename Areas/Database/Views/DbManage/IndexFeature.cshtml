@@ -4,7 +4,9 @@
 @inject CinemaDbContext dbContext
 
 @{
-    ViewData["Title"] = "Manage Feature";
+    ViewData["Title"] = "Manage Features";
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Active"] = "true";
 }
 
 <h1>@ViewData["Title"]</h1>

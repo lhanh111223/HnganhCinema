@@ -15,7 +15,8 @@ namespace CinemaWeb.Models
 
         [Key]
         public int RoomId { get; set; }
-        public int? CinemaId { get; set; }
+        [Required]
+        public int CinemaId { get; set; }
 
         [Required]
         [DisplayName("Room No")]
@@ -32,6 +33,8 @@ namespace CinemaWeb.Models
         public int NumberCol { get; set; }
         public string Type { get; set; }
         public int Status { get; set; }
+
+        public string? RowsVip {  get; set; }
 
         public virtual Cinema? Cinema { get; set; }
         public virtual ICollection<Seat> Seats { get; set; }

@@ -2,6 +2,7 @@ using HnganhCinema.Data;
 using HnganhCinema.Helper;
 using HnganhCinema.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -117,7 +118,7 @@ app.UseStaticFiles(new StaticFileOptions()
     FileProvider = new PhysicalFileProvider(
         Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
         ),
-    RequestPath = "/contents"
+    RequestPath = "/Contents"
 });
 
 app.UseRouting();
@@ -126,20 +127,29 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapRazorPages();
-});
+//app.UseEndpoints(endpoints =>
+//{
+
+
+//    endpoints.MapControllers();
+//    endpoints.MapRazorPages();
+//});
 
 // URL: /{controller}/{action}/{id?}
 // Abc/Xyz = > Controller: ABC, goi method Xyz
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
-//ContentRootPath = app.Environment.ContentRootPath;
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.UseStatusCodePages();
 app.Run();

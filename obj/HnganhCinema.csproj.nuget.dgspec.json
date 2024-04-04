@@ -49,10 +49,6 @@
               "target": "Package",
               "version": "[35.0.1, )"
             },
-            "DataAnnotationsExtensions": {
-              "target": "Package",
-              "version": "[5.0.1.27, )"
-            },
             "MailKit": {
               "target": "Package",
               "version": "[4.3.0, )"
@@ -170,6 +166,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "PayPal": {
+              "target": "Package",
+              "version": "[1.9.1, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",

@@ -14,7 +14,7 @@ namespace CinemaWeb.Models
         [Key]
         public int GerneId { get; set; }
 
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} must be from {1} to {2} characters")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} must be from {2} to {1} characters")]
         public string GerneName { get; set; }
 
         public virtual ICollection<MovieGerne> MovieGernes { get; set; }
